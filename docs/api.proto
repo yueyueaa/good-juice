@@ -73,7 +73,7 @@ message RegisterIntroRequest {
     string user_intro = 1;
     bytes  sex = 2;	
     string area = 3;		  
-	  string head_imageURL = 4;
+	  bytes  head_imageURL = 4;
     string token = 5;  
 }
 
@@ -93,15 +93,15 @@ message Users {
     string user_name = 2;
     uint64 follow_count = 3;
     uint64 follower_count = 4;
-    bool is_follow = 5;
+    bool   is_follow = 5;
     string user_intro = 6;
-    string head_imageURL = 7;  
+    bytes  head_imageURL = 7;  
 }
   
 message UserInfoResponse {
     uint64 status_code = 1;
     string status_msg = 2;
-    Users user = 3;
+    Users  user = 3;
 }
 
 // 搜索用户
@@ -196,7 +196,7 @@ service Basic {
 
 // 上传图片/封面/头像
 message PublishImagesRequest {
-    string image_url = 1;
+    bytes image_url = 1;
     string token = 2;
 }
 
@@ -205,8 +205,8 @@ message PublishVideosRequest {
     string title = 1;
     string intro = 2;
     string address = 3;
-    string cover_url = 4;
-    string play_url = 5;
+    bytes  cover_url = 4;
+    bytes  play_url = 5;
     uint64 uid = 6;
     uint64 publish_date = 7;
     uint64 video_type = 8;   //视频类型
@@ -225,19 +225,11 @@ message VideosListRequest {
     string token = 2;
 }
 
-message Author {
-  uint64 uid = 1;
-  string name = 2;
-  uint64 follow_count = 3;
-  uint64 follower_count = 4;
-  bool is_follow = 5;
-}
-
 message Videos {
   uint64 vid = 1;
-  Author author = 2;
-  string play_url = 3;
-  string cover_url = 4;
+  Users  user = 2;
+  bytes  play_url = 3;
+  bytes  cover_url = 4;
   uint64 favorite_count = 5;
   uint64 comment_count = 6;
   bool is_favorite = 7;
@@ -262,7 +254,7 @@ message PublishCommentsRequest {
 
 message Comment {
   uint64 cid = 1;
-  Author author= 2;
+  Users  user= 2;
   string content = 3;
   string create_date = 4;
 }
