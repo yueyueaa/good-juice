@@ -63,35 +63,35 @@ service UserBasic { // 用户服务，用于所有用户
   // 用户登陆
   rpc UserLogin(UserLoginRequest) returns (UserLoginResponse) {
     option (google.api.http) = {
-      post : "/v1/user/login"
+      post : "/v1/user_basic/login"
     };
   };
 
   // 用户注册
   rpc UserRegister(UserRegisterRequest) returns (UserRegisterResponse) {
     option (google.api.http) = {
-      post : "/v1/user/register"
+      post : "/v1/user_basic/register"
     };
   };
 
   // 用户信息更新接口
   rpc UpdateUserInfo(UserUpdateInfoRequest) returns (UserUpdateInfoResponse) {
     option (google.api.http) = {
-      post : "/v1/user/register/intro"
+      post : "/v1/user_basic/update"
     };
   };
 
   // 获取用户信息
   rpc GetUserInfo(GetUserInfoRequest) returns (UserInfoResponse) {
     option (google.api.http) = {
-      get : "/v1/user/userinfo"
+      get : "/v1/user_basic/info"
     };
   };
 
   // 搜索用户
   rpc SearchUserList(SeaechUserListRequest) returns (UserListResponse) {
     option (google.api.http) = {
-      get : "/v1/user/usersinfo"
+      get : "/v1/user_basic/search"
     };
   };
 }
@@ -350,6 +350,11 @@ service VideoFeed {
       get : "/v1/video_feed/list"
     };
   };
+  rpc GetUserVideoList(GetUserVideoListRequest) returns (VideoListResponse) {
+    option (google.api.http) = {
+      get : "/v1/video_feed/list"
+    };
+  };
   rpc SearchVideoList(SearchVideoListRequest) returns (VideoListResponse) {
     option (google.api.http) = {
       get : "/v1/video_feed/info"
@@ -360,7 +365,7 @@ service VideoFeed {
       get : "/v1/video_feed/video/classified_list"
     };
   };
-  rpc GetVideoFeed(GetVideoFeedRequest) returns (VideoFeedResponse) {
+  rpc GetVideoStream(GetVideoStreamRequest) returns (VideoStreamResponse) {
     option (google.api.http) = {
       get : "/v1/video_feed/feed"
     };
@@ -369,6 +374,11 @@ service VideoFeed {
 
 // 获取视频列表
 message GetVideoListRequest { IdentityMsg user_identity = 1; }
+
+message GetUserVideoListRequest {
+  IdentityMsg user_identity = 1;
+  uint64 user_id = 2;
+}
 
 // 搜索视频
 message SearchVideoListRequest {
@@ -389,9 +399,9 @@ message VideoListResponse {
 
 // 视频流
 // 未知作用，可能可以用于ffmpeg和ffplay推拉流使用
-message GetVideoFeedRequest { IdentityMsg user_identity = 1; }
+message GetVideoStreamRequest { IdentityMsg user_identity = 1; }
 
-message VideoFeedResponse {
+message VideoStreamResponse {
   StatusMsg msg = 1;
   repeated Video video_list = 4;
 }
