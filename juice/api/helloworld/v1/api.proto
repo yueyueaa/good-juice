@@ -1,0 +1,407 @@
+// 定义项目 API 的 proto 文件 可以同时描述 gRPC 和 HTTP API
+// protobuf 文件参考:
+//  - https://developers.google.com/protocol-buffers/
+syntax = "proto3";
+package v1;
+
+// import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+// import "google/protobuf/empty.proto";
+// import "google/protobuf/timestamp.proto";
+
+option go_package = "juice/api/helloworld/v1;v1";
+
+// 通用基本结构
+
+message IdentityMsg { // 用户身份信息
+  uint64 user_id = 1;
+  string token = 2;
+  uint64 timestampe = 3;
+}
+
+message StatusMsg { // 返回消息
+  uint64 code = 1;
+  string msg = 2;
+  uint64 timestampe = 3;
+}
+
+message Users { // 用户信息
+  uint64 uid = 1;
+  string user_name = 2;
+  uint64 follow_count = 3;
+  uint64 follower_count = 4;
+  bool is_follow = 5; // False for oneself
+  string user_intro = 6;
+  bytes head_imageURL = 7;
+}
+
+message Comment { // 评论
+  uint64 comment_id = 1;
+  uint64 pcomment_id = 2;
+  uint64 video_id = 3;
+  Users user = 4;
+  string content = 5;
+  string create_date = 6;
+}
+
+message Video { // 视频
+  uint64 vid = 1;
+  Users user = 2;
+  bytes play_url = 3;
+  bytes cover_url = 4;
+  uint64 favorite_count = 5;
+  uint64 comment_count = 6;
+  bool is_favorite = 7;
+  string title = 8;
+  uint64 publish_date = 9;
+}
+
+// grpcurl -d {"name":"World"} localhost:9000 api.User/v1/user/login
+
+service UserBasic { // 用户服务，用于所有用户
+
+  // 用户登陆
+  rpc UserLogin(UserLoginRequest) returns (UserLoginResponse) {
+    option (google.api.http) = {
+      post : "/v1/user_basic/login"
+    };
+  };
+
+  // 用户注册
+  rpc UserRegister(UserRegisterRequest) returns (UserRegisterResponse) {
+    option (google.api.http) = {
+      post : "/v1/user_basic/register"
+    };
+  };
+
+  // 用户信息更新接口
+  rpc UpdateUserInfo(UserUpdateInfoRequest) returns (UserUpdateInfoResponse) {
+    option (google.api.http) = {
+      post : "/v1/user_basic/update"
+    };
+  };
+
+  // 获取用户信息
+  rpc GetUserInfo(GetUserInfoRequest) returns (UserInfoResponse) {
+    option (google.api.http) = {
+      get : "/v1/user_basic/info"
+    };
+  };
+
+  // 搜索用户
+  rpc SearchUserList(SeaechUserListRequest) returns (UserListResponse) {
+    option (google.api.http) = {
+      get : "/v1/user_basic/search"
+    };
+  };
+}
+
+// 用户登录
+message UserLoginRequest {
+  IdentityMsg user_identity = 1; // NULL
+  string user_name = 2;
+  string password = 3;
+}
+
+message UserLoginResponse {
+  StatusMsg status = 1;
+  IdentityMsg IdentityMsg = 2;
+}
+
+// 用户注册
+message UserRegisterRequest {
+  IdentityMsg user_identity = 1; // NULL
+  string user_name = 2;
+  string password = 3;
+}
+
+message UserRegisterResponse {
+  StatusMsg status = 1;
+  IdentityMsg IdentityMsg = 2;
+}
+
+// 用户信息更新
+message UserUpdateInfoRequest {
+  IdentityMsg user_identity = 1;
+  string user_intro = 2;
+  bytes sex = 3;
+  string area = 4;
+  bytes head_imageURL = 5;
+}
+
+message UserUpdateInfoResponse { StatusMsg status = 1; }
+
+// 用户信息
+message GetUserInfoRequest { IdentityMsg user_identity = 1; }
+
+message UserInfoResponse {
+  StatusMsg status = 1;
+  Users user = 2;
+}
+
+// 搜索用户
+message SeaechUserListRequest {
+  IdentityMsg user_identity = 1;
+  string users_keywords = 2;
+}
+
+message UserListResponse {
+  StatusMsg status = 1;
+  repeated Users user_list = 2;
+}
+
+// 视频管理接口，用于视频发布者
+service VideoManage {
+
+  // 发布视频
+  rpc PublishVideo(PublishVideoRequest) returns (PublishVideoResponse) {
+    option (google.api.http) = {
+      post : "/v1/video/manege/publish"
+    };
+  };
+
+  // 删除视频
+  rpc DeleteVideo(DeleteVideoRequest) returns (DeleteVideoResponse) {
+    option (google.api.http) = {
+      delete : "/v1/video/manege/delete"
+    };
+  };
+}
+
+// 上传视频
+message PublishVideoRequest {
+  IdentityMsg user_identity = 1;
+  string title = 2;
+  string intro = 3;
+  string address = 4;
+  bytes cover_url = 5;
+  bytes play_url = 6;
+  uint64 publish_date = 7;
+  uint64 video_type = 8;
+}
+
+message PublishVideoResponse { StatusMsg msg = 1; }
+
+// 删除视频
+message DeleteVideoRequest {
+  IdentityMsg user_identity = 1;
+  uint64 video_id = 2;
+}
+
+message DeleteVideoResponse { StatusMsg msg = 1; }
+
+// 互动服务接口
+service VideoInteract {
+
+  // 视频点赞
+  rpc SetLike(SetLikeRequest) returns (LikeResponse) {
+    option (google.api.http) = {
+      post : "/v1/video_interact/like/set"
+    };
+  };
+  rpc GetLikeList(GetLikeListRequest) returns (LikeListResponse) {
+    option (google.api.http) = {
+      get : "/v1/video_interact/like/list"
+    };
+  };
+
+  // 视频收藏
+  rpc SetSave(SetSaveRequest) returns (SaveResponse) {
+    option (google.api.http) = {
+      post : "/v1/video_interact/save/set"
+    };
+  }
+  rpc GetSaveList(GetSaveListRequest) returns (SaveListResponse) {
+    option (google.api.http) = {
+      get : "/v1/video_interact/save/list"
+    };
+  };
+
+  // 视频评论
+  rpc PublishComment(PublishCommentRequest) returns (PublishCommentResponse) {
+    option (google.api.http) = {
+      post : "/v1/video_interact/comment/publish"
+    };
+  };
+  rpc DeleteComment(DeleteCommentRequest) returns (DeleteCommentResponse) {
+    option (google.api.http) = {
+      delete : "/v1/video_interact/comment/delete"
+    };
+  };
+  rpc GetCommentsList(GetCommentListRequest) returns (CommentListResponse) {
+    option (google.api.http) = {
+      get : "/v1/video_interact/comment/list"
+    };
+  };
+}
+
+// 点赞
+message SetLikeRequest {
+  IdentityMsg user_identity = 1;
+  uint64 video_id = 2;
+  bool action_type = 3;
+}
+
+message LikeResponse { StatusMsg status_msg = 1; }
+
+// 点赞列表
+message GetLikeListRequest { IdentityMsg user_identity = 1; }
+
+message LikeListResponse {
+  StatusMsg status_msg = 1;
+  repeated Video video_list = 3;
+}
+
+// 收藏
+message SetSaveRequest {
+  IdentityMsg user_identity = 1;
+  uint64 video_id = 2;
+  bool action_type = 3;
+}
+
+message SaveResponse { StatusMsg status_msg = 1; }
+
+// 收藏列表
+message GetSaveListRequest { IdentityMsg user_identity = 1; }
+
+message SaveListResponse {
+  StatusMsg status_msg = 1;
+  repeated Video video_list = 3;
+}
+
+// 发布评论
+message PublishCommentRequest {
+  IdentityMsg user_identity = 1;
+  Comment comment = 2;
+}
+
+message PublishCommentResponse { StatusMsg msg = 1; }
+
+// 删除评论
+message DeleteCommentRequest {
+  IdentityMsg user_identity = 1;
+  uint64 cid = 2;
+}
+
+message DeleteCommentResponse { StatusMsg msg = 1; }
+
+// 评论列表
+message GetCommentListRequest {
+  IdentityMsg user_identity = 1;
+  uint64 vid = 2;
+}
+
+message CommentListResponse {
+  StatusMsg msg = 1;
+  repeated Comment comment_list = 2;
+}
+
+service UserRelation {
+  // 关注（互动）
+  rpc SetFollow(SetFollowRequest) returns (SetFollowResponse) {
+    option (google.api.http) = {
+      post : "/v1/user_relation/set"
+    };
+  };
+
+  // 关注列表
+  rpc GetFollowedList(GetFollowedListRequest) returns (FollowedListResponse) {
+    option (google.api.http) = {
+      get : "/v1/user_relation/followed"
+    };
+  };
+
+  // 粉丝列表
+  rpc GetFollowerList(GetFollowerListRequest) returns (FollowerListResponse) {
+    option (google.api.http) = {
+      get : "/v1/user_relation/follower"
+    };
+  };
+}
+
+// 关注操作
+message SetFollowRequest {
+  IdentityMsg user_identity = 1;
+  uint64 followed_id = 2;
+  string action_type = 3;
+}
+
+message SetFollowResponse { StatusMsg msg = 1; }
+
+// 关注列表
+message GetFollowedListRequest { IdentityMsg user_identity = 1; }
+
+message FollowedListResponse {
+  StatusMsg msg = 1;
+  repeated Users user_list = 2;
+}
+
+// 粉丝列表
+message GetFollowerListRequest { IdentityMsg user_identity = 1; }
+
+message FollowerListResponse {
+  StatusMsg msg = 1;
+  repeated Users user_list = 2;
+}
+
+service VideoFeed {
+  rpc GetVideoList(GetVideoListRequest) returns (VideoListResponse) {
+    option (google.api.http) = {
+      get : "/v1/video_feed/list"
+    };
+  };
+  rpc GetUserVideoList(GetUserVideoListRequest) returns (VideoListResponse) {
+    option (google.api.http) = {
+      get : "/v1/video_feed/list"
+    };
+  };
+  rpc SearchVideoList(SearchVideoListRequest) returns (VideoListResponse) {
+    option (google.api.http) = {
+      get : "/v1/video_feed/info"
+    };
+  };
+  rpc ClassifyVideoList(ClassifyVideoListRequest) returns (VideoListResponse) {
+    option (google.api.http) = {
+      get : "/v1/video_feed/video/classified_list"
+    };
+  };
+  rpc GetVideoStream(GetVideoStreamRequest) returns (VideoStreamResponse) {
+    option (google.api.http) = {
+      get : "/v1/video_feed/feed"
+    };
+  };
+}
+
+// 获取视频列表
+message GetVideoListRequest { IdentityMsg user_identity = 1; }
+
+message GetUserVideoListRequest {
+  IdentityMsg user_identity = 1;
+  uint64 user_id = 2;
+}
+
+// 搜索视频
+message SearchVideoListRequest {
+  IdentityMsg user_identity = 1;
+  string video_keywords = 2;
+}
+
+// 按视频分类筛选
+message ClassifyVideoListRequest {
+  IdentityMsg user_identity = 1;
+  uint64 video_type = 2;
+}
+
+message VideoListResponse {
+  StatusMsg msg = 1;
+  repeated Video video_list = 3;
+}
+
+// 视频流
+// 未知作用，可能可以用于ffmpeg和ffplay推拉流使用
+message GetVideoStreamRequest { IdentityMsg user_identity = 1; }
+
+message VideoStreamResponse {
+  StatusMsg msg = 1;
+  repeated Video video_list = 4;
+}
