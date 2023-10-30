@@ -1,0 +1,1193 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "api.proto",
+    "version": "version not set"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/user_basic/info": {
+      "get": {
+        "summary": "获取用户信息",
+        "operationId": "UserBasic_GetUserInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UserInfoResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user_identity.user_id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "user_identity.token",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "user_identity.timestampe",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "UserBasic"
+        ]
+      }
+    },
+    "/v1/user_basic/login": {
+      "post": {
+        "summary": "用户登陆",
+        "operationId": "UserBasic_UserLogin",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UserLoginResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "tags": [
+          "UserBasic"
+        ]
+      }
+    },
+    "/v1/user_basic/register": {
+      "post": {
+        "summary": "用户注册",
+        "operationId": "UserBasic_UserRegister",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UserRegisterResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "tags": [
+          "UserBasic"
+        ]
+      }
+    },
+    "/v1/user_basic/search": {
+      "get": {
+        "summary": "搜索用户",
+        "operationId": "UserBasic_SearchUserList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UserListResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user_identity.user_id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "user_identity.token",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "user_identity.timestampe",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "users_keywords",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UserBasic"
+        ]
+      }
+    },
+    "/v1/user_basic/update": {
+      "post": {
+        "summary": "用户信息更新接口",
+        "operationId": "UserBasic_UpdateUserInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UserUpdateInfoResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "tags": [
+          "UserBasic"
+        ]
+      }
+    },
+    "/v1/user_relation/followed": {
+      "get": {
+        "summary": "关注列表",
+        "operationId": "UserRelation_GetFollowedList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1FollowedListResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user_identity.user_id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "user_identity.token",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "user_identity.timestampe",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "UserRelation"
+        ]
+      }
+    },
+    "/v1/user_relation/follower": {
+      "get": {
+        "summary": "粉丝列表",
+        "operationId": "UserRelation_GetFollowerList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1FollowerListResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user_identity.user_id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "user_identity.token",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "user_identity.timestampe",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "UserRelation"
+        ]
+      }
+    },
+    "/v1/user_relation/set": {
+      "post": {
+        "summary": "关注（互动）",
+        "operationId": "UserRelation_SetFollow",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SetFollowResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "tags": [
+          "UserRelation"
+        ]
+      }
+    },
+    "/v1/video/manege/delete": {
+      "delete": {
+        "summary": "删除视频",
+        "operationId": "VideoManage_DeleteVideo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteVideoResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user_identity.user_id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "user_identity.token",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "user_identity.timestampe",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "video_id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "VideoManage"
+        ]
+      }
+    },
+    "/v1/video/manege/publish": {
+      "post": {
+        "summary": "发布视频",
+        "operationId": "VideoManage_PublishVideo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1PublishVideoResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "tags": [
+          "VideoManage"
+        ]
+      }
+    },
+    "/v1/video_feed/feed": {
+      "get": {
+        "operationId": "VideoFeed_GetVideoStream",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1VideoStreamResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user_identity.user_id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "user_identity.token",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "user_identity.timestampe",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "VideoFeed"
+        ]
+      }
+    },
+    "/v1/video_feed/info": {
+      "get": {
+        "operationId": "VideoFeed_SearchVideoList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1VideoListResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user_identity.user_id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "user_identity.token",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "user_identity.timestampe",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "video_keywords",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "VideoFeed"
+        ]
+      }
+    },
+    "/v1/video_feed/list": {
+      "get": {
+        "operationId": "VideoFeed_GetUserVideoList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1VideoListResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user_identity.user_id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "user_identity.token",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "user_identity.timestampe",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "user_id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "VideoFeed"
+        ]
+      }
+    },
+    "/v1/video_feed/video/classified_list": {
+      "get": {
+        "operationId": "VideoFeed_ClassifyVideoList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1VideoListResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user_identity.user_id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "user_identity.token",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "user_identity.timestampe",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "video_type",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "VideoFeed"
+        ]
+      }
+    },
+    "/v1/video_interact/comment/delete": {
+      "delete": {
+        "operationId": "VideoInteract_DeleteComment",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteCommentResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user_identity.user_id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "user_identity.token",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "user_identity.timestampe",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "cid",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "VideoInteract"
+        ]
+      }
+    },
+    "/v1/video_interact/comment/list": {
+      "get": {
+        "operationId": "VideoInteract_GetCommentsList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CommentListResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user_identity.user_id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "user_identity.token",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "user_identity.timestampe",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "vid",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "VideoInteract"
+        ]
+      }
+    },
+    "/v1/video_interact/comment/publish": {
+      "post": {
+        "summary": "视频评论",
+        "operationId": "VideoInteract_PublishComment",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1PublishCommentResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "tags": [
+          "VideoInteract"
+        ]
+      }
+    },
+    "/v1/video_interact/like/list": {
+      "get": {
+        "operationId": "VideoInteract_GetLikeList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1LikeListResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user_identity.user_id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "user_identity.token",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "user_identity.timestampe",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "VideoInteract"
+        ]
+      }
+    },
+    "/v1/video_interact/like/set": {
+      "post": {
+        "summary": "视频点赞",
+        "operationId": "VideoInteract_SetLike",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1LikeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "tags": [
+          "VideoInteract"
+        ]
+      }
+    },
+    "/v1/video_interact/save/list": {
+      "get": {
+        "operationId": "VideoInteract_GetSaveList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SaveListResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user_identity.user_id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "user_identity.token",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "user_identity.timestampe",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "VideoInteract"
+        ]
+      }
+    },
+    "/v1/video_interact/save/set": {
+      "post": {
+        "summary": "视频收藏",
+        "operationId": "VideoInteract_SetSave",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1SaveResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "tags": [
+          "VideoInteract"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "runtimeError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1Comment": {
+      "type": "object",
+      "properties": {
+        "comment_id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "pcomment_id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "video_id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "user": {
+          "$ref": "#/definitions/v1Users"
+        },
+        "content": {
+          "type": "string"
+        },
+        "create_date": {
+          "type": "string"
+        }
+      }
+    },
+    "v1CommentListResponse": {
+      "type": "object",
+      "properties": {
+        "msg": {
+          "$ref": "#/definitions/v1StatusMsg"
+        },
+        "comment_list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Comment"
+          }
+        }
+      }
+    },
+    "v1DeleteCommentResponse": {
+      "type": "object",
+      "properties": {
+        "msg": {
+          "$ref": "#/definitions/v1StatusMsg"
+        }
+      }
+    },
+    "v1DeleteVideoResponse": {
+      "type": "object",
+      "properties": {
+        "msg": {
+          "$ref": "#/definitions/v1StatusMsg"
+        }
+      }
+    },
+    "v1FollowedListResponse": {
+      "type": "object",
+      "properties": {
+        "msg": {
+          "$ref": "#/definitions/v1StatusMsg"
+        },
+        "user_list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Users"
+          }
+        }
+      }
+    },
+    "v1FollowerListResponse": {
+      "type": "object",
+      "properties": {
+        "msg": {
+          "$ref": "#/definitions/v1StatusMsg"
+        },
+        "user_list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Users"
+          }
+        }
+      }
+    },
+    "v1IdentityMsg": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "token": {
+          "type": "string"
+        },
+        "timestampe": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
+    "v1LikeListResponse": {
+      "type": "object",
+      "properties": {
+        "status_msg": {
+          "$ref": "#/definitions/v1StatusMsg"
+        },
+        "video_list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Video"
+          }
+        }
+      }
+    },
+    "v1LikeResponse": {
+      "type": "object",
+      "properties": {
+        "status_msg": {
+          "$ref": "#/definitions/v1StatusMsg"
+        }
+      }
+    },
+    "v1PublishCommentResponse": {
+      "type": "object",
+      "properties": {
+        "msg": {
+          "$ref": "#/definitions/v1StatusMsg"
+        }
+      }
+    },
+    "v1PublishVideoResponse": {
+      "type": "object",
+      "properties": {
+        "msg": {
+          "$ref": "#/definitions/v1StatusMsg"
+        }
+      }
+    },
+    "v1SaveListResponse": {
+      "type": "object",
+      "properties": {
+        "status_msg": {
+          "$ref": "#/definitions/v1StatusMsg"
+        },
+        "video_list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Video"
+          }
+        }
+      }
+    },
+    "v1SaveResponse": {
+      "type": "object",
+      "properties": {
+        "status_msg": {
+          "$ref": "#/definitions/v1StatusMsg"
+        }
+      }
+    },
+    "v1SetFollowResponse": {
+      "type": "object",
+      "properties": {
+        "msg": {
+          "$ref": "#/definitions/v1StatusMsg"
+        }
+      }
+    },
+    "v1StatusMsg": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "msg": {
+          "type": "string"
+        },
+        "timestampe": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
+    "v1UserInfoResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/v1StatusMsg"
+        },
+        "user": {
+          "$ref": "#/definitions/v1Users"
+        }
+      }
+    },
+    "v1UserListResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/v1StatusMsg"
+        },
+        "user_list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Users"
+          }
+        }
+      }
+    },
+    "v1UserLoginResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/v1StatusMsg"
+        },
+        "IdentityMsg": {
+          "$ref": "#/definitions/v1IdentityMsg"
+        }
+      }
+    },
+    "v1UserRegisterResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/v1StatusMsg"
+        },
+        "IdentityMsg": {
+          "$ref": "#/definitions/v1IdentityMsg"
+        }
+      }
+    },
+    "v1UserUpdateInfoResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/v1StatusMsg"
+        }
+      }
+    },
+    "v1Users": {
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "user_name": {
+          "type": "string"
+        },
+        "follow_count": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "follower_count": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "is_follow": {
+          "type": "boolean"
+        },
+        "user_intro": {
+          "type": "string"
+        },
+        "head_imageURL": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "v1Video": {
+      "type": "object",
+      "properties": {
+        "vid": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "user": {
+          "$ref": "#/definitions/v1Users"
+        },
+        "play_url": {
+          "type": "string",
+          "format": "byte"
+        },
+        "cover_url": {
+          "type": "string",
+          "format": "byte"
+        },
+        "favorite_count": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "comment_count": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "is_favorite": {
+          "type": "boolean"
+        },
+        "title": {
+          "type": "string"
+        },
+        "publish_date": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
+    "v1VideoListResponse": {
+      "type": "object",
+      "properties": {
+        "msg": {
+          "$ref": "#/definitions/v1StatusMsg"
+        },
+        "video_list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Video"
+          }
+        }
+      }
+    },
+    "v1VideoStreamResponse": {
+      "type": "object",
+      "properties": {
+        "msg": {
+          "$ref": "#/definitions/v1StatusMsg"
+        },
+        "video_list": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1Video"
+          }
+        }
+      }
+    }
+  }
+}
