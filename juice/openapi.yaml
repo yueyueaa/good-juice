@@ -1,0 +1,955 @@
+# Generated with protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/cmd/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: ""
+    version: 0.0.1
+paths:
+    /helloworld/{name}:
+        get:
+            tags:
+                - Greeter
+            description: Sends a greeting
+            operationId: Greeter_SayHello
+            parameters:
+                - name: name
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.HelloReply'
+    /v1/user_basic/info:
+        get:
+            tags:
+                - UserBasic
+            description: 获取用户信息
+            operationId: UserBasic_GetUserInfo
+            parameters:
+                - name: userIdentity.userId
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.token
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.timestampe
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/v1.UserInfoResponse'
+    /v1/user_basic/login:
+        post:
+            tags:
+                - UserBasic
+            description: 用户登陆
+            operationId: UserBasic_UserLogin
+            parameters:
+                - name: userIdentity.userId
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.token
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.timestampe
+                  in: query
+                  schema:
+                    type: string
+                - name: userName
+                  in: query
+                  schema:
+                    type: string
+                - name: password
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/v1.UserLoginResponse'
+    /v1/user_basic/register:
+        post:
+            tags:
+                - UserBasic
+            description: 用户注册
+            operationId: UserBasic_UserRegister
+            parameters:
+                - name: userIdentity.userId
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.token
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.timestampe
+                  in: query
+                  schema:
+                    type: string
+                - name: userName
+                  in: query
+                  schema:
+                    type: string
+                - name: password
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/v1.UserRegisterResponse'
+    /v1/user_basic/search:
+        get:
+            tags:
+                - UserBasic
+            description: 搜索用户
+            operationId: UserBasic_SearchUserList
+            parameters:
+                - name: userIdentity.userId
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.token
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.timestampe
+                  in: query
+                  schema:
+                    type: string
+                - name: usersKeywords
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/v1.UserListResponse'
+    /v1/user_basic/update:
+        post:
+            tags:
+                - UserBasic
+            description: 用户信息更新接口
+            operationId: UserBasic_UpdateUserInfo
+            parameters:
+                - name: userIdentity.userId
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.token
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.timestampe
+                  in: query
+                  schema:
+                    type: string
+                - name: userIntro
+                  in: query
+                  schema:
+                    type: string
+                - name: sex
+                  in: query
+                  schema:
+                    type: string
+                    format: bytes
+                - name: area
+                  in: query
+                  schema:
+                    type: string
+                - name: headImageURL
+                  in: query
+                  schema:
+                    type: string
+                    format: bytes
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/v1.UserUpdateInfoResponse'
+    /v1/user_relation/followed:
+        get:
+            tags:
+                - UserRelation
+            description: 关注列表
+            operationId: UserRelation_GetFollowedList
+            parameters:
+                - name: userIdentity.userId
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.token
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.timestampe
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/v1.FollowedListResponse'
+    /v1/user_relation/follower:
+        get:
+            tags:
+                - UserRelation
+            description: 粉丝列表
+            operationId: UserRelation_GetFollowerList
+            parameters:
+                - name: userIdentity.userId
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.token
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.timestampe
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/v1.FollowerListResponse'
+    /v1/user_relation/set:
+        post:
+            tags:
+                - UserRelation
+            description: 关注（互动）
+            operationId: UserRelation_SetFollow
+            parameters:
+                - name: userIdentity.userId
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.token
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.timestampe
+                  in: query
+                  schema:
+                    type: string
+                - name: followedId
+                  in: query
+                  schema:
+                    type: string
+                - name: actionType
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/v1.SetFollowResponse'
+    /v1/video/manege/delete:
+        delete:
+            tags:
+                - VideoManage
+            description: 删除视频
+            operationId: VideoManage_DeleteVideo
+            parameters:
+                - name: userIdentity.userId
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.token
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.timestampe
+                  in: query
+                  schema:
+                    type: string
+                - name: videoId
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/v1.DeleteVideoResponse'
+    /v1/video/manege/publish:
+        post:
+            tags:
+                - VideoManage
+            description: 发布视频
+            operationId: VideoManage_PublishVideo
+            parameters:
+                - name: userIdentity.userId
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.token
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.timestampe
+                  in: query
+                  schema:
+                    type: string
+                - name: title
+                  in: query
+                  schema:
+                    type: string
+                - name: intro
+                  in: query
+                  schema:
+                    type: string
+                - name: address
+                  in: query
+                  schema:
+                    type: string
+                - name: coverUrl
+                  in: query
+                  schema:
+                    type: string
+                    format: bytes
+                - name: playUrl
+                  in: query
+                  schema:
+                    type: string
+                    format: bytes
+                - name: publishDate
+                  in: query
+                  schema:
+                    type: string
+                - name: videoType
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/v1.PublishVideoResponse'
+    /v1/video_feed/feed:
+        get:
+            tags:
+                - VideoFeed
+            operationId: VideoFeed_GetVideoStream
+            parameters:
+                - name: userIdentity.userId
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.token
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.timestampe
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/v1.VideoStreamResponse'
+    /v1/video_feed/info:
+        get:
+            tags:
+                - VideoFeed
+            operationId: VideoFeed_SearchVideoList
+            parameters:
+                - name: userIdentity.userId
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.token
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.timestampe
+                  in: query
+                  schema:
+                    type: string
+                - name: videoKeywords
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/v1.VideoListResponse'
+    /v1/video_feed/list:
+        get:
+            tags:
+                - VideoFeed
+            operationId: VideoFeed_GetUserVideoList
+            parameters:
+                - name: userIdentity.userId
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.token
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.timestampe
+                  in: query
+                  schema:
+                    type: string
+                - name: userId
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/v1.VideoListResponse'
+    /v1/video_feed/video/classified_list:
+        get:
+            tags:
+                - VideoFeed
+            operationId: VideoFeed_ClassifyVideoList
+            parameters:
+                - name: userIdentity.userId
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.token
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.timestampe
+                  in: query
+                  schema:
+                    type: string
+                - name: videoType
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/v1.VideoListResponse'
+    /v1/video_interact/comment/delete:
+        delete:
+            tags:
+                - VideoInteract
+            operationId: VideoInteract_DeleteComment
+            parameters:
+                - name: userIdentity.userId
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.token
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.timestampe
+                  in: query
+                  schema:
+                    type: string
+                - name: cid
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/v1.DeleteCommentResponse'
+    /v1/video_interact/comment/list:
+        get:
+            tags:
+                - VideoInteract
+            operationId: VideoInteract_GetCommentsList
+            parameters:
+                - name: userIdentity.userId
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.token
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.timestampe
+                  in: query
+                  schema:
+                    type: string
+                - name: vid
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/v1.CommentListResponse'
+    /v1/video_interact/comment/publish:
+        post:
+            tags:
+                - VideoInteract
+            description: 视频评论
+            operationId: VideoInteract_PublishComment
+            parameters:
+                - name: userIdentity.userId
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.token
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.timestampe
+                  in: query
+                  schema:
+                    type: string
+                - name: comment.commentId
+                  in: query
+                  schema:
+                    type: string
+                - name: comment.pcommentId
+                  in: query
+                  schema:
+                    type: string
+                - name: comment.videoId
+                  in: query
+                  schema:
+                    type: string
+                - name: comment.user.uid
+                  in: query
+                  schema:
+                    type: string
+                - name: comment.user.userName
+                  in: query
+                  schema:
+                    type: string
+                - name: comment.user.followCount
+                  in: query
+                  schema:
+                    type: string
+                - name: comment.user.followerCount
+                  in: query
+                  schema:
+                    type: string
+                - name: comment.user.isFollow
+                  in: query
+                  schema:
+                    type: boolean
+                - name: comment.user.userIntro
+                  in: query
+                  schema:
+                    type: string
+                - name: comment.user.headImageURL
+                  in: query
+                  schema:
+                    type: string
+                    format: bytes
+                - name: comment.content
+                  in: query
+                  schema:
+                    type: string
+                - name: comment.createDate
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/v1.PublishCommentResponse'
+    /v1/video_interact/like/list:
+        get:
+            tags:
+                - VideoInteract
+            operationId: VideoInteract_GetLikeList
+            parameters:
+                - name: userIdentity.userId
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.token
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.timestampe
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/v1.LikeListResponse'
+    /v1/video_interact/like/set:
+        post:
+            tags:
+                - VideoInteract
+            description: 视频点赞
+            operationId: VideoInteract_SetLike
+            parameters:
+                - name: userIdentity.userId
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.token
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.timestampe
+                  in: query
+                  schema:
+                    type: string
+                - name: videoId
+                  in: query
+                  schema:
+                    type: string
+                - name: actionType
+                  in: query
+                  schema:
+                    type: boolean
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/v1.LikeResponse'
+    /v1/video_interact/save/list:
+        get:
+            tags:
+                - VideoInteract
+            operationId: VideoInteract_GetSaveList
+            parameters:
+                - name: userIdentity.userId
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.token
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.timestampe
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/v1.SaveListResponse'
+    /v1/video_interact/save/set:
+        post:
+            tags:
+                - VideoInteract
+            description: 视频收藏
+            operationId: VideoInteract_SetSave
+            parameters:
+                - name: userIdentity.userId
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.token
+                  in: query
+                  schema:
+                    type: string
+                - name: userIdentity.timestampe
+                  in: query
+                  schema:
+                    type: string
+                - name: videoId
+                  in: query
+                  schema:
+                    type: string
+                - name: actionType
+                  in: query
+                  schema:
+                    type: boolean
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/v1.SaveResponse'
+components:
+    schemas:
+        helloworld.v1.HelloReply:
+            type: object
+            properties:
+                message:
+                    type: string
+            description: The response message containing the greetings
+        v1.Comment:
+            type: object
+            properties:
+                commentId:
+                    type: string
+                pcommentId:
+                    type: string
+                videoId:
+                    type: string
+                user:
+                    $ref: '#/components/schemas/v1.Users'
+                content:
+                    type: string
+                createDate:
+                    type: string
+        v1.CommentListResponse:
+            type: object
+            properties:
+                msg:
+                    $ref: '#/components/schemas/v1.StatusMsg'
+                commentList:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/v1.Comment'
+        v1.DeleteCommentResponse:
+            type: object
+            properties:
+                msg:
+                    $ref: '#/components/schemas/v1.StatusMsg'
+        v1.DeleteVideoResponse:
+            type: object
+            properties:
+                msg:
+                    $ref: '#/components/schemas/v1.StatusMsg'
+        v1.FollowedListResponse:
+            type: object
+            properties:
+                msg:
+                    $ref: '#/components/schemas/v1.StatusMsg'
+                userList:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/v1.Users'
+        v1.FollowerListResponse:
+            type: object
+            properties:
+                msg:
+                    $ref: '#/components/schemas/v1.StatusMsg'
+                userList:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/v1.Users'
+        v1.IdentityMsg:
+            type: object
+            properties:
+                userId:
+                    type: string
+                token:
+                    type: string
+                timestampe:
+                    type: string
+        v1.LikeListResponse:
+            type: object
+            properties:
+                statusMsg:
+                    $ref: '#/components/schemas/v1.StatusMsg'
+                videoList:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/v1.Video'
+        v1.LikeResponse:
+            type: object
+            properties:
+                statusMsg:
+                    $ref: '#/components/schemas/v1.StatusMsg'
+        v1.PublishCommentResponse:
+            type: object
+            properties:
+                msg:
+                    $ref: '#/components/schemas/v1.StatusMsg'
+        v1.PublishVideoResponse:
+            type: object
+            properties:
+                msg:
+                    $ref: '#/components/schemas/v1.StatusMsg'
+        v1.SaveListResponse:
+            type: object
+            properties:
+                statusMsg:
+                    $ref: '#/components/schemas/v1.StatusMsg'
+                videoList:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/v1.Video'
+        v1.SaveResponse:
+            type: object
+            properties:
+                statusMsg:
+                    $ref: '#/components/schemas/v1.StatusMsg'
+        v1.SetFollowResponse:
+            type: object
+            properties:
+                msg:
+                    $ref: '#/components/schemas/v1.StatusMsg'
+        v1.StatusMsg:
+            type: object
+            properties:
+                code:
+                    type: string
+                msg:
+                    type: string
+                timestampe:
+                    type: string
+        v1.UserInfoResponse:
+            type: object
+            properties:
+                status:
+                    $ref: '#/components/schemas/v1.StatusMsg'
+                user:
+                    $ref: '#/components/schemas/v1.Users'
+        v1.UserListResponse:
+            type: object
+            properties:
+                status:
+                    $ref: '#/components/schemas/v1.StatusMsg'
+                userList:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/v1.Users'
+        v1.UserLoginResponse:
+            type: object
+            properties:
+                status:
+                    $ref: '#/components/schemas/v1.StatusMsg'
+                IdentityMsg:
+                    $ref: '#/components/schemas/v1.IdentityMsg'
+        v1.UserRegisterResponse:
+            type: object
+            properties:
+                status:
+                    $ref: '#/components/schemas/v1.StatusMsg'
+                IdentityMsg:
+                    $ref: '#/components/schemas/v1.IdentityMsg'
+        v1.UserUpdateInfoResponse:
+            type: object
+            properties:
+                status:
+                    $ref: '#/components/schemas/v1.StatusMsg'
+        v1.Users:
+            type: object
+            properties:
+                uid:
+                    type: string
+                userName:
+                    type: string
+                followCount:
+                    type: string
+                followerCount:
+                    type: string
+                isFollow:
+                    type: boolean
+                userIntro:
+                    type: string
+                headImageURL:
+                    type: string
+                    format: bytes
+        v1.Video:
+            type: object
+            properties:
+                vid:
+                    type: string
+                user:
+                    $ref: '#/components/schemas/v1.Users'
+                playUrl:
+                    type: string
+                    format: bytes
+                coverUrl:
+                    type: string
+                    format: bytes
+                favoriteCount:
+                    type: string
+                commentCount:
+                    type: string
+                isFavorite:
+                    type: boolean
+                title:
+                    type: string
+                publishDate:
+                    type: string
+        v1.VideoListResponse:
+            type: object
+            properties:
+                msg:
+                    $ref: '#/components/schemas/v1.StatusMsg'
+                videoList:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/v1.Video'
+        v1.VideoStreamResponse:
+            type: object
+            properties:
+                msg:
+                    $ref: '#/components/schemas/v1.StatusMsg'
+                videoList:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/v1.Video'
+tags:
+    - name: Greeter
+      description: The greeting service definition.
+    - name: UserBasic
+    - name: UserRelation
+    - name: VideoFeed
+    - name: VideoInteract
+      description: 互动服务接口
+    - name: VideoManage
+      description: 视频管理接口，用于视频发布者
