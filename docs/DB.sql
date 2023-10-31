@@ -15,8 +15,8 @@ CREATE TABLE
         -- 表项
         `user_id` BIGINT UNSIGNED NOT NULL UNIQUE,
         `username` CHAR(30) NOT NULL,
-        `sex` BIT NOT NULL,
-        `birth` DATE NOT NULL DEFAULT CURRENT_DATE,
+        `sex` TINYINT NOT NULL,
+        `birth` DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
         `area` INT NOT NULL,
         `user_profile` CHAR(255),
         `user_profile_photo_url` CHAR(255),
@@ -58,7 +58,7 @@ CREATE TABLE
         -- 表项
         `user_id` BIGINT UNSIGNED NOT NULL,
         `follow_id` BIGINT UNSIGNED NOT NULL,
-        `status` BIT NOT NULL DEFAULT 1,
+        `status` TINYINT NOT NULL DEFAULT 1,
         -- 时间 
         `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -96,7 +96,7 @@ CREATE TABLE
         -- 表项
         `user_id` BIGINT NOT NULL,
         `video_id` BIGINT NOT NULL,
-        `status` BIT NOT NULL DEFAULT 1,
+        `status` TINYINT NOT NULL DEFAULT 1,
         -- 时间
         `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -112,7 +112,7 @@ CREATE TABLE
         -- 表项
         `user_id` BIGINT NOT NULL,
         `video_id` BIGINT NOT NULL,
-        `status` BIT NOT NULL DEFAULT 1,
+        `status` TINYINT NOT NULL DEFAULT 1,
         -- 时间
         `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
