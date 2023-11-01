@@ -3,8 +3,6 @@
 package userfollowinfo
 
 import (
-	"time"
-
 	"entgo.io/ent/dialect/sql"
 )
 
@@ -24,7 +22,7 @@ const (
 	// FieldUpdateTime holds the string denoting the update_time field in the database.
 	FieldUpdateTime = "update_time"
 	// Table holds the table name of the userfollowinfo in the database.
-	Table = "user_follow_infos"
+	Table = "user_follow_info"
 )
 
 // Columns holds all SQL columns for userfollowinfo fields.
@@ -46,21 +44,6 @@ func ValidColumn(column string) bool {
 	}
 	return false
 }
-
-var (
-	// UserIDValidator is a validator for the "user_id" field. It is called by the builders before save.
-	UserIDValidator func(int64) error
-	// FollowIDValidator is a validator for the "follow_id" field. It is called by the builders before save.
-	FollowIDValidator func(int64) error
-	// DefaultStatus holds the default value on creation for the "status" field.
-	DefaultStatus int8
-	// DefaultCreateTime holds the default value on creation for the "create_time" field.
-	DefaultCreateTime func() time.Time
-	// DefaultUpdateTime holds the default value on creation for the "update_time" field.
-	DefaultUpdateTime func() time.Time
-	// UpdateDefaultUpdateTime holds the default value on update for the "update_time" field.
-	UpdateDefaultUpdateTime func() time.Time
-)
 
 // OrderOption defines the ordering options for the UserFollowInfo queries.
 type OrderOption func(*sql.Selector)

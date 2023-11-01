@@ -55,12 +55,12 @@ func IDLTE(id int) predicate.VideoCollection {
 }
 
 // UserID applies equality check predicate on the "user_id" field. It's identical to UserIDEQ.
-func UserID(v int64) predicate.VideoCollection {
+func UserID(v int) predicate.VideoCollection {
 	return predicate.VideoCollection(sql.FieldEQ(FieldUserID, v))
 }
 
 // VideoID applies equality check predicate on the "video_id" field. It's identical to VideoIDEQ.
-func VideoID(v int64) predicate.VideoCollection {
+func VideoID(v int) predicate.VideoCollection {
 	return predicate.VideoCollection(sql.FieldEQ(FieldVideoID, v))
 }
 
@@ -80,82 +80,82 @@ func UpdateTime(v time.Time) predicate.VideoCollection {
 }
 
 // UserIDEQ applies the EQ predicate on the "user_id" field.
-func UserIDEQ(v int64) predicate.VideoCollection {
+func UserIDEQ(v int) predicate.VideoCollection {
 	return predicate.VideoCollection(sql.FieldEQ(FieldUserID, v))
 }
 
 // UserIDNEQ applies the NEQ predicate on the "user_id" field.
-func UserIDNEQ(v int64) predicate.VideoCollection {
+func UserIDNEQ(v int) predicate.VideoCollection {
 	return predicate.VideoCollection(sql.FieldNEQ(FieldUserID, v))
 }
 
 // UserIDIn applies the In predicate on the "user_id" field.
-func UserIDIn(vs ...int64) predicate.VideoCollection {
+func UserIDIn(vs ...int) predicate.VideoCollection {
 	return predicate.VideoCollection(sql.FieldIn(FieldUserID, vs...))
 }
 
 // UserIDNotIn applies the NotIn predicate on the "user_id" field.
-func UserIDNotIn(vs ...int64) predicate.VideoCollection {
+func UserIDNotIn(vs ...int) predicate.VideoCollection {
 	return predicate.VideoCollection(sql.FieldNotIn(FieldUserID, vs...))
 }
 
 // UserIDGT applies the GT predicate on the "user_id" field.
-func UserIDGT(v int64) predicate.VideoCollection {
+func UserIDGT(v int) predicate.VideoCollection {
 	return predicate.VideoCollection(sql.FieldGT(FieldUserID, v))
 }
 
 // UserIDGTE applies the GTE predicate on the "user_id" field.
-func UserIDGTE(v int64) predicate.VideoCollection {
+func UserIDGTE(v int) predicate.VideoCollection {
 	return predicate.VideoCollection(sql.FieldGTE(FieldUserID, v))
 }
 
 // UserIDLT applies the LT predicate on the "user_id" field.
-func UserIDLT(v int64) predicate.VideoCollection {
+func UserIDLT(v int) predicate.VideoCollection {
 	return predicate.VideoCollection(sql.FieldLT(FieldUserID, v))
 }
 
 // UserIDLTE applies the LTE predicate on the "user_id" field.
-func UserIDLTE(v int64) predicate.VideoCollection {
+func UserIDLTE(v int) predicate.VideoCollection {
 	return predicate.VideoCollection(sql.FieldLTE(FieldUserID, v))
 }
 
 // VideoIDEQ applies the EQ predicate on the "video_id" field.
-func VideoIDEQ(v int64) predicate.VideoCollection {
+func VideoIDEQ(v int) predicate.VideoCollection {
 	return predicate.VideoCollection(sql.FieldEQ(FieldVideoID, v))
 }
 
 // VideoIDNEQ applies the NEQ predicate on the "video_id" field.
-func VideoIDNEQ(v int64) predicate.VideoCollection {
+func VideoIDNEQ(v int) predicate.VideoCollection {
 	return predicate.VideoCollection(sql.FieldNEQ(FieldVideoID, v))
 }
 
 // VideoIDIn applies the In predicate on the "video_id" field.
-func VideoIDIn(vs ...int64) predicate.VideoCollection {
+func VideoIDIn(vs ...int) predicate.VideoCollection {
 	return predicate.VideoCollection(sql.FieldIn(FieldVideoID, vs...))
 }
 
 // VideoIDNotIn applies the NotIn predicate on the "video_id" field.
-func VideoIDNotIn(vs ...int64) predicate.VideoCollection {
+func VideoIDNotIn(vs ...int) predicate.VideoCollection {
 	return predicate.VideoCollection(sql.FieldNotIn(FieldVideoID, vs...))
 }
 
 // VideoIDGT applies the GT predicate on the "video_id" field.
-func VideoIDGT(v int64) predicate.VideoCollection {
+func VideoIDGT(v int) predicate.VideoCollection {
 	return predicate.VideoCollection(sql.FieldGT(FieldVideoID, v))
 }
 
 // VideoIDGTE applies the GTE predicate on the "video_id" field.
-func VideoIDGTE(v int64) predicate.VideoCollection {
+func VideoIDGTE(v int) predicate.VideoCollection {
 	return predicate.VideoCollection(sql.FieldGTE(FieldVideoID, v))
 }
 
 // VideoIDLT applies the LT predicate on the "video_id" field.
-func VideoIDLT(v int64) predicate.VideoCollection {
+func VideoIDLT(v int) predicate.VideoCollection {
 	return predicate.VideoCollection(sql.FieldLT(FieldVideoID, v))
 }
 
 // VideoIDLTE applies the LTE predicate on the "video_id" field.
-func VideoIDLTE(v int64) predicate.VideoCollection {
+func VideoIDLTE(v int) predicate.VideoCollection {
 	return predicate.VideoCollection(sql.FieldLTE(FieldVideoID, v))
 }
 
@@ -239,6 +239,16 @@ func CreateTimeLTE(v time.Time) predicate.VideoCollection {
 	return predicate.VideoCollection(sql.FieldLTE(FieldCreateTime, v))
 }
 
+// CreateTimeIsNil applies the IsNil predicate on the "create_time" field.
+func CreateTimeIsNil() predicate.VideoCollection {
+	return predicate.VideoCollection(sql.FieldIsNull(FieldCreateTime))
+}
+
+// CreateTimeNotNil applies the NotNil predicate on the "create_time" field.
+func CreateTimeNotNil() predicate.VideoCollection {
+	return predicate.VideoCollection(sql.FieldNotNull(FieldCreateTime))
+}
+
 // UpdateTimeEQ applies the EQ predicate on the "update_time" field.
 func UpdateTimeEQ(v time.Time) predicate.VideoCollection {
 	return predicate.VideoCollection(sql.FieldEQ(FieldUpdateTime, v))
@@ -277,6 +287,16 @@ func UpdateTimeLT(v time.Time) predicate.VideoCollection {
 // UpdateTimeLTE applies the LTE predicate on the "update_time" field.
 func UpdateTimeLTE(v time.Time) predicate.VideoCollection {
 	return predicate.VideoCollection(sql.FieldLTE(FieldUpdateTime, v))
+}
+
+// UpdateTimeIsNil applies the IsNil predicate on the "update_time" field.
+func UpdateTimeIsNil() predicate.VideoCollection {
+	return predicate.VideoCollection(sql.FieldIsNull(FieldUpdateTime))
+}
+
+// UpdateTimeNotNil applies the NotNil predicate on the "update_time" field.
+func UpdateTimeNotNil() predicate.VideoCollection {
+	return predicate.VideoCollection(sql.FieldNotNull(FieldUpdateTime))
 }
 
 // And groups predicates with the AND operator between them.

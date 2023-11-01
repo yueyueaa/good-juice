@@ -29,15 +29,15 @@ func (ubiu *UserBaseInfoUpdate) Where(ps ...predicate.UserBaseInfo) *UserBaseInf
 }
 
 // SetUserID sets the "user_id" field.
-func (ubiu *UserBaseInfoUpdate) SetUserID(i int64) *UserBaseInfoUpdate {
+func (ubiu *UserBaseInfoUpdate) SetUserID(u uint64) *UserBaseInfoUpdate {
 	ubiu.mutation.ResetUserID()
-	ubiu.mutation.SetUserID(i)
+	ubiu.mutation.SetUserID(u)
 	return ubiu
 }
 
-// AddUserID adds i to the "user_id" field.
-func (ubiu *UserBaseInfoUpdate) AddUserID(i int64) *UserBaseInfoUpdate {
-	ubiu.mutation.AddUserID(i)
+// AddUserID adds u to the "user_id" field.
+func (ubiu *UserBaseInfoUpdate) AddUserID(u int64) *UserBaseInfoUpdate {
+	ubiu.mutation.AddUserID(u)
 	return ubiu
 }
 
@@ -71,6 +71,12 @@ func (ubiu *UserBaseInfoUpdate) SetNillableBirth(t *time.Time) *UserBaseInfoUpda
 	if t != nil {
 		ubiu.SetBirth(*t)
 	}
+	return ubiu
+}
+
+// ClearBirth clears the value of the "birth" field.
+func (ubiu *UserBaseInfoUpdate) ClearBirth() *UserBaseInfoUpdate {
+	ubiu.mutation.ClearBirth()
 	return ubiu
 }
 
@@ -134,14 +140,6 @@ func (ubiu *UserBaseInfoUpdate) SetFollowCount(i int32) *UserBaseInfoUpdate {
 	return ubiu
 }
 
-// SetNillableFollowCount sets the "follow_count" field if the given value is not nil.
-func (ubiu *UserBaseInfoUpdate) SetNillableFollowCount(i *int32) *UserBaseInfoUpdate {
-	if i != nil {
-		ubiu.SetFollowCount(*i)
-	}
-	return ubiu
-}
-
 // AddFollowCount adds i to the "follow_count" field.
 func (ubiu *UserBaseInfoUpdate) AddFollowCount(i int32) *UserBaseInfoUpdate {
 	ubiu.mutation.AddFollowCount(i)
@@ -152,14 +150,6 @@ func (ubiu *UserBaseInfoUpdate) AddFollowCount(i int32) *UserBaseInfoUpdate {
 func (ubiu *UserBaseInfoUpdate) SetFanCount(i int32) *UserBaseInfoUpdate {
 	ubiu.mutation.ResetFanCount()
 	ubiu.mutation.SetFanCount(i)
-	return ubiu
-}
-
-// SetNillableFanCount sets the "fan_count" field if the given value is not nil.
-func (ubiu *UserBaseInfoUpdate) SetNillableFanCount(i *int32) *UserBaseInfoUpdate {
-	if i != nil {
-		ubiu.SetFanCount(*i)
-	}
 	return ubiu
 }
 
@@ -183,9 +173,29 @@ func (ubiu *UserBaseInfoUpdate) SetNillableCreateTime(t *time.Time) *UserBaseInf
 	return ubiu
 }
 
+// ClearCreateTime clears the value of the "create_time" field.
+func (ubiu *UserBaseInfoUpdate) ClearCreateTime() *UserBaseInfoUpdate {
+	ubiu.mutation.ClearCreateTime()
+	return ubiu
+}
+
 // SetUpdateTime sets the "update_time" field.
 func (ubiu *UserBaseInfoUpdate) SetUpdateTime(t time.Time) *UserBaseInfoUpdate {
 	ubiu.mutation.SetUpdateTime(t)
+	return ubiu
+}
+
+// SetNillableUpdateTime sets the "update_time" field if the given value is not nil.
+func (ubiu *UserBaseInfoUpdate) SetNillableUpdateTime(t *time.Time) *UserBaseInfoUpdate {
+	if t != nil {
+		ubiu.SetUpdateTime(*t)
+	}
+	return ubiu
+}
+
+// ClearUpdateTime clears the value of the "update_time" field.
+func (ubiu *UserBaseInfoUpdate) ClearUpdateTime() *UserBaseInfoUpdate {
+	ubiu.mutation.ClearUpdateTime()
 	return ubiu
 }
 
@@ -196,7 +206,6 @@ func (ubiu *UserBaseInfoUpdate) Mutation() *UserBaseInfoMutation {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (ubiu *UserBaseInfoUpdate) Save(ctx context.Context) (int, error) {
-	ubiu.defaults()
 	return withHooks(ctx, ubiu.sqlSave, ubiu.mutation, ubiu.hooks)
 }
 
@@ -222,28 +231,7 @@ func (ubiu *UserBaseInfoUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (ubiu *UserBaseInfoUpdate) defaults() {
-	if _, ok := ubiu.mutation.UpdateTime(); !ok {
-		v := userbaseinfo.UpdateDefaultUpdateTime()
-		ubiu.mutation.SetUpdateTime(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (ubiu *UserBaseInfoUpdate) check() error {
-	if v, ok := ubiu.mutation.UserID(); ok {
-		if err := userbaseinfo.UserIDValidator(v); err != nil {
-			return &ValidationError{Name: "user_id", err: fmt.Errorf(`ent: validator failed for field "UserBaseInfo.user_id": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (ubiu *UserBaseInfoUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	if err := ubiu.check(); err != nil {
-		return n, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(userbaseinfo.Table, userbaseinfo.Columns, sqlgraph.NewFieldSpec(userbaseinfo.FieldID, field.TypeInt))
 	if ps := ubiu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -253,10 +241,10 @@ func (ubiu *UserBaseInfoUpdate) sqlSave(ctx context.Context) (n int, err error) 
 		}
 	}
 	if value, ok := ubiu.mutation.UserID(); ok {
-		_spec.SetField(userbaseinfo.FieldUserID, field.TypeInt64, value)
+		_spec.SetField(userbaseinfo.FieldUserID, field.TypeUint64, value)
 	}
 	if value, ok := ubiu.mutation.AddedUserID(); ok {
-		_spec.AddField(userbaseinfo.FieldUserID, field.TypeInt64, value)
+		_spec.AddField(userbaseinfo.FieldUserID, field.TypeUint64, value)
 	}
 	if value, ok := ubiu.mutation.Username(); ok {
 		_spec.SetField(userbaseinfo.FieldUsername, field.TypeString, value)
@@ -269,6 +257,9 @@ func (ubiu *UserBaseInfoUpdate) sqlSave(ctx context.Context) (n int, err error) 
 	}
 	if value, ok := ubiu.mutation.Birth(); ok {
 		_spec.SetField(userbaseinfo.FieldBirth, field.TypeTime, value)
+	}
+	if ubiu.mutation.BirthCleared() {
+		_spec.ClearField(userbaseinfo.FieldBirth, field.TypeTime)
 	}
 	if value, ok := ubiu.mutation.Area(); ok {
 		_spec.SetField(userbaseinfo.FieldArea, field.TypeInt32, value)
@@ -303,8 +294,14 @@ func (ubiu *UserBaseInfoUpdate) sqlSave(ctx context.Context) (n int, err error) 
 	if value, ok := ubiu.mutation.CreateTime(); ok {
 		_spec.SetField(userbaseinfo.FieldCreateTime, field.TypeTime, value)
 	}
+	if ubiu.mutation.CreateTimeCleared() {
+		_spec.ClearField(userbaseinfo.FieldCreateTime, field.TypeTime)
+	}
 	if value, ok := ubiu.mutation.UpdateTime(); ok {
 		_spec.SetField(userbaseinfo.FieldUpdateTime, field.TypeTime, value)
+	}
+	if ubiu.mutation.UpdateTimeCleared() {
+		_spec.ClearField(userbaseinfo.FieldUpdateTime, field.TypeTime)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, ubiu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -327,15 +324,15 @@ type UserBaseInfoUpdateOne struct {
 }
 
 // SetUserID sets the "user_id" field.
-func (ubiuo *UserBaseInfoUpdateOne) SetUserID(i int64) *UserBaseInfoUpdateOne {
+func (ubiuo *UserBaseInfoUpdateOne) SetUserID(u uint64) *UserBaseInfoUpdateOne {
 	ubiuo.mutation.ResetUserID()
-	ubiuo.mutation.SetUserID(i)
+	ubiuo.mutation.SetUserID(u)
 	return ubiuo
 }
 
-// AddUserID adds i to the "user_id" field.
-func (ubiuo *UserBaseInfoUpdateOne) AddUserID(i int64) *UserBaseInfoUpdateOne {
-	ubiuo.mutation.AddUserID(i)
+// AddUserID adds u to the "user_id" field.
+func (ubiuo *UserBaseInfoUpdateOne) AddUserID(u int64) *UserBaseInfoUpdateOne {
+	ubiuo.mutation.AddUserID(u)
 	return ubiuo
 }
 
@@ -369,6 +366,12 @@ func (ubiuo *UserBaseInfoUpdateOne) SetNillableBirth(t *time.Time) *UserBaseInfo
 	if t != nil {
 		ubiuo.SetBirth(*t)
 	}
+	return ubiuo
+}
+
+// ClearBirth clears the value of the "birth" field.
+func (ubiuo *UserBaseInfoUpdateOne) ClearBirth() *UserBaseInfoUpdateOne {
+	ubiuo.mutation.ClearBirth()
 	return ubiuo
 }
 
@@ -432,14 +435,6 @@ func (ubiuo *UserBaseInfoUpdateOne) SetFollowCount(i int32) *UserBaseInfoUpdateO
 	return ubiuo
 }
 
-// SetNillableFollowCount sets the "follow_count" field if the given value is not nil.
-func (ubiuo *UserBaseInfoUpdateOne) SetNillableFollowCount(i *int32) *UserBaseInfoUpdateOne {
-	if i != nil {
-		ubiuo.SetFollowCount(*i)
-	}
-	return ubiuo
-}
-
 // AddFollowCount adds i to the "follow_count" field.
 func (ubiuo *UserBaseInfoUpdateOne) AddFollowCount(i int32) *UserBaseInfoUpdateOne {
 	ubiuo.mutation.AddFollowCount(i)
@@ -450,14 +445,6 @@ func (ubiuo *UserBaseInfoUpdateOne) AddFollowCount(i int32) *UserBaseInfoUpdateO
 func (ubiuo *UserBaseInfoUpdateOne) SetFanCount(i int32) *UserBaseInfoUpdateOne {
 	ubiuo.mutation.ResetFanCount()
 	ubiuo.mutation.SetFanCount(i)
-	return ubiuo
-}
-
-// SetNillableFanCount sets the "fan_count" field if the given value is not nil.
-func (ubiuo *UserBaseInfoUpdateOne) SetNillableFanCount(i *int32) *UserBaseInfoUpdateOne {
-	if i != nil {
-		ubiuo.SetFanCount(*i)
-	}
 	return ubiuo
 }
 
@@ -481,9 +468,29 @@ func (ubiuo *UserBaseInfoUpdateOne) SetNillableCreateTime(t *time.Time) *UserBas
 	return ubiuo
 }
 
+// ClearCreateTime clears the value of the "create_time" field.
+func (ubiuo *UserBaseInfoUpdateOne) ClearCreateTime() *UserBaseInfoUpdateOne {
+	ubiuo.mutation.ClearCreateTime()
+	return ubiuo
+}
+
 // SetUpdateTime sets the "update_time" field.
 func (ubiuo *UserBaseInfoUpdateOne) SetUpdateTime(t time.Time) *UserBaseInfoUpdateOne {
 	ubiuo.mutation.SetUpdateTime(t)
+	return ubiuo
+}
+
+// SetNillableUpdateTime sets the "update_time" field if the given value is not nil.
+func (ubiuo *UserBaseInfoUpdateOne) SetNillableUpdateTime(t *time.Time) *UserBaseInfoUpdateOne {
+	if t != nil {
+		ubiuo.SetUpdateTime(*t)
+	}
+	return ubiuo
+}
+
+// ClearUpdateTime clears the value of the "update_time" field.
+func (ubiuo *UserBaseInfoUpdateOne) ClearUpdateTime() *UserBaseInfoUpdateOne {
+	ubiuo.mutation.ClearUpdateTime()
 	return ubiuo
 }
 
@@ -507,7 +514,6 @@ func (ubiuo *UserBaseInfoUpdateOne) Select(field string, fields ...string) *User
 
 // Save executes the query and returns the updated UserBaseInfo entity.
 func (ubiuo *UserBaseInfoUpdateOne) Save(ctx context.Context) (*UserBaseInfo, error) {
-	ubiuo.defaults()
 	return withHooks(ctx, ubiuo.sqlSave, ubiuo.mutation, ubiuo.hooks)
 }
 
@@ -533,28 +539,7 @@ func (ubiuo *UserBaseInfoUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (ubiuo *UserBaseInfoUpdateOne) defaults() {
-	if _, ok := ubiuo.mutation.UpdateTime(); !ok {
-		v := userbaseinfo.UpdateDefaultUpdateTime()
-		ubiuo.mutation.SetUpdateTime(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (ubiuo *UserBaseInfoUpdateOne) check() error {
-	if v, ok := ubiuo.mutation.UserID(); ok {
-		if err := userbaseinfo.UserIDValidator(v); err != nil {
-			return &ValidationError{Name: "user_id", err: fmt.Errorf(`ent: validator failed for field "UserBaseInfo.user_id": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (ubiuo *UserBaseInfoUpdateOne) sqlSave(ctx context.Context) (_node *UserBaseInfo, err error) {
-	if err := ubiuo.check(); err != nil {
-		return _node, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(userbaseinfo.Table, userbaseinfo.Columns, sqlgraph.NewFieldSpec(userbaseinfo.FieldID, field.TypeInt))
 	id, ok := ubiuo.mutation.ID()
 	if !ok {
@@ -581,10 +566,10 @@ func (ubiuo *UserBaseInfoUpdateOne) sqlSave(ctx context.Context) (_node *UserBas
 		}
 	}
 	if value, ok := ubiuo.mutation.UserID(); ok {
-		_spec.SetField(userbaseinfo.FieldUserID, field.TypeInt64, value)
+		_spec.SetField(userbaseinfo.FieldUserID, field.TypeUint64, value)
 	}
 	if value, ok := ubiuo.mutation.AddedUserID(); ok {
-		_spec.AddField(userbaseinfo.FieldUserID, field.TypeInt64, value)
+		_spec.AddField(userbaseinfo.FieldUserID, field.TypeUint64, value)
 	}
 	if value, ok := ubiuo.mutation.Username(); ok {
 		_spec.SetField(userbaseinfo.FieldUsername, field.TypeString, value)
@@ -597,6 +582,9 @@ func (ubiuo *UserBaseInfoUpdateOne) sqlSave(ctx context.Context) (_node *UserBas
 	}
 	if value, ok := ubiuo.mutation.Birth(); ok {
 		_spec.SetField(userbaseinfo.FieldBirth, field.TypeTime, value)
+	}
+	if ubiuo.mutation.BirthCleared() {
+		_spec.ClearField(userbaseinfo.FieldBirth, field.TypeTime)
 	}
 	if value, ok := ubiuo.mutation.Area(); ok {
 		_spec.SetField(userbaseinfo.FieldArea, field.TypeInt32, value)
@@ -631,8 +619,14 @@ func (ubiuo *UserBaseInfoUpdateOne) sqlSave(ctx context.Context) (_node *UserBas
 	if value, ok := ubiuo.mutation.CreateTime(); ok {
 		_spec.SetField(userbaseinfo.FieldCreateTime, field.TypeTime, value)
 	}
+	if ubiuo.mutation.CreateTimeCleared() {
+		_spec.ClearField(userbaseinfo.FieldCreateTime, field.TypeTime)
+	}
 	if value, ok := ubiuo.mutation.UpdateTime(); ok {
 		_spec.SetField(userbaseinfo.FieldUpdateTime, field.TypeTime, value)
+	}
+	if ubiuo.mutation.UpdateTimeCleared() {
+		_spec.ClearField(userbaseinfo.FieldUpdateTime, field.TypeTime)
 	}
 	_node = &UserBaseInfo{config: ubiuo.config}
 	_spec.Assign = _node.assignValues

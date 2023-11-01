@@ -21,25 +21,25 @@ type VideoCommentCreate struct {
 }
 
 // SetCommentID sets the "comment_id" field.
-func (vcc *VideoCommentCreate) SetCommentID(i int64) *VideoCommentCreate {
+func (vcc *VideoCommentCreate) SetCommentID(i int) *VideoCommentCreate {
 	vcc.mutation.SetCommentID(i)
 	return vcc
 }
 
 // SetPcommentID sets the "pcomment_id" field.
-func (vcc *VideoCommentCreate) SetPcommentID(i int64) *VideoCommentCreate {
+func (vcc *VideoCommentCreate) SetPcommentID(i int) *VideoCommentCreate {
 	vcc.mutation.SetPcommentID(i)
 	return vcc
 }
 
 // SetVideoID sets the "video_id" field.
-func (vcc *VideoCommentCreate) SetVideoID(i int64) *VideoCommentCreate {
+func (vcc *VideoCommentCreate) SetVideoID(i int) *VideoCommentCreate {
 	vcc.mutation.SetVideoID(i)
 	return vcc
 }
 
 // SetUserID sets the "user_id" field.
-func (vcc *VideoCommentCreate) SetUserID(i int64) *VideoCommentCreate {
+func (vcc *VideoCommentCreate) SetUserID(i int) *VideoCommentCreate {
 	vcc.mutation.SetUserID(i)
 	return vcc
 }
@@ -86,6 +86,12 @@ func (vcc *VideoCommentCreate) SetNillableUpdateTime(t *time.Time) *VideoComment
 	return vcc
 }
 
+// SetID sets the "id" field.
+func (vcc *VideoCommentCreate) SetID(i int) *VideoCommentCreate {
+	vcc.mutation.SetID(i)
+	return vcc
+}
+
 // Mutation returns the VideoCommentMutation object of the builder.
 func (vcc *VideoCommentCreate) Mutation() *VideoCommentMutation {
 	return vcc.mutation
@@ -93,7 +99,6 @@ func (vcc *VideoCommentCreate) Mutation() *VideoCommentMutation {
 
 // Save creates the VideoComment in the database.
 func (vcc *VideoCommentCreate) Save(ctx context.Context) (*VideoComment, error) {
-	vcc.defaults()
 	return withHooks(ctx, vcc.sqlSave, vcc.mutation, vcc.hooks)
 }
 
@@ -119,18 +124,6 @@ func (vcc *VideoCommentCreate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (vcc *VideoCommentCreate) defaults() {
-	if _, ok := vcc.mutation.CreateTime(); !ok {
-		v := videocomment.DefaultCreateTime()
-		vcc.mutation.SetCreateTime(v)
-	}
-	if _, ok := vcc.mutation.UpdateTime(); !ok {
-		v := videocomment.DefaultUpdateTime()
-		vcc.mutation.SetUpdateTime(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (vcc *VideoCommentCreate) check() error {
 	if _, ok := vcc.mutation.CommentID(); !ok {
@@ -144,12 +137,6 @@ func (vcc *VideoCommentCreate) check() error {
 	}
 	if _, ok := vcc.mutation.UserID(); !ok {
 		return &ValidationError{Name: "user_id", err: errors.New(`ent: missing required field "VideoComment.user_id"`)}
-	}
-	if _, ok := vcc.mutation.CreateTime(); !ok {
-		return &ValidationError{Name: "create_time", err: errors.New(`ent: missing required field "VideoComment.create_time"`)}
-	}
-	if _, ok := vcc.mutation.UpdateTime(); !ok {
-		return &ValidationError{Name: "update_time", err: errors.New(`ent: missing required field "VideoComment.update_time"`)}
 	}
 	return nil
 }
@@ -165,8 +152,10 @@ func (vcc *VideoCommentCreate) sqlSave(ctx context.Context) (*VideoComment, erro
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != _node.ID {
+		id := _spec.ID.Value.(int64)
+		_node.ID = int(id)
+	}
 	vcc.mutation.id = &_node.ID
 	vcc.mutation.done = true
 	return _node, nil
@@ -177,20 +166,24 @@ func (vcc *VideoCommentCreate) createSpec() (*VideoComment, *sqlgraph.CreateSpec
 		_node = &VideoComment{config: vcc.config}
 		_spec = sqlgraph.NewCreateSpec(videocomment.Table, sqlgraph.NewFieldSpec(videocomment.FieldID, field.TypeInt))
 	)
+	if id, ok := vcc.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
 	if value, ok := vcc.mutation.CommentID(); ok {
-		_spec.SetField(videocomment.FieldCommentID, field.TypeInt64, value)
+		_spec.SetField(videocomment.FieldCommentID, field.TypeInt, value)
 		_node.CommentID = value
 	}
 	if value, ok := vcc.mutation.PcommentID(); ok {
-		_spec.SetField(videocomment.FieldPcommentID, field.TypeInt64, value)
+		_spec.SetField(videocomment.FieldPcommentID, field.TypeInt, value)
 		_node.PcommentID = value
 	}
 	if value, ok := vcc.mutation.VideoID(); ok {
-		_spec.SetField(videocomment.FieldVideoID, field.TypeInt64, value)
+		_spec.SetField(videocomment.FieldVideoID, field.TypeInt, value)
 		_node.VideoID = value
 	}
 	if value, ok := vcc.mutation.UserID(); ok {
-		_spec.SetField(videocomment.FieldUserID, field.TypeInt64, value)
+		_spec.SetField(videocomment.FieldUserID, field.TypeInt, value)
 		_node.UserID = value
 	}
 	if value, ok := vcc.mutation.CommentText(); ok {
@@ -226,7 +219,6 @@ func (vccb *VideoCommentCreateBulk) Save(ctx context.Context) ([]*VideoComment, 
 	for i := range vccb.builders {
 		func(i int, root context.Context) {
 			builder := vccb.builders[i]
-			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*VideoCommentMutation)
 				if !ok {
@@ -253,7 +245,7 @@ func (vccb *VideoCommentCreateBulk) Save(ctx context.Context) ([]*VideoComment, 
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
+				if specs[i].ID.Value != nil && nodes[i].ID == 0 {
 					id := specs[i].ID.Value.(int64)
 					nodes[i].ID = int(id)
 				}

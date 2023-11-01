@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"juice/internal/data/ent/predicate"
 	"juice/internal/data/ent/userpassword"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -28,23 +29,23 @@ func (upu *UserPasswordUpdate) Where(ps ...predicate.UserPassword) *UserPassword
 }
 
 // SetUserID sets the "user_id" field.
-func (upu *UserPasswordUpdate) SetUserID(i int64) *UserPasswordUpdate {
+func (upu *UserPasswordUpdate) SetUserID(u uint64) *UserPasswordUpdate {
 	upu.mutation.ResetUserID()
-	upu.mutation.SetUserID(i)
+	upu.mutation.SetUserID(u)
 	return upu
 }
 
 // SetNillableUserID sets the "user_id" field if the given value is not nil.
-func (upu *UserPasswordUpdate) SetNillableUserID(i *int64) *UserPasswordUpdate {
-	if i != nil {
-		upu.SetUserID(*i)
+func (upu *UserPasswordUpdate) SetNillableUserID(u *uint64) *UserPasswordUpdate {
+	if u != nil {
+		upu.SetUserID(*u)
 	}
 	return upu
 }
 
-// AddUserID adds i to the "user_id" field.
-func (upu *UserPasswordUpdate) AddUserID(i int64) *UserPasswordUpdate {
-	upu.mutation.AddUserID(i)
+// AddUserID adds u to the "user_id" field.
+func (upu *UserPasswordUpdate) AddUserID(u int64) *UserPasswordUpdate {
+	upu.mutation.AddUserID(u)
 	return upu
 }
 
@@ -63,6 +64,46 @@ func (upu *UserPasswordUpdate) SetSalt(s string) *UserPasswordUpdate {
 // SetPwd sets the "pwd" field.
 func (upu *UserPasswordUpdate) SetPwd(s string) *UserPasswordUpdate {
 	upu.mutation.SetPwd(s)
+	return upu
+}
+
+// SetCreateTime sets the "create_time" field.
+func (upu *UserPasswordUpdate) SetCreateTime(t time.Time) *UserPasswordUpdate {
+	upu.mutation.SetCreateTime(t)
+	return upu
+}
+
+// SetNillableCreateTime sets the "create_time" field if the given value is not nil.
+func (upu *UserPasswordUpdate) SetNillableCreateTime(t *time.Time) *UserPasswordUpdate {
+	if t != nil {
+		upu.SetCreateTime(*t)
+	}
+	return upu
+}
+
+// ClearCreateTime clears the value of the "create_time" field.
+func (upu *UserPasswordUpdate) ClearCreateTime() *UserPasswordUpdate {
+	upu.mutation.ClearCreateTime()
+	return upu
+}
+
+// SetUpdateTime sets the "update_time" field.
+func (upu *UserPasswordUpdate) SetUpdateTime(t time.Time) *UserPasswordUpdate {
+	upu.mutation.SetUpdateTime(t)
+	return upu
+}
+
+// SetNillableUpdateTime sets the "update_time" field if the given value is not nil.
+func (upu *UserPasswordUpdate) SetNillableUpdateTime(t *time.Time) *UserPasswordUpdate {
+	if t != nil {
+		upu.SetUpdateTime(*t)
+	}
+	return upu
+}
+
+// ClearUpdateTime clears the value of the "update_time" field.
+func (upu *UserPasswordUpdate) ClearUpdateTime() *UserPasswordUpdate {
+	upu.mutation.ClearUpdateTime()
 	return upu
 }
 
@@ -98,20 +139,7 @@ func (upu *UserPasswordUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// check runs all checks and user-defined validators on the builder.
-func (upu *UserPasswordUpdate) check() error {
-	if v, ok := upu.mutation.UserID(); ok {
-		if err := userpassword.UserIDValidator(v); err != nil {
-			return &ValidationError{Name: "user_id", err: fmt.Errorf(`ent: validator failed for field "UserPassword.user_id": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (upu *UserPasswordUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	if err := upu.check(); err != nil {
-		return n, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(userpassword.Table, userpassword.Columns, sqlgraph.NewFieldSpec(userpassword.FieldID, field.TypeInt))
 	if ps := upu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -121,19 +149,31 @@ func (upu *UserPasswordUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 	}
 	if value, ok := upu.mutation.UserID(); ok {
-		_spec.SetField(userpassword.FieldUserID, field.TypeInt64, value)
+		_spec.SetField(userpassword.FieldUserID, field.TypeUint64, value)
 	}
 	if value, ok := upu.mutation.AddedUserID(); ok {
-		_spec.AddField(userpassword.FieldUserID, field.TypeInt64, value)
+		_spec.AddField(userpassword.FieldUserID, field.TypeUint64, value)
 	}
 	if upu.mutation.UserIDCleared() {
-		_spec.ClearField(userpassword.FieldUserID, field.TypeInt64)
+		_spec.ClearField(userpassword.FieldUserID, field.TypeUint64)
 	}
 	if value, ok := upu.mutation.Salt(); ok {
 		_spec.SetField(userpassword.FieldSalt, field.TypeString, value)
 	}
 	if value, ok := upu.mutation.Pwd(); ok {
 		_spec.SetField(userpassword.FieldPwd, field.TypeString, value)
+	}
+	if value, ok := upu.mutation.CreateTime(); ok {
+		_spec.SetField(userpassword.FieldCreateTime, field.TypeTime, value)
+	}
+	if upu.mutation.CreateTimeCleared() {
+		_spec.ClearField(userpassword.FieldCreateTime, field.TypeTime)
+	}
+	if value, ok := upu.mutation.UpdateTime(); ok {
+		_spec.SetField(userpassword.FieldUpdateTime, field.TypeTime, value)
+	}
+	if upu.mutation.UpdateTimeCleared() {
+		_spec.ClearField(userpassword.FieldUpdateTime, field.TypeTime)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, upu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -156,23 +196,23 @@ type UserPasswordUpdateOne struct {
 }
 
 // SetUserID sets the "user_id" field.
-func (upuo *UserPasswordUpdateOne) SetUserID(i int64) *UserPasswordUpdateOne {
+func (upuo *UserPasswordUpdateOne) SetUserID(u uint64) *UserPasswordUpdateOne {
 	upuo.mutation.ResetUserID()
-	upuo.mutation.SetUserID(i)
+	upuo.mutation.SetUserID(u)
 	return upuo
 }
 
 // SetNillableUserID sets the "user_id" field if the given value is not nil.
-func (upuo *UserPasswordUpdateOne) SetNillableUserID(i *int64) *UserPasswordUpdateOne {
-	if i != nil {
-		upuo.SetUserID(*i)
+func (upuo *UserPasswordUpdateOne) SetNillableUserID(u *uint64) *UserPasswordUpdateOne {
+	if u != nil {
+		upuo.SetUserID(*u)
 	}
 	return upuo
 }
 
-// AddUserID adds i to the "user_id" field.
-func (upuo *UserPasswordUpdateOne) AddUserID(i int64) *UserPasswordUpdateOne {
-	upuo.mutation.AddUserID(i)
+// AddUserID adds u to the "user_id" field.
+func (upuo *UserPasswordUpdateOne) AddUserID(u int64) *UserPasswordUpdateOne {
+	upuo.mutation.AddUserID(u)
 	return upuo
 }
 
@@ -191,6 +231,46 @@ func (upuo *UserPasswordUpdateOne) SetSalt(s string) *UserPasswordUpdateOne {
 // SetPwd sets the "pwd" field.
 func (upuo *UserPasswordUpdateOne) SetPwd(s string) *UserPasswordUpdateOne {
 	upuo.mutation.SetPwd(s)
+	return upuo
+}
+
+// SetCreateTime sets the "create_time" field.
+func (upuo *UserPasswordUpdateOne) SetCreateTime(t time.Time) *UserPasswordUpdateOne {
+	upuo.mutation.SetCreateTime(t)
+	return upuo
+}
+
+// SetNillableCreateTime sets the "create_time" field if the given value is not nil.
+func (upuo *UserPasswordUpdateOne) SetNillableCreateTime(t *time.Time) *UserPasswordUpdateOne {
+	if t != nil {
+		upuo.SetCreateTime(*t)
+	}
+	return upuo
+}
+
+// ClearCreateTime clears the value of the "create_time" field.
+func (upuo *UserPasswordUpdateOne) ClearCreateTime() *UserPasswordUpdateOne {
+	upuo.mutation.ClearCreateTime()
+	return upuo
+}
+
+// SetUpdateTime sets the "update_time" field.
+func (upuo *UserPasswordUpdateOne) SetUpdateTime(t time.Time) *UserPasswordUpdateOne {
+	upuo.mutation.SetUpdateTime(t)
+	return upuo
+}
+
+// SetNillableUpdateTime sets the "update_time" field if the given value is not nil.
+func (upuo *UserPasswordUpdateOne) SetNillableUpdateTime(t *time.Time) *UserPasswordUpdateOne {
+	if t != nil {
+		upuo.SetUpdateTime(*t)
+	}
+	return upuo
+}
+
+// ClearUpdateTime clears the value of the "update_time" field.
+func (upuo *UserPasswordUpdateOne) ClearUpdateTime() *UserPasswordUpdateOne {
+	upuo.mutation.ClearUpdateTime()
 	return upuo
 }
 
@@ -239,20 +319,7 @@ func (upuo *UserPasswordUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// check runs all checks and user-defined validators on the builder.
-func (upuo *UserPasswordUpdateOne) check() error {
-	if v, ok := upuo.mutation.UserID(); ok {
-		if err := userpassword.UserIDValidator(v); err != nil {
-			return &ValidationError{Name: "user_id", err: fmt.Errorf(`ent: validator failed for field "UserPassword.user_id": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (upuo *UserPasswordUpdateOne) sqlSave(ctx context.Context) (_node *UserPassword, err error) {
-	if err := upuo.check(); err != nil {
-		return _node, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(userpassword.Table, userpassword.Columns, sqlgraph.NewFieldSpec(userpassword.FieldID, field.TypeInt))
 	id, ok := upuo.mutation.ID()
 	if !ok {
@@ -279,19 +346,31 @@ func (upuo *UserPasswordUpdateOne) sqlSave(ctx context.Context) (_node *UserPass
 		}
 	}
 	if value, ok := upuo.mutation.UserID(); ok {
-		_spec.SetField(userpassword.FieldUserID, field.TypeInt64, value)
+		_spec.SetField(userpassword.FieldUserID, field.TypeUint64, value)
 	}
 	if value, ok := upuo.mutation.AddedUserID(); ok {
-		_spec.AddField(userpassword.FieldUserID, field.TypeInt64, value)
+		_spec.AddField(userpassword.FieldUserID, field.TypeUint64, value)
 	}
 	if upuo.mutation.UserIDCleared() {
-		_spec.ClearField(userpassword.FieldUserID, field.TypeInt64)
+		_spec.ClearField(userpassword.FieldUserID, field.TypeUint64)
 	}
 	if value, ok := upuo.mutation.Salt(); ok {
 		_spec.SetField(userpassword.FieldSalt, field.TypeString, value)
 	}
 	if value, ok := upuo.mutation.Pwd(); ok {
 		_spec.SetField(userpassword.FieldPwd, field.TypeString, value)
+	}
+	if value, ok := upuo.mutation.CreateTime(); ok {
+		_spec.SetField(userpassword.FieldCreateTime, field.TypeTime, value)
+	}
+	if upuo.mutation.CreateTimeCleared() {
+		_spec.ClearField(userpassword.FieldCreateTime, field.TypeTime)
+	}
+	if value, ok := upuo.mutation.UpdateTime(); ok {
+		_spec.SetField(userpassword.FieldUpdateTime, field.TypeTime, value)
+	}
+	if upuo.mutation.UpdateTimeCleared() {
+		_spec.ClearField(userpassword.FieldUpdateTime, field.TypeTime)
 	}
 	_node = &UserPassword{config: upuo.config}
 	_spec.Assign = _node.assignValues

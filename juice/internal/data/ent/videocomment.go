@@ -18,13 +18,13 @@ type VideoComment struct {
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
 	// CommentID holds the value of the "comment_id" field.
-	CommentID int64 `json:"comment_id,omitempty"`
+	CommentID int `json:"comment_id,omitempty"`
 	// PcommentID holds the value of the "pcomment_id" field.
-	PcommentID int64 `json:"pcomment_id,omitempty"`
+	PcommentID int `json:"pcomment_id,omitempty"`
 	// VideoID holds the value of the "video_id" field.
-	VideoID int64 `json:"video_id,omitempty"`
+	VideoID int `json:"video_id,omitempty"`
 	// UserID holds the value of the "user_id" field.
-	UserID int64 `json:"user_id,omitempty"`
+	UserID int `json:"user_id,omitempty"`
 	// CommentText holds the value of the "comment_text" field.
 	CommentText string `json:"comment_text,omitempty"`
 	// CreateTime holds the value of the "create_time" field.
@@ -70,25 +70,25 @@ func (vc *VideoComment) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field comment_id", values[i])
 			} else if value.Valid {
-				vc.CommentID = value.Int64
+				vc.CommentID = int(value.Int64)
 			}
 		case videocomment.FieldPcommentID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field pcomment_id", values[i])
 			} else if value.Valid {
-				vc.PcommentID = value.Int64
+				vc.PcommentID = int(value.Int64)
 			}
 		case videocomment.FieldVideoID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field video_id", values[i])
 			} else if value.Valid {
-				vc.VideoID = value.Int64
+				vc.VideoID = int(value.Int64)
 			}
 		case videocomment.FieldUserID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field user_id", values[i])
 			} else if value.Valid {
-				vc.UserID = value.Int64
+				vc.UserID = int(value.Int64)
 			}
 		case videocomment.FieldCommentText:
 			if value, ok := values[i].(*sql.NullString); !ok {

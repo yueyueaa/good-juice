@@ -6,7 +6,7 @@ import (
 	"context"
 	"fmt"
 	"juice/internal/data/ent/predicate"
-	"juice/internal/data/ent/videometadata"
+	"juice/internal/data/ent/videometadatum"
 	"math"
 
 	"entgo.io/ent/dialect/sql"
@@ -14,64 +14,64 @@ import (
 	"entgo.io/ent/schema/field"
 )
 
-// VideoMetadataQuery is the builder for querying VideoMetadata entities.
-type VideoMetadataQuery struct {
+// VideoMetadatumQuery is the builder for querying VideoMetadatum entities.
+type VideoMetadatumQuery struct {
 	config
 	ctx        *QueryContext
-	order      []videometadata.OrderOption
+	order      []videometadatum.OrderOption
 	inters     []Interceptor
-	predicates []predicate.VideoMetadata
+	predicates []predicate.VideoMetadatum
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
 }
 
-// Where adds a new predicate for the VideoMetadataQuery builder.
-func (vmq *VideoMetadataQuery) Where(ps ...predicate.VideoMetadata) *VideoMetadataQuery {
+// Where adds a new predicate for the VideoMetadatumQuery builder.
+func (vmq *VideoMetadatumQuery) Where(ps ...predicate.VideoMetadatum) *VideoMetadatumQuery {
 	vmq.predicates = append(vmq.predicates, ps...)
 	return vmq
 }
 
 // Limit the number of records to be returned by this query.
-func (vmq *VideoMetadataQuery) Limit(limit int) *VideoMetadataQuery {
+func (vmq *VideoMetadatumQuery) Limit(limit int) *VideoMetadatumQuery {
 	vmq.ctx.Limit = &limit
 	return vmq
 }
 
 // Offset to start from.
-func (vmq *VideoMetadataQuery) Offset(offset int) *VideoMetadataQuery {
+func (vmq *VideoMetadatumQuery) Offset(offset int) *VideoMetadatumQuery {
 	vmq.ctx.Offset = &offset
 	return vmq
 }
 
 // Unique configures the query builder to filter duplicate records on query.
 // By default, unique is set to true, and can be disabled using this method.
-func (vmq *VideoMetadataQuery) Unique(unique bool) *VideoMetadataQuery {
+func (vmq *VideoMetadatumQuery) Unique(unique bool) *VideoMetadatumQuery {
 	vmq.ctx.Unique = &unique
 	return vmq
 }
 
 // Order specifies how the records should be ordered.
-func (vmq *VideoMetadataQuery) Order(o ...videometadata.OrderOption) *VideoMetadataQuery {
+func (vmq *VideoMetadatumQuery) Order(o ...videometadatum.OrderOption) *VideoMetadatumQuery {
 	vmq.order = append(vmq.order, o...)
 	return vmq
 }
 
-// First returns the first VideoMetadata entity from the query.
-// Returns a *NotFoundError when no VideoMetadata was found.
-func (vmq *VideoMetadataQuery) First(ctx context.Context) (*VideoMetadata, error) {
+// First returns the first VideoMetadatum entity from the query.
+// Returns a *NotFoundError when no VideoMetadatum was found.
+func (vmq *VideoMetadatumQuery) First(ctx context.Context) (*VideoMetadatum, error) {
 	nodes, err := vmq.Limit(1).All(setContextOp(ctx, vmq.ctx, "First"))
 	if err != nil {
 		return nil, err
 	}
 	if len(nodes) == 0 {
-		return nil, &NotFoundError{videometadata.Label}
+		return nil, &NotFoundError{videometadatum.Label}
 	}
 	return nodes[0], nil
 }
 
 // FirstX is like First, but panics if an error occurs.
-func (vmq *VideoMetadataQuery) FirstX(ctx context.Context) *VideoMetadata {
+func (vmq *VideoMetadatumQuery) FirstX(ctx context.Context) *VideoMetadatum {
 	node, err := vmq.First(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -79,22 +79,22 @@ func (vmq *VideoMetadataQuery) FirstX(ctx context.Context) *VideoMetadata {
 	return node
 }
 
-// FirstID returns the first VideoMetadata ID from the query.
-// Returns a *NotFoundError when no VideoMetadata ID was found.
-func (vmq *VideoMetadataQuery) FirstID(ctx context.Context) (id int, err error) {
+// FirstID returns the first VideoMetadatum ID from the query.
+// Returns a *NotFoundError when no VideoMetadatum ID was found.
+func (vmq *VideoMetadatumQuery) FirstID(ctx context.Context) (id int, err error) {
 	var ids []int
 	if ids, err = vmq.Limit(1).IDs(setContextOp(ctx, vmq.ctx, "FirstID")); err != nil {
 		return
 	}
 	if len(ids) == 0 {
-		err = &NotFoundError{videometadata.Label}
+		err = &NotFoundError{videometadatum.Label}
 		return
 	}
 	return ids[0], nil
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (vmq *VideoMetadataQuery) FirstIDX(ctx context.Context) int {
+func (vmq *VideoMetadatumQuery) FirstIDX(ctx context.Context) int {
 	id, err := vmq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -102,10 +102,10 @@ func (vmq *VideoMetadataQuery) FirstIDX(ctx context.Context) int {
 	return id
 }
 
-// Only returns a single VideoMetadata entity found by the query, ensuring it only returns one.
-// Returns a *NotSingularError when more than one VideoMetadata entity is found.
-// Returns a *NotFoundError when no VideoMetadata entities are found.
-func (vmq *VideoMetadataQuery) Only(ctx context.Context) (*VideoMetadata, error) {
+// Only returns a single VideoMetadatum entity found by the query, ensuring it only returns one.
+// Returns a *NotSingularError when more than one VideoMetadatum entity is found.
+// Returns a *NotFoundError when no VideoMetadatum entities are found.
+func (vmq *VideoMetadatumQuery) Only(ctx context.Context) (*VideoMetadatum, error) {
 	nodes, err := vmq.Limit(2).All(setContextOp(ctx, vmq.ctx, "Only"))
 	if err != nil {
 		return nil, err
@@ -114,14 +114,14 @@ func (vmq *VideoMetadataQuery) Only(ctx context.Context) (*VideoMetadata, error)
 	case 1:
 		return nodes[0], nil
 	case 0:
-		return nil, &NotFoundError{videometadata.Label}
+		return nil, &NotFoundError{videometadatum.Label}
 	default:
-		return nil, &NotSingularError{videometadata.Label}
+		return nil, &NotSingularError{videometadatum.Label}
 	}
 }
 
 // OnlyX is like Only, but panics if an error occurs.
-func (vmq *VideoMetadataQuery) OnlyX(ctx context.Context) *VideoMetadata {
+func (vmq *VideoMetadatumQuery) OnlyX(ctx context.Context) *VideoMetadatum {
 	node, err := vmq.Only(ctx)
 	if err != nil {
 		panic(err)
@@ -129,10 +129,10 @@ func (vmq *VideoMetadataQuery) OnlyX(ctx context.Context) *VideoMetadata {
 	return node
 }
 
-// OnlyID is like Only, but returns the only VideoMetadata ID in the query.
-// Returns a *NotSingularError when more than one VideoMetadata ID is found.
+// OnlyID is like Only, but returns the only VideoMetadatum ID in the query.
+// Returns a *NotSingularError when more than one VideoMetadatum ID is found.
 // Returns a *NotFoundError when no entities are found.
-func (vmq *VideoMetadataQuery) OnlyID(ctx context.Context) (id int, err error) {
+func (vmq *VideoMetadatumQuery) OnlyID(ctx context.Context) (id int, err error) {
 	var ids []int
 	if ids, err = vmq.Limit(2).IDs(setContextOp(ctx, vmq.ctx, "OnlyID")); err != nil {
 		return
@@ -141,15 +141,15 @@ func (vmq *VideoMetadataQuery) OnlyID(ctx context.Context) (id int, err error) {
 	case 1:
 		id = ids[0]
 	case 0:
-		err = &NotFoundError{videometadata.Label}
+		err = &NotFoundError{videometadatum.Label}
 	default:
-		err = &NotSingularError{videometadata.Label}
+		err = &NotSingularError{videometadatum.Label}
 	}
 	return
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (vmq *VideoMetadataQuery) OnlyIDX(ctx context.Context) int {
+func (vmq *VideoMetadatumQuery) OnlyIDX(ctx context.Context) int {
 	id, err := vmq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -157,18 +157,18 @@ func (vmq *VideoMetadataQuery) OnlyIDX(ctx context.Context) int {
 	return id
 }
 
-// All executes the query and returns a list of VideoMetadataSlice.
-func (vmq *VideoMetadataQuery) All(ctx context.Context) ([]*VideoMetadata, error) {
+// All executes the query and returns a list of VideoMetadata.
+func (vmq *VideoMetadatumQuery) All(ctx context.Context) ([]*VideoMetadatum, error) {
 	ctx = setContextOp(ctx, vmq.ctx, "All")
 	if err := vmq.prepareQuery(ctx); err != nil {
 		return nil, err
 	}
-	qr := querierAll[[]*VideoMetadata, *VideoMetadataQuery]()
-	return withInterceptors[[]*VideoMetadata](ctx, vmq, qr, vmq.inters)
+	qr := querierAll[[]*VideoMetadatum, *VideoMetadatumQuery]()
+	return withInterceptors[[]*VideoMetadatum](ctx, vmq, qr, vmq.inters)
 }
 
 // AllX is like All, but panics if an error occurs.
-func (vmq *VideoMetadataQuery) AllX(ctx context.Context) []*VideoMetadata {
+func (vmq *VideoMetadatumQuery) AllX(ctx context.Context) []*VideoMetadatum {
 	nodes, err := vmq.All(ctx)
 	if err != nil {
 		panic(err)
@@ -176,20 +176,20 @@ func (vmq *VideoMetadataQuery) AllX(ctx context.Context) []*VideoMetadata {
 	return nodes
 }
 
-// IDs executes the query and returns a list of VideoMetadata IDs.
-func (vmq *VideoMetadataQuery) IDs(ctx context.Context) (ids []int, err error) {
+// IDs executes the query and returns a list of VideoMetadatum IDs.
+func (vmq *VideoMetadatumQuery) IDs(ctx context.Context) (ids []int, err error) {
 	if vmq.ctx.Unique == nil && vmq.path != nil {
 		vmq.Unique(true)
 	}
 	ctx = setContextOp(ctx, vmq.ctx, "IDs")
-	if err = vmq.Select(videometadata.FieldID).Scan(ctx, &ids); err != nil {
+	if err = vmq.Select(videometadatum.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
 	return ids, nil
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (vmq *VideoMetadataQuery) IDsX(ctx context.Context) []int {
+func (vmq *VideoMetadatumQuery) IDsX(ctx context.Context) []int {
 	ids, err := vmq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -198,16 +198,16 @@ func (vmq *VideoMetadataQuery) IDsX(ctx context.Context) []int {
 }
 
 // Count returns the count of the given query.
-func (vmq *VideoMetadataQuery) Count(ctx context.Context) (int, error) {
+func (vmq *VideoMetadatumQuery) Count(ctx context.Context) (int, error) {
 	ctx = setContextOp(ctx, vmq.ctx, "Count")
 	if err := vmq.prepareQuery(ctx); err != nil {
 		return 0, err
 	}
-	return withInterceptors[int](ctx, vmq, querierCount[*VideoMetadataQuery](), vmq.inters)
+	return withInterceptors[int](ctx, vmq, querierCount[*VideoMetadatumQuery](), vmq.inters)
 }
 
 // CountX is like Count, but panics if an error occurs.
-func (vmq *VideoMetadataQuery) CountX(ctx context.Context) int {
+func (vmq *VideoMetadatumQuery) CountX(ctx context.Context) int {
 	count, err := vmq.Count(ctx)
 	if err != nil {
 		panic(err)
@@ -216,7 +216,7 @@ func (vmq *VideoMetadataQuery) CountX(ctx context.Context) int {
 }
 
 // Exist returns true if the query has elements in the graph.
-func (vmq *VideoMetadataQuery) Exist(ctx context.Context) (bool, error) {
+func (vmq *VideoMetadatumQuery) Exist(ctx context.Context) (bool, error) {
 	ctx = setContextOp(ctx, vmq.ctx, "Exist")
 	switch _, err := vmq.FirstID(ctx); {
 	case IsNotFound(err):
@@ -229,7 +229,7 @@ func (vmq *VideoMetadataQuery) Exist(ctx context.Context) (bool, error) {
 }
 
 // ExistX is like Exist, but panics if an error occurs.
-func (vmq *VideoMetadataQuery) ExistX(ctx context.Context) bool {
+func (vmq *VideoMetadatumQuery) ExistX(ctx context.Context) bool {
 	exist, err := vmq.Exist(ctx)
 	if err != nil {
 		panic(err)
@@ -237,18 +237,18 @@ func (vmq *VideoMetadataQuery) ExistX(ctx context.Context) bool {
 	return exist
 }
 
-// Clone returns a duplicate of the VideoMetadataQuery builder, including all associated steps. It can be
+// Clone returns a duplicate of the VideoMetadatumQuery builder, including all associated steps. It can be
 // used to prepare common query builders and use them differently after the clone is made.
-func (vmq *VideoMetadataQuery) Clone() *VideoMetadataQuery {
+func (vmq *VideoMetadatumQuery) Clone() *VideoMetadatumQuery {
 	if vmq == nil {
 		return nil
 	}
-	return &VideoMetadataQuery{
+	return &VideoMetadatumQuery{
 		config:     vmq.config,
 		ctx:        vmq.ctx.Clone(),
-		order:      append([]videometadata.OrderOption{}, vmq.order...),
+		order:      append([]videometadatum.OrderOption{}, vmq.order...),
 		inters:     append([]Interceptor{}, vmq.inters...),
-		predicates: append([]predicate.VideoMetadata{}, vmq.predicates...),
+		predicates: append([]predicate.VideoMetadatum{}, vmq.predicates...),
 		// clone intermediate query.
 		sql:  vmq.sql.Clone(),
 		path: vmq.path,
@@ -261,19 +261,19 @@ func (vmq *VideoMetadataQuery) Clone() *VideoMetadataQuery {
 // Example:
 //
 //	var v []struct {
-//		VideoID int64 `json:"video_id,omitempty"`
+//		VideoID int `json:"video_id,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
-//	client.VideoMetadata.Query().
-//		GroupBy(videometadata.FieldVideoID).
+//	client.VideoMetadatum.Query().
+//		GroupBy(videometadatum.FieldVideoID).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
-func (vmq *VideoMetadataQuery) GroupBy(field string, fields ...string) *VideoMetadataGroupBy {
+func (vmq *VideoMetadatumQuery) GroupBy(field string, fields ...string) *VideoMetadatumGroupBy {
 	vmq.ctx.Fields = append([]string{field}, fields...)
-	grbuild := &VideoMetadataGroupBy{build: vmq}
+	grbuild := &VideoMetadatumGroupBy{build: vmq}
 	grbuild.flds = &vmq.ctx.Fields
-	grbuild.label = videometadata.Label
+	grbuild.label = videometadatum.Label
 	grbuild.scan = grbuild.Scan
 	return grbuild
 }
@@ -284,26 +284,26 @@ func (vmq *VideoMetadataQuery) GroupBy(field string, fields ...string) *VideoMet
 // Example:
 //
 //	var v []struct {
-//		VideoID int64 `json:"video_id,omitempty"`
+//		VideoID int `json:"video_id,omitempty"`
 //	}
 //
-//	client.VideoMetadata.Query().
-//		Select(videometadata.FieldVideoID).
+//	client.VideoMetadatum.Query().
+//		Select(videometadatum.FieldVideoID).
 //		Scan(ctx, &v)
-func (vmq *VideoMetadataQuery) Select(fields ...string) *VideoMetadataSelect {
+func (vmq *VideoMetadatumQuery) Select(fields ...string) *VideoMetadatumSelect {
 	vmq.ctx.Fields = append(vmq.ctx.Fields, fields...)
-	sbuild := &VideoMetadataSelect{VideoMetadataQuery: vmq}
-	sbuild.label = videometadata.Label
+	sbuild := &VideoMetadatumSelect{VideoMetadatumQuery: vmq}
+	sbuild.label = videometadatum.Label
 	sbuild.flds, sbuild.scan = &vmq.ctx.Fields, sbuild.Scan
 	return sbuild
 }
 
-// Aggregate returns a VideoMetadataSelect configured with the given aggregations.
-func (vmq *VideoMetadataQuery) Aggregate(fns ...AggregateFunc) *VideoMetadataSelect {
+// Aggregate returns a VideoMetadatumSelect configured with the given aggregations.
+func (vmq *VideoMetadatumQuery) Aggregate(fns ...AggregateFunc) *VideoMetadatumSelect {
 	return vmq.Select().Aggregate(fns...)
 }
 
-func (vmq *VideoMetadataQuery) prepareQuery(ctx context.Context) error {
+func (vmq *VideoMetadatumQuery) prepareQuery(ctx context.Context) error {
 	for _, inter := range vmq.inters {
 		if inter == nil {
 			return fmt.Errorf("ent: uninitialized interceptor (forgotten import ent/runtime?)")
@@ -315,7 +315,7 @@ func (vmq *VideoMetadataQuery) prepareQuery(ctx context.Context) error {
 		}
 	}
 	for _, f := range vmq.ctx.Fields {
-		if !videometadata.ValidColumn(f) {
+		if !videometadatum.ValidColumn(f) {
 			return &ValidationError{Name: f, err: fmt.Errorf("ent: invalid field %q for query", f)}
 		}
 	}
@@ -329,16 +329,16 @@ func (vmq *VideoMetadataQuery) prepareQuery(ctx context.Context) error {
 	return nil
 }
 
-func (vmq *VideoMetadataQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*VideoMetadata, error) {
+func (vmq *VideoMetadatumQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*VideoMetadatum, error) {
 	var (
-		nodes = []*VideoMetadata{}
+		nodes = []*VideoMetadatum{}
 		_spec = vmq.querySpec()
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
-		return (*VideoMetadata).scanValues(nil, columns)
+		return (*VideoMetadatum).scanValues(nil, columns)
 	}
 	_spec.Assign = func(columns []string, values []any) error {
-		node := &VideoMetadata{config: vmq.config}
+		node := &VideoMetadatum{config: vmq.config}
 		nodes = append(nodes, node)
 		return node.assignValues(columns, values)
 	}
@@ -354,7 +354,7 @@ func (vmq *VideoMetadataQuery) sqlAll(ctx context.Context, hooks ...queryHook) (
 	return nodes, nil
 }
 
-func (vmq *VideoMetadataQuery) sqlCount(ctx context.Context) (int, error) {
+func (vmq *VideoMetadatumQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := vmq.querySpec()
 	_spec.Node.Columns = vmq.ctx.Fields
 	if len(vmq.ctx.Fields) > 0 {
@@ -363,8 +363,8 @@ func (vmq *VideoMetadataQuery) sqlCount(ctx context.Context) (int, error) {
 	return sqlgraph.CountNodes(ctx, vmq.driver, _spec)
 }
 
-func (vmq *VideoMetadataQuery) querySpec() *sqlgraph.QuerySpec {
-	_spec := sqlgraph.NewQuerySpec(videometadata.Table, videometadata.Columns, sqlgraph.NewFieldSpec(videometadata.FieldID, field.TypeInt))
+func (vmq *VideoMetadatumQuery) querySpec() *sqlgraph.QuerySpec {
+	_spec := sqlgraph.NewQuerySpec(videometadatum.Table, videometadatum.Columns, sqlgraph.NewFieldSpec(videometadatum.FieldID, field.TypeInt))
 	_spec.From = vmq.sql
 	if unique := vmq.ctx.Unique; unique != nil {
 		_spec.Unique = *unique
@@ -373,9 +373,9 @@ func (vmq *VideoMetadataQuery) querySpec() *sqlgraph.QuerySpec {
 	}
 	if fields := vmq.ctx.Fields; len(fields) > 0 {
 		_spec.Node.Columns = make([]string, 0, len(fields))
-		_spec.Node.Columns = append(_spec.Node.Columns, videometadata.FieldID)
+		_spec.Node.Columns = append(_spec.Node.Columns, videometadatum.FieldID)
 		for i := range fields {
-			if fields[i] != videometadata.FieldID {
+			if fields[i] != videometadatum.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, fields[i])
 			}
 		}
@@ -403,12 +403,12 @@ func (vmq *VideoMetadataQuery) querySpec() *sqlgraph.QuerySpec {
 	return _spec
 }
 
-func (vmq *VideoMetadataQuery) sqlQuery(ctx context.Context) *sql.Selector {
+func (vmq *VideoMetadatumQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	builder := sql.Dialect(vmq.driver.Dialect())
-	t1 := builder.Table(videometadata.Table)
+	t1 := builder.Table(videometadatum.Table)
 	columns := vmq.ctx.Fields
 	if len(columns) == 0 {
-		columns = videometadata.Columns
+		columns = videometadatum.Columns
 	}
 	selector := builder.Select(t1.Columns(columns...)...).From(t1)
 	if vmq.sql != nil {
@@ -435,28 +435,28 @@ func (vmq *VideoMetadataQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	return selector
 }
 
-// VideoMetadataGroupBy is the group-by builder for VideoMetadata entities.
-type VideoMetadataGroupBy struct {
+// VideoMetadatumGroupBy is the group-by builder for VideoMetadatum entities.
+type VideoMetadatumGroupBy struct {
 	selector
-	build *VideoMetadataQuery
+	build *VideoMetadatumQuery
 }
 
 // Aggregate adds the given aggregation functions to the group-by query.
-func (vmgb *VideoMetadataGroupBy) Aggregate(fns ...AggregateFunc) *VideoMetadataGroupBy {
+func (vmgb *VideoMetadatumGroupBy) Aggregate(fns ...AggregateFunc) *VideoMetadatumGroupBy {
 	vmgb.fns = append(vmgb.fns, fns...)
 	return vmgb
 }
 
 // Scan applies the selector query and scans the result into the given value.
-func (vmgb *VideoMetadataGroupBy) Scan(ctx context.Context, v any) error {
+func (vmgb *VideoMetadatumGroupBy) Scan(ctx context.Context, v any) error {
 	ctx = setContextOp(ctx, vmgb.build.ctx, "GroupBy")
 	if err := vmgb.build.prepareQuery(ctx); err != nil {
 		return err
 	}
-	return scanWithInterceptors[*VideoMetadataQuery, *VideoMetadataGroupBy](ctx, vmgb.build, vmgb, vmgb.build.inters, v)
+	return scanWithInterceptors[*VideoMetadatumQuery, *VideoMetadatumGroupBy](ctx, vmgb.build, vmgb, vmgb.build.inters, v)
 }
 
-func (vmgb *VideoMetadataGroupBy) sqlScan(ctx context.Context, root *VideoMetadataQuery, v any) error {
+func (vmgb *VideoMetadatumGroupBy) sqlScan(ctx context.Context, root *VideoMetadatumQuery, v any) error {
 	selector := root.sqlQuery(ctx).Select()
 	aggregation := make([]string, 0, len(vmgb.fns))
 	for _, fn := range vmgb.fns {
@@ -483,28 +483,28 @@ func (vmgb *VideoMetadataGroupBy) sqlScan(ctx context.Context, root *VideoMetada
 	return sql.ScanSlice(rows, v)
 }
 
-// VideoMetadataSelect is the builder for selecting fields of VideoMetadata entities.
-type VideoMetadataSelect struct {
-	*VideoMetadataQuery
+// VideoMetadatumSelect is the builder for selecting fields of VideoMetadatum entities.
+type VideoMetadatumSelect struct {
+	*VideoMetadatumQuery
 	selector
 }
 
 // Aggregate adds the given aggregation functions to the selector query.
-func (vms *VideoMetadataSelect) Aggregate(fns ...AggregateFunc) *VideoMetadataSelect {
+func (vms *VideoMetadatumSelect) Aggregate(fns ...AggregateFunc) *VideoMetadatumSelect {
 	vms.fns = append(vms.fns, fns...)
 	return vms
 }
 
 // Scan applies the selector query and scans the result into the given value.
-func (vms *VideoMetadataSelect) Scan(ctx context.Context, v any) error {
+func (vms *VideoMetadatumSelect) Scan(ctx context.Context, v any) error {
 	ctx = setContextOp(ctx, vms.ctx, "Select")
 	if err := vms.prepareQuery(ctx); err != nil {
 		return err
 	}
-	return scanWithInterceptors[*VideoMetadataQuery, *VideoMetadataSelect](ctx, vms.VideoMetadataQuery, vms, vms.inters, v)
+	return scanWithInterceptors[*VideoMetadatumQuery, *VideoMetadatumSelect](ctx, vms.VideoMetadatumQuery, vms, vms.inters, v)
 }
 
-func (vms *VideoMetadataSelect) sqlScan(ctx context.Context, root *VideoMetadataQuery, v any) error {
+func (vms *VideoMetadatumSelect) sqlScan(ctx context.Context, root *VideoMetadatumQuery, v any) error {
 	selector := root.sqlQuery(ctx)
 	aggregation := make([]string, 0, len(vms.fns))
 	for _, fn := range vms.fns {

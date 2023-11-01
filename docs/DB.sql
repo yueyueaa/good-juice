@@ -1,4 +1,4 @@
--- Active: 1698252338786@@60.255.139.184@13306@test
+-- Active: 1698815275788@@60.255.139.184@13306@test
 
 --! 所有id（uid,vid,cid）均使用雪花算法生成全局唯一id
 
@@ -12,6 +12,7 @@ USE test;
 
 CREATE TABLE
     user_base_info(
+        `id` BIGINT NOT NULL UNIQUE PRIMARY KEY,
         -- 表项
         `user_id` BIGINT UNSIGNED NOT NULL UNIQUE,
         `username` CHAR(30) NOT NULL,
@@ -26,7 +27,8 @@ CREATE TABLE
         `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         -- 约束 
-        PRIMARY KEY (`user_id`),
+        -- CONSTRAINT `pk_id` PRIMARY KEY(id),
+        UNIQUE INDEX `uk_user_id` (`user_id`),
         UNIQUE INDEX `uk_username` (`username`)
     );
 
@@ -34,6 +36,7 @@ CREATE TABLE
 
 CREATE TABLE
     user_password(
+        `id` BIGINT NOT NULL UNIQUE PRIMARY KEY,
         -- 表项
         `user_id` BIGINT UNSIGNED UNIQUE,
         `salt` CHAR(64) NOT NULL DEFAULT CONCAT(
@@ -48,13 +51,15 @@ CREATE TABLE
         `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         -- 约束 
-        PRIMARY KEY (`user_id`)
+        -- CONSTRAINT `pk_id` PRIMARY KEY(id),
+        UNIQUE INDEX `uk_user_id` (`user_id`)
     );
 
 --- 用户关注信息 user_id 用户关注 follow_id 用户
 
 CREATE TABLE
     user_follow_info (
+        `id` BIGINT NOT NULL UNIQUE PRIMARY KEY,
         -- 表项
         `user_id` BIGINT UNSIGNED NOT NULL,
         `follow_id` BIGINT UNSIGNED NOT NULL,
@@ -63,7 +68,8 @@ CREATE TABLE
         `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         -- 约束 
-        PRIMARY KEY `up_follows_id` (`user_id`, `follow_id`),
+        -- CONSTRAINT `pk_id` PRIMARY KEY(id),
+        UNIQUE INDEX `uk_follows_id` (`user_id`, `follow_id`),
         UNIQUE INDEX `uk_fans_id` (`follow_id`, `user_id`)
     );
 
@@ -73,6 +79,7 @@ CREATE TABLE
 
 CREATE TABLE
     video_metadata (
+        `id` BIGINT NOT NULL UNIQUE PRIMARY KEY,
         -- 表项
         `video_id` BIGINT NOT NULL,
         `user_id` BIGINT NOT NULL,
@@ -85,7 +92,8 @@ CREATE TABLE
         `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         -- 约束 
-        PRIMARY KEY (`video_id`),
+        -- CONSTRAINT `pk_id` PRIMARY KEY(id),
+        UNIQUE INDEX `uk_video_id` (`video_id`),
         UNIQUE INDEX `uk_uid` (`user_id`, `video_id`)
     );
 
@@ -93,6 +101,7 @@ CREATE TABLE
 
 CREATE TABLE
     video_like(
+        `id` BIGINT NOT NULL UNIQUE PRIMARY KEY,
         -- 表项
         `user_id` BIGINT NOT NULL,
         `video_id` BIGINT NOT NULL,
@@ -101,7 +110,8 @@ CREATE TABLE
         `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         -- 约束 
-        PRIMARY KEY `pk_user_id` (`user_id`, `video_id`),
+        -- CONSTRAINT `pk_id` PRIMARY KEY(id),
+        UNIQUE INDEX `uk_user_id` (`user_id`, `video_id`),
         UNIQUE INDEX `uk_video_id` (`video_id`, `user_id`)
     );
 
@@ -109,6 +119,7 @@ CREATE TABLE
 
 CREATE TABLE
     video_collection(
+        `id` BIGINT NOT NULL UNIQUE PRIMARY KEY,
         -- 表项
         `user_id` BIGINT NOT NULL,
         `video_id` BIGINT NOT NULL,
@@ -117,7 +128,8 @@ CREATE TABLE
         `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         -- 约束 
-        PRIMARY KEY `pk_user_id` (`user_id`, `video_id`),
+        -- CONSTRAINT `pk_id` PRIMARY KEY(id),
+        UNIQUE INDEX `uk_user_id` (`user_id`, `video_id`),
         UNIQUE INDEX `uk_video_id` (`video_id`, `user_id`)
     );
 
@@ -127,6 +139,7 @@ CREATE TABLE
 
 CREATE TABLE
     video_comment (
+        `id` BIGINT NOT NULL UNIQUE PRIMARY KEY,
         -- 表项
         `comment_id` BIGINT NOT NULL,
         `pcomment_id` BIGINT NOT NULL,
@@ -137,6 +150,21 @@ CREATE TABLE
         `create_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         `update_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         -- 约束
-        PRIMARY KEY (`comment_id`),
-        UNIQUE INDEX `idx_video_comment` (`video_id`, `comment_id`)
+        -- CONSTRAINT `pk_id` PRIMARY KEY(id),
+        UNIQUE INDEX `uk_comment_id` (`comment_id`),
+        UNIQUE INDEX `uk_video_comment` (`video_id`, `comment_id`)
     );
+
+-- ent new UserBaseInfo
+
+-- ent new UserFollowInfo
+
+-- ent new UserPassword
+
+-- ent new VideoComment
+
+-- ent new VideoCollection
+
+-- ent new VideoLike
+
+-- ent new VideoMetadata

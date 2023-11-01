@@ -261,7 +261,7 @@ func (ubiq *UserBaseInfoQuery) Clone() *UserBaseInfoQuery {
 // Example:
 //
 //	var v []struct {
-//		UserID int64 `json:"user_id,omitempty"`
+//		UserID uint64 `json:"user_id,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -284,7 +284,7 @@ func (ubiq *UserBaseInfoQuery) GroupBy(field string, fields ...string) *UserBase
 // Example:
 //
 //	var v []struct {
-//		UserID int64 `json:"user_id,omitempty"`
+//		UserID uint64 `json:"user_id,omitempty"`
 //	}
 //
 //	client.UserBaseInfo.Query().

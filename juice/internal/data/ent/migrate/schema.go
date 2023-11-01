@@ -3,119 +3,122 @@
 package migrate
 
 import (
+	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/dialect/sql/schema"
 	"entgo.io/ent/schema/field"
 )
 
 var (
-	// UserBaseInfosColumns holds the columns for the "user_base_infos" table.
-	UserBaseInfosColumns = []*schema.Column{
+	// UserBaseInfoColumns holds the columns for the "user_base_info" table.
+	UserBaseInfoColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "user_id", Type: field.TypeInt64, Unique: true, SchemaType: map[string]string{"mysql": "BIGINTUNSIGNED"}},
-		{Name: "username", Type: field.TypeString, SchemaType: map[string]string{"mysql": "CHAR(30)"}},
-		{Name: "sex", Type: field.TypeInt8, SchemaType: map[string]string{"mysql": "TINYINT"}},
-		{Name: "birth", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "DATE"}},
-		{Name: "area", Type: field.TypeInt32, SchemaType: map[string]string{"mysql": "INT"}},
-		{Name: "user_profile", Type: field.TypeString, Nullable: true, SchemaType: map[string]string{"mysql": "CHAR(255)"}},
-		{Name: "user_profile_photo_url", Type: field.TypeString, Nullable: true, SchemaType: map[string]string{"mysql": "CHAR(255)"}},
-		{Name: "follow_count", Type: field.TypeInt32, Default: 0, SchemaType: map[string]string{"mysql": "INT"}},
-		{Name: "fan_count", Type: field.TypeInt32, Default: 0, SchemaType: map[string]string{"mysql": "INT"}},
-		{Name: "create_time", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "DATETIME"}},
-		{Name: "update_time", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "DATETIME"}},
+		{Name: "user_id", Type: field.TypeUint64, Unique: true},
+		{Name: "username", Type: field.TypeString, Unique: true},
+		{Name: "sex", Type: field.TypeInt8},
+		{Name: "birth", Type: field.TypeTime, Nullable: true},
+		{Name: "area", Type: field.TypeInt32},
+		{Name: "user_profile", Type: field.TypeString, Nullable: true},
+		{Name: "user_profile_photo_url", Type: field.TypeString, Nullable: true},
+		{Name: "follow_count", Type: field.TypeInt32},
+		{Name: "fan_count", Type: field.TypeInt32},
+		{Name: "create_time", Type: field.TypeTime, Nullable: true},
+		{Name: "update_time", Type: field.TypeTime, Nullable: true},
 	}
-	// UserBaseInfosTable holds the schema information for the "user_base_infos" table.
-	UserBaseInfosTable = &schema.Table{
-		Name:       "user_base_infos",
-		Columns:    UserBaseInfosColumns,
-		PrimaryKey: []*schema.Column{UserBaseInfosColumns[0]},
+	// UserBaseInfoTable holds the schema information for the "user_base_info" table.
+	UserBaseInfoTable = &schema.Table{
+		Name:       "user_base_info",
+		Columns:    UserBaseInfoColumns,
+		PrimaryKey: []*schema.Column{UserBaseInfoColumns[0]},
 	}
-	// UserFollowInfosColumns holds the columns for the "user_follow_infos" table.
-	UserFollowInfosColumns = []*schema.Column{
+	// UserFollowInfoColumns holds the columns for the "user_follow_info" table.
+	UserFollowInfoColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "user_id", Type: field.TypeInt64, SchemaType: map[string]string{"mysql": "BIGINTUNSIGNED"}},
-		{Name: "follow_id", Type: field.TypeInt64, SchemaType: map[string]string{"mysql": "BIGINTUNSIGNED"}},
-		{Name: "status", Type: field.TypeInt8, Default: 1, SchemaType: map[string]string{"mysql": "TINYINT"}},
-		{Name: "create_time", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "DATETIME"}},
-		{Name: "update_time", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "DATETIME"}},
+		{Name: "user_id", Type: field.TypeUint64},
+		{Name: "follow_id", Type: field.TypeUint64},
+		{Name: "status", Type: field.TypeInt8},
+		{Name: "create_time", Type: field.TypeTime, Nullable: true},
+		{Name: "update_time", Type: field.TypeTime, Nullable: true},
 	}
-	// UserFollowInfosTable holds the schema information for the "user_follow_infos" table.
-	UserFollowInfosTable = &schema.Table{
-		Name:       "user_follow_infos",
-		Columns:    UserFollowInfosColumns,
-		PrimaryKey: []*schema.Column{UserFollowInfosColumns[0]},
+	// UserFollowInfoTable holds the schema information for the "user_follow_info" table.
+	UserFollowInfoTable = &schema.Table{
+		Name:       "user_follow_info",
+		Columns:    UserFollowInfoColumns,
+		PrimaryKey: []*schema.Column{UserFollowInfoColumns[0]},
 	}
-	// UserPasswordsColumns holds the columns for the "user_passwords" table.
-	UserPasswordsColumns = []*schema.Column{
+	// UserPasswordColumns holds the columns for the "user_password" table.
+	UserPasswordColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "user_id", Type: field.TypeInt64, Unique: true, Nullable: true, SchemaType: map[string]string{"mysql": "BIGINTUNSIGNED"}},
-		{Name: "salt", Type: field.TypeString, SchemaType: map[string]string{"mysql": "CHAR(64)"}},
-		{Name: "pwd", Type: field.TypeString, SchemaType: map[string]string{"mysql": "CHAR(64)"}},
+		{Name: "user_id", Type: field.TypeUint64, Unique: true, Nullable: true},
+		{Name: "salt", Type: field.TypeString},
+		{Name: "pwd", Type: field.TypeString},
+		{Name: "create_time", Type: field.TypeTime, Nullable: true},
+		{Name: "update_time", Type: field.TypeTime, Nullable: true},
 	}
-	// UserPasswordsTable holds the schema information for the "user_passwords" table.
-	UserPasswordsTable = &schema.Table{
-		Name:       "user_passwords",
-		Columns:    UserPasswordsColumns,
-		PrimaryKey: []*schema.Column{UserPasswordsColumns[0]},
+	// UserPasswordTable holds the schema information for the "user_password" table.
+	UserPasswordTable = &schema.Table{
+		Name:       "user_password",
+		Columns:    UserPasswordColumns,
+		PrimaryKey: []*schema.Column{UserPasswordColumns[0]},
 	}
-	// VideoCollectionsColumns holds the columns for the "video_collections" table.
-	VideoCollectionsColumns = []*schema.Column{
+	// VideoCollectionColumns holds the columns for the "video_collection" table.
+	VideoCollectionColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "user_id", Type: field.TypeInt64, SchemaType: map[string]string{"mysql": "BIGINT"}},
-		{Name: "video_id", Type: field.TypeInt64, SchemaType: map[string]string{"mysql": "BIGINT"}},
-		{Name: "status", Type: field.TypeInt8, Default: 1, SchemaType: map[string]string{"mysql": "TINYINT"}},
-		{Name: "create_time", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "DATETIME"}},
-		{Name: "update_time", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "DATETIME"}},
+		{Name: "user_id", Type: field.TypeInt},
+		{Name: "video_id", Type: field.TypeInt},
+		{Name: "status", Type: field.TypeInt8},
+		{Name: "create_time", Type: field.TypeTime, Nullable: true},
+		{Name: "update_time", Type: field.TypeTime, Nullable: true},
 	}
-	// VideoCollectionsTable holds the schema information for the "video_collections" table.
-	VideoCollectionsTable = &schema.Table{
-		Name:       "video_collections",
-		Columns:    VideoCollectionsColumns,
-		PrimaryKey: []*schema.Column{VideoCollectionsColumns[0]},
+	// VideoCollectionTable holds the schema information for the "video_collection" table.
+	VideoCollectionTable = &schema.Table{
+		Name:       "video_collection",
+		Columns:    VideoCollectionColumns,
+		PrimaryKey: []*schema.Column{VideoCollectionColumns[0]},
 	}
-	// VideoCommentsColumns holds the columns for the "video_comments" table.
-	VideoCommentsColumns = []*schema.Column{
+	// VideoCommentColumns holds the columns for the "video_comment" table.
+	VideoCommentColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "comment_id", Type: field.TypeInt64, Unique: true, SchemaType: map[string]string{"mysql": "BIGINT"}},
-		{Name: "pcomment_id", Type: field.TypeInt64, SchemaType: map[string]string{"mysql": "BIGINT"}},
-		{Name: "video_id", Type: field.TypeInt64, SchemaType: map[string]string{"mysql": "BIGINT"}},
-		{Name: "user_id", Type: field.TypeInt64, SchemaType: map[string]string{"mysql": "BIGINT"}},
-		{Name: "comment_text", Type: field.TypeString, Nullable: true, Size: 2147483647, SchemaType: map[string]string{"mysql": "TEXT"}},
-		{Name: "create_time", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "DATETIME"}},
-		{Name: "update_time", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "DATETIME"}},
+		{Name: "comment_id", Type: field.TypeInt, Unique: true},
+		{Name: "pcomment_id", Type: field.TypeInt},
+		{Name: "video_id", Type: field.TypeInt},
+		{Name: "user_id", Type: field.TypeInt},
+		{Name: "comment_text", Type: field.TypeString, Nullable: true},
+		{Name: "create_time", Type: field.TypeTime, Nullable: true},
+		{Name: "update_time", Type: field.TypeTime, Nullable: true},
 	}
-	// VideoCommentsTable holds the schema information for the "video_comments" table.
-	VideoCommentsTable = &schema.Table{
-		Name:       "video_comments",
-		Columns:    VideoCommentsColumns,
-		PrimaryKey: []*schema.Column{VideoCommentsColumns[0]},
+	// VideoCommentTable holds the schema information for the "video_comment" table.
+	VideoCommentTable = &schema.Table{
+		Name:       "video_comment",
+		Columns:    VideoCommentColumns,
+		PrimaryKey: []*schema.Column{VideoCommentColumns[0]},
 	}
-	// VideoLikesColumns holds the columns for the "video_likes" table.
-	VideoLikesColumns = []*schema.Column{
+	// VideoLikeColumns holds the columns for the "video_like" table.
+	VideoLikeColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "user_id", Type: field.TypeInt64, SchemaType: map[string]string{"mysql": "BIGINT"}},
-		{Name: "video_id", Type: field.TypeInt64, SchemaType: map[string]string{"mysql": "BIGINT"}},
-		{Name: "status", Type: field.TypeInt8, Default: 1, SchemaType: map[string]string{"mysql": "TINYINT"}},
-		{Name: "create_time", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "DATETIME"}},
-		{Name: "update_time", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "DATETIME"}},
+		{Name: "user_id", Type: field.TypeInt},
+		{Name: "video_id", Type: field.TypeInt},
+		{Name: "status", Type: field.TypeInt8},
+		{Name: "create_time", Type: field.TypeTime, Nullable: true},
+		{Name: "update_time", Type: field.TypeTime, Nullable: true},
 	}
-	// VideoLikesTable holds the schema information for the "video_likes" table.
-	VideoLikesTable = &schema.Table{
-		Name:       "video_likes",
-		Columns:    VideoLikesColumns,
-		PrimaryKey: []*schema.Column{VideoLikesColumns[0]},
+	// VideoLikeTable holds the schema information for the "video_like" table.
+	VideoLikeTable = &schema.Table{
+		Name:       "video_like",
+		Columns:    VideoLikeColumns,
+		PrimaryKey: []*schema.Column{VideoLikeColumns[0]},
 	}
 	// VideoMetadataColumns holds the columns for the "video_metadata" table.
 	VideoMetadataColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "video_id", Type: field.TypeInt64, Unique: true, SchemaType: map[string]string{"mysql": "BIGINT"}},
-		{Name: "user_id", Type: field.TypeInt64, SchemaType: map[string]string{"mysql": "BIGINT"}},
-		{Name: "cover_url", Type: field.TypeString, SchemaType: map[string]string{"mysql": "CHAR(255)"}},
-		{Name: "video_url", Type: field.TypeString, SchemaType: map[string]string{"mysql": "CHAR(255)"}},
-		{Name: "video_intro", Type: field.TypeString, Nullable: true, SchemaType: map[string]string{"mysql": "CHAR(255)"}},
-		{Name: "video_type", Type: field.TypeInt64, SchemaType: map[string]string{"mysql": "BIGINT"}},
-		{Name: "publish_address", Type: field.TypeInt32, Default: 0, SchemaType: map[string]string{"mysql": "INT"}},
-		{Name: "create_time", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "DATETIME"}},
-		{Name: "update_time", Type: field.TypeTime, SchemaType: map[string]string{"mysql": "DATETIME"}},
+		{Name: "video_id", Type: field.TypeInt, Unique: true},
+		{Name: "user_id", Type: field.TypeInt},
+		{Name: "cover_url", Type: field.TypeString},
+		{Name: "video_url", Type: field.TypeString},
+		{Name: "video_intro", Type: field.TypeString, Nullable: true},
+		{Name: "video_type", Type: field.TypeInt},
+		{Name: "publish_address", Type: field.TypeInt32},
+		{Name: "create_time", Type: field.TypeTime, Nullable: true},
+		{Name: "update_time", Type: field.TypeTime, Nullable: true},
 	}
 	// VideoMetadataTable holds the schema information for the "video_metadata" table.
 	VideoMetadataTable = &schema.Table{
@@ -125,15 +128,33 @@ var (
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
-		UserBaseInfosTable,
-		UserFollowInfosTable,
-		UserPasswordsTable,
-		VideoCollectionsTable,
-		VideoCommentsTable,
-		VideoLikesTable,
+		UserBaseInfoTable,
+		UserFollowInfoTable,
+		UserPasswordTable,
+		VideoCollectionTable,
+		VideoCommentTable,
+		VideoLikeTable,
 		VideoMetadataTable,
 	}
 )
 
 func init() {
+	UserBaseInfoTable.Annotation = &entsql.Annotation{
+		Table: "user_base_info",
+	}
+	UserFollowInfoTable.Annotation = &entsql.Annotation{
+		Table: "user_follow_info",
+	}
+	UserPasswordTable.Annotation = &entsql.Annotation{
+		Table: "user_password",
+	}
+	VideoCollectionTable.Annotation = &entsql.Annotation{
+		Table: "video_collection",
+	}
+	VideoCommentTable.Annotation = &entsql.Annotation{
+		Table: "video_comment",
+	}
+	VideoLikeTable.Annotation = &entsql.Annotation{
+		Table: "video_like",
+	}
 }

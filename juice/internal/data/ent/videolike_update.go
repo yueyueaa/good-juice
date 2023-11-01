@@ -29,27 +29,27 @@ func (vlu *VideoLikeUpdate) Where(ps ...predicate.VideoLike) *VideoLikeUpdate {
 }
 
 // SetUserID sets the "user_id" field.
-func (vlu *VideoLikeUpdate) SetUserID(i int64) *VideoLikeUpdate {
+func (vlu *VideoLikeUpdate) SetUserID(i int) *VideoLikeUpdate {
 	vlu.mutation.ResetUserID()
 	vlu.mutation.SetUserID(i)
 	return vlu
 }
 
 // AddUserID adds i to the "user_id" field.
-func (vlu *VideoLikeUpdate) AddUserID(i int64) *VideoLikeUpdate {
+func (vlu *VideoLikeUpdate) AddUserID(i int) *VideoLikeUpdate {
 	vlu.mutation.AddUserID(i)
 	return vlu
 }
 
 // SetVideoID sets the "video_id" field.
-func (vlu *VideoLikeUpdate) SetVideoID(i int64) *VideoLikeUpdate {
+func (vlu *VideoLikeUpdate) SetVideoID(i int) *VideoLikeUpdate {
 	vlu.mutation.ResetVideoID()
 	vlu.mutation.SetVideoID(i)
 	return vlu
 }
 
 // AddVideoID adds i to the "video_id" field.
-func (vlu *VideoLikeUpdate) AddVideoID(i int64) *VideoLikeUpdate {
+func (vlu *VideoLikeUpdate) AddVideoID(i int) *VideoLikeUpdate {
 	vlu.mutation.AddVideoID(i)
 	return vlu
 }
@@ -58,14 +58,6 @@ func (vlu *VideoLikeUpdate) AddVideoID(i int64) *VideoLikeUpdate {
 func (vlu *VideoLikeUpdate) SetStatus(i int8) *VideoLikeUpdate {
 	vlu.mutation.ResetStatus()
 	vlu.mutation.SetStatus(i)
-	return vlu
-}
-
-// SetNillableStatus sets the "status" field if the given value is not nil.
-func (vlu *VideoLikeUpdate) SetNillableStatus(i *int8) *VideoLikeUpdate {
-	if i != nil {
-		vlu.SetStatus(*i)
-	}
 	return vlu
 }
 
@@ -89,9 +81,29 @@ func (vlu *VideoLikeUpdate) SetNillableCreateTime(t *time.Time) *VideoLikeUpdate
 	return vlu
 }
 
+// ClearCreateTime clears the value of the "create_time" field.
+func (vlu *VideoLikeUpdate) ClearCreateTime() *VideoLikeUpdate {
+	vlu.mutation.ClearCreateTime()
+	return vlu
+}
+
 // SetUpdateTime sets the "update_time" field.
 func (vlu *VideoLikeUpdate) SetUpdateTime(t time.Time) *VideoLikeUpdate {
 	vlu.mutation.SetUpdateTime(t)
+	return vlu
+}
+
+// SetNillableUpdateTime sets the "update_time" field if the given value is not nil.
+func (vlu *VideoLikeUpdate) SetNillableUpdateTime(t *time.Time) *VideoLikeUpdate {
+	if t != nil {
+		vlu.SetUpdateTime(*t)
+	}
+	return vlu
+}
+
+// ClearUpdateTime clears the value of the "update_time" field.
+func (vlu *VideoLikeUpdate) ClearUpdateTime() *VideoLikeUpdate {
+	vlu.mutation.ClearUpdateTime()
 	return vlu
 }
 
@@ -102,7 +114,6 @@ func (vlu *VideoLikeUpdate) Mutation() *VideoLikeMutation {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (vlu *VideoLikeUpdate) Save(ctx context.Context) (int, error) {
-	vlu.defaults()
 	return withHooks(ctx, vlu.sqlSave, vlu.mutation, vlu.hooks)
 }
 
@@ -128,14 +139,6 @@ func (vlu *VideoLikeUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (vlu *VideoLikeUpdate) defaults() {
-	if _, ok := vlu.mutation.UpdateTime(); !ok {
-		v := videolike.UpdateDefaultUpdateTime()
-		vlu.mutation.SetUpdateTime(v)
-	}
-}
-
 func (vlu *VideoLikeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := sqlgraph.NewUpdateSpec(videolike.Table, videolike.Columns, sqlgraph.NewFieldSpec(videolike.FieldID, field.TypeInt))
 	if ps := vlu.mutation.predicates; len(ps) > 0 {
@@ -146,16 +149,16 @@ func (vlu *VideoLikeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 	}
 	if value, ok := vlu.mutation.UserID(); ok {
-		_spec.SetField(videolike.FieldUserID, field.TypeInt64, value)
+		_spec.SetField(videolike.FieldUserID, field.TypeInt, value)
 	}
 	if value, ok := vlu.mutation.AddedUserID(); ok {
-		_spec.AddField(videolike.FieldUserID, field.TypeInt64, value)
+		_spec.AddField(videolike.FieldUserID, field.TypeInt, value)
 	}
 	if value, ok := vlu.mutation.VideoID(); ok {
-		_spec.SetField(videolike.FieldVideoID, field.TypeInt64, value)
+		_spec.SetField(videolike.FieldVideoID, field.TypeInt, value)
 	}
 	if value, ok := vlu.mutation.AddedVideoID(); ok {
-		_spec.AddField(videolike.FieldVideoID, field.TypeInt64, value)
+		_spec.AddField(videolike.FieldVideoID, field.TypeInt, value)
 	}
 	if value, ok := vlu.mutation.Status(); ok {
 		_spec.SetField(videolike.FieldStatus, field.TypeInt8, value)
@@ -166,8 +169,14 @@ func (vlu *VideoLikeUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := vlu.mutation.CreateTime(); ok {
 		_spec.SetField(videolike.FieldCreateTime, field.TypeTime, value)
 	}
+	if vlu.mutation.CreateTimeCleared() {
+		_spec.ClearField(videolike.FieldCreateTime, field.TypeTime)
+	}
 	if value, ok := vlu.mutation.UpdateTime(); ok {
 		_spec.SetField(videolike.FieldUpdateTime, field.TypeTime, value)
+	}
+	if vlu.mutation.UpdateTimeCleared() {
+		_spec.ClearField(videolike.FieldUpdateTime, field.TypeTime)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, vlu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -190,27 +199,27 @@ type VideoLikeUpdateOne struct {
 }
 
 // SetUserID sets the "user_id" field.
-func (vluo *VideoLikeUpdateOne) SetUserID(i int64) *VideoLikeUpdateOne {
+func (vluo *VideoLikeUpdateOne) SetUserID(i int) *VideoLikeUpdateOne {
 	vluo.mutation.ResetUserID()
 	vluo.mutation.SetUserID(i)
 	return vluo
 }
 
 // AddUserID adds i to the "user_id" field.
-func (vluo *VideoLikeUpdateOne) AddUserID(i int64) *VideoLikeUpdateOne {
+func (vluo *VideoLikeUpdateOne) AddUserID(i int) *VideoLikeUpdateOne {
 	vluo.mutation.AddUserID(i)
 	return vluo
 }
 
 // SetVideoID sets the "video_id" field.
-func (vluo *VideoLikeUpdateOne) SetVideoID(i int64) *VideoLikeUpdateOne {
+func (vluo *VideoLikeUpdateOne) SetVideoID(i int) *VideoLikeUpdateOne {
 	vluo.mutation.ResetVideoID()
 	vluo.mutation.SetVideoID(i)
 	return vluo
 }
 
 // AddVideoID adds i to the "video_id" field.
-func (vluo *VideoLikeUpdateOne) AddVideoID(i int64) *VideoLikeUpdateOne {
+func (vluo *VideoLikeUpdateOne) AddVideoID(i int) *VideoLikeUpdateOne {
 	vluo.mutation.AddVideoID(i)
 	return vluo
 }
@@ -219,14 +228,6 @@ func (vluo *VideoLikeUpdateOne) AddVideoID(i int64) *VideoLikeUpdateOne {
 func (vluo *VideoLikeUpdateOne) SetStatus(i int8) *VideoLikeUpdateOne {
 	vluo.mutation.ResetStatus()
 	vluo.mutation.SetStatus(i)
-	return vluo
-}
-
-// SetNillableStatus sets the "status" field if the given value is not nil.
-func (vluo *VideoLikeUpdateOne) SetNillableStatus(i *int8) *VideoLikeUpdateOne {
-	if i != nil {
-		vluo.SetStatus(*i)
-	}
 	return vluo
 }
 
@@ -250,9 +251,29 @@ func (vluo *VideoLikeUpdateOne) SetNillableCreateTime(t *time.Time) *VideoLikeUp
 	return vluo
 }
 
+// ClearCreateTime clears the value of the "create_time" field.
+func (vluo *VideoLikeUpdateOne) ClearCreateTime() *VideoLikeUpdateOne {
+	vluo.mutation.ClearCreateTime()
+	return vluo
+}
+
 // SetUpdateTime sets the "update_time" field.
 func (vluo *VideoLikeUpdateOne) SetUpdateTime(t time.Time) *VideoLikeUpdateOne {
 	vluo.mutation.SetUpdateTime(t)
+	return vluo
+}
+
+// SetNillableUpdateTime sets the "update_time" field if the given value is not nil.
+func (vluo *VideoLikeUpdateOne) SetNillableUpdateTime(t *time.Time) *VideoLikeUpdateOne {
+	if t != nil {
+		vluo.SetUpdateTime(*t)
+	}
+	return vluo
+}
+
+// ClearUpdateTime clears the value of the "update_time" field.
+func (vluo *VideoLikeUpdateOne) ClearUpdateTime() *VideoLikeUpdateOne {
+	vluo.mutation.ClearUpdateTime()
 	return vluo
 }
 
@@ -276,7 +297,6 @@ func (vluo *VideoLikeUpdateOne) Select(field string, fields ...string) *VideoLik
 
 // Save executes the query and returns the updated VideoLike entity.
 func (vluo *VideoLikeUpdateOne) Save(ctx context.Context) (*VideoLike, error) {
-	vluo.defaults()
 	return withHooks(ctx, vluo.sqlSave, vluo.mutation, vluo.hooks)
 }
 
@@ -299,14 +319,6 @@ func (vluo *VideoLikeUpdateOne) Exec(ctx context.Context) error {
 func (vluo *VideoLikeUpdateOne) ExecX(ctx context.Context) {
 	if err := vluo.Exec(ctx); err != nil {
 		panic(err)
-	}
-}
-
-// defaults sets the default values of the builder before save.
-func (vluo *VideoLikeUpdateOne) defaults() {
-	if _, ok := vluo.mutation.UpdateTime(); !ok {
-		v := videolike.UpdateDefaultUpdateTime()
-		vluo.mutation.SetUpdateTime(v)
 	}
 }
 
@@ -337,16 +349,16 @@ func (vluo *VideoLikeUpdateOne) sqlSave(ctx context.Context) (_node *VideoLike, 
 		}
 	}
 	if value, ok := vluo.mutation.UserID(); ok {
-		_spec.SetField(videolike.FieldUserID, field.TypeInt64, value)
+		_spec.SetField(videolike.FieldUserID, field.TypeInt, value)
 	}
 	if value, ok := vluo.mutation.AddedUserID(); ok {
-		_spec.AddField(videolike.FieldUserID, field.TypeInt64, value)
+		_spec.AddField(videolike.FieldUserID, field.TypeInt, value)
 	}
 	if value, ok := vluo.mutation.VideoID(); ok {
-		_spec.SetField(videolike.FieldVideoID, field.TypeInt64, value)
+		_spec.SetField(videolike.FieldVideoID, field.TypeInt, value)
 	}
 	if value, ok := vluo.mutation.AddedVideoID(); ok {
-		_spec.AddField(videolike.FieldVideoID, field.TypeInt64, value)
+		_spec.AddField(videolike.FieldVideoID, field.TypeInt, value)
 	}
 	if value, ok := vluo.mutation.Status(); ok {
 		_spec.SetField(videolike.FieldStatus, field.TypeInt8, value)
@@ -357,8 +369,14 @@ func (vluo *VideoLikeUpdateOne) sqlSave(ctx context.Context) (_node *VideoLike, 
 	if value, ok := vluo.mutation.CreateTime(); ok {
 		_spec.SetField(videolike.FieldCreateTime, field.TypeTime, value)
 	}
+	if vluo.mutation.CreateTimeCleared() {
+		_spec.ClearField(videolike.FieldCreateTime, field.TypeTime)
+	}
 	if value, ok := vluo.mutation.UpdateTime(); ok {
 		_spec.SetField(videolike.FieldUpdateTime, field.TypeTime, value)
+	}
+	if vluo.mutation.UpdateTimeCleared() {
+		_spec.ClearField(videolike.FieldUpdateTime, field.TypeTime)
 	}
 	_node = &VideoLike{config: vluo.config}
 	_spec.Assign = _node.assignValues

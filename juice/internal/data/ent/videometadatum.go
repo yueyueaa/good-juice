@@ -4,7 +4,7 @@ package ent
 
 import (
 	"fmt"
-	"juice/internal/data/ent/videometadata"
+	"juice/internal/data/ent/videometadatum"
 	"strings"
 	"time"
 
@@ -12,15 +12,15 @@ import (
 	"entgo.io/ent/dialect/sql"
 )
 
-// VideoMetadata is the model entity for the VideoMetadata schema.
-type VideoMetadata struct {
+// VideoMetadatum is the model entity for the VideoMetadatum schema.
+type VideoMetadatum struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
 	// VideoID holds the value of the "video_id" field.
-	VideoID int64 `json:"video_id,omitempty"`
+	VideoID int `json:"video_id,omitempty"`
 	// UserID holds the value of the "user_id" field.
-	UserID int64 `json:"user_id,omitempty"`
+	UserID int `json:"user_id,omitempty"`
 	// CoverURL holds the value of the "cover_url" field.
 	CoverURL string `json:"cover_url,omitempty"`
 	// VideoURL holds the value of the "video_url" field.
@@ -28,7 +28,7 @@ type VideoMetadata struct {
 	// VideoIntro holds the value of the "video_intro" field.
 	VideoIntro string `json:"video_intro,omitempty"`
 	// VideoType holds the value of the "video_type" field.
-	VideoType int64 `json:"video_type,omitempty"`
+	VideoType int `json:"video_type,omitempty"`
 	// PublishAddress holds the value of the "publish_address" field.
 	PublishAddress int32 `json:"publish_address,omitempty"`
 	// CreateTime holds the value of the "create_time" field.
@@ -39,15 +39,15 @@ type VideoMetadata struct {
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
-func (*VideoMetadata) scanValues(columns []string) ([]any, error) {
+func (*VideoMetadatum) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case videometadata.FieldID, videometadata.FieldVideoID, videometadata.FieldUserID, videometadata.FieldVideoType, videometadata.FieldPublishAddress:
+		case videometadatum.FieldID, videometadatum.FieldVideoID, videometadatum.FieldUserID, videometadatum.FieldVideoType, videometadatum.FieldPublishAddress:
 			values[i] = new(sql.NullInt64)
-		case videometadata.FieldCoverURL, videometadata.FieldVideoURL, videometadata.FieldVideoIntro:
+		case videometadatum.FieldCoverURL, videometadatum.FieldVideoURL, videometadatum.FieldVideoIntro:
 			values[i] = new(sql.NullString)
-		case videometadata.FieldCreateTime, videometadata.FieldUpdateTime:
+		case videometadatum.FieldCreateTime, videometadatum.FieldUpdateTime:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -57,68 +57,68 @@ func (*VideoMetadata) scanValues(columns []string) ([]any, error) {
 }
 
 // assignValues assigns the values that were returned from sql.Rows (after scanning)
-// to the VideoMetadata fields.
-func (vm *VideoMetadata) assignValues(columns []string, values []any) error {
+// to the VideoMetadatum fields.
+func (vm *VideoMetadatum) assignValues(columns []string, values []any) error {
 	if m, n := len(values), len(columns); m < n {
 		return fmt.Errorf("mismatch number of scan values: %d != %d", m, n)
 	}
 	for i := range columns {
 		switch columns[i] {
-		case videometadata.FieldID:
+		case videometadatum.FieldID:
 			value, ok := values[i].(*sql.NullInt64)
 			if !ok {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			vm.ID = int(value.Int64)
-		case videometadata.FieldVideoID:
+		case videometadatum.FieldVideoID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field video_id", values[i])
 			} else if value.Valid {
-				vm.VideoID = value.Int64
+				vm.VideoID = int(value.Int64)
 			}
-		case videometadata.FieldUserID:
+		case videometadatum.FieldUserID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field user_id", values[i])
 			} else if value.Valid {
-				vm.UserID = value.Int64
+				vm.UserID = int(value.Int64)
 			}
-		case videometadata.FieldCoverURL:
+		case videometadatum.FieldCoverURL:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field cover_url", values[i])
 			} else if value.Valid {
 				vm.CoverURL = value.String
 			}
-		case videometadata.FieldVideoURL:
+		case videometadatum.FieldVideoURL:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field video_url", values[i])
 			} else if value.Valid {
 				vm.VideoURL = value.String
 			}
-		case videometadata.FieldVideoIntro:
+		case videometadatum.FieldVideoIntro:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field video_intro", values[i])
 			} else if value.Valid {
 				vm.VideoIntro = value.String
 			}
-		case videometadata.FieldVideoType:
+		case videometadatum.FieldVideoType:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field video_type", values[i])
 			} else if value.Valid {
-				vm.VideoType = value.Int64
+				vm.VideoType = int(value.Int64)
 			}
-		case videometadata.FieldPublishAddress:
+		case videometadatum.FieldPublishAddress:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field publish_address", values[i])
 			} else if value.Valid {
 				vm.PublishAddress = int32(value.Int64)
 			}
-		case videometadata.FieldCreateTime:
+		case videometadatum.FieldCreateTime:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field create_time", values[i])
 			} else if value.Valid {
 				vm.CreateTime = value.Time
 			}
-		case videometadata.FieldUpdateTime:
+		case videometadatum.FieldUpdateTime:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field update_time", values[i])
 			} else if value.Valid {
@@ -131,34 +131,34 @@ func (vm *VideoMetadata) assignValues(columns []string, values []any) error {
 	return nil
 }
 
-// Value returns the ent.Value that was dynamically selected and assigned to the VideoMetadata.
+// Value returns the ent.Value that was dynamically selected and assigned to the VideoMetadatum.
 // This includes values selected through modifiers, order, etc.
-func (vm *VideoMetadata) Value(name string) (ent.Value, error) {
+func (vm *VideoMetadatum) Value(name string) (ent.Value, error) {
 	return vm.selectValues.Get(name)
 }
 
-// Update returns a builder for updating this VideoMetadata.
-// Note that you need to call VideoMetadata.Unwrap() before calling this method if this VideoMetadata
+// Update returns a builder for updating this VideoMetadatum.
+// Note that you need to call VideoMetadatum.Unwrap() before calling this method if this VideoMetadatum
 // was returned from a transaction, and the transaction was committed or rolled back.
-func (vm *VideoMetadata) Update() *VideoMetadataUpdateOne {
-	return NewVideoMetadataClient(vm.config).UpdateOne(vm)
+func (vm *VideoMetadatum) Update() *VideoMetadatumUpdateOne {
+	return NewVideoMetadatumClient(vm.config).UpdateOne(vm)
 }
 
-// Unwrap unwraps the VideoMetadata entity that was returned from a transaction after it was closed,
+// Unwrap unwraps the VideoMetadatum entity that was returned from a transaction after it was closed,
 // so that all future queries will be executed through the driver which created the transaction.
-func (vm *VideoMetadata) Unwrap() *VideoMetadata {
+func (vm *VideoMetadatum) Unwrap() *VideoMetadatum {
 	_tx, ok := vm.config.driver.(*txDriver)
 	if !ok {
-		panic("ent: VideoMetadata is not a transactional entity")
+		panic("ent: VideoMetadatum is not a transactional entity")
 	}
 	vm.config.driver = _tx.drv
 	return vm
 }
 
 // String implements the fmt.Stringer.
-func (vm *VideoMetadata) String() string {
+func (vm *VideoMetadatum) String() string {
 	var builder strings.Builder
-	builder.WriteString("VideoMetadata(")
+	builder.WriteString("VideoMetadatum(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", vm.ID))
 	builder.WriteString("video_id=")
 	builder.WriteString(fmt.Sprintf("%v", vm.VideoID))
@@ -190,5 +190,5 @@ func (vm *VideoMetadata) String() string {
 	return builder.String()
 }
 
-// VideoMetadataSlice is a parsable slice of VideoMetadata.
-type VideoMetadataSlice []*VideoMetadata
+// VideoMetadata is a parsable slice of VideoMetadatum.
+type VideoMetadata []*VideoMetadatum

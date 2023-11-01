@@ -18,9 +18,9 @@ type UserFollowInfo struct {
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
 	// UserID holds the value of the "user_id" field.
-	UserID int64 `json:"user_id,omitempty"`
+	UserID uint64 `json:"user_id,omitempty"`
 	// FollowID holds the value of the "follow_id" field.
-	FollowID int64 `json:"follow_id,omitempty"`
+	FollowID uint64 `json:"follow_id,omitempty"`
 	// Status holds the value of the "status" field.
 	Status int8 `json:"status,omitempty"`
 	// CreateTime holds the value of the "create_time" field.
@@ -64,13 +64,13 @@ func (ufi *UserFollowInfo) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field user_id", values[i])
 			} else if value.Valid {
-				ufi.UserID = value.Int64
+				ufi.UserID = uint64(value.Int64)
 			}
 		case userfollowinfo.FieldFollowID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field follow_id", values[i])
 			} else if value.Valid {
-				ufi.FollowID = value.Int64
+				ufi.FollowID = uint64(value.Int64)
 			}
 		case userfollowinfo.FieldStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {

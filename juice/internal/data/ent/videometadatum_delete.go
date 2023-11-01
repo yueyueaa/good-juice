@@ -5,33 +5,33 @@ package ent
 import (
 	"context"
 	"juice/internal/data/ent/predicate"
-	"juice/internal/data/ent/videometadata"
+	"juice/internal/data/ent/videometadatum"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 )
 
-// VideoMetadataDelete is the builder for deleting a VideoMetadata entity.
-type VideoMetadataDelete struct {
+// VideoMetadatumDelete is the builder for deleting a VideoMetadatum entity.
+type VideoMetadatumDelete struct {
 	config
 	hooks    []Hook
-	mutation *VideoMetadataMutation
+	mutation *VideoMetadatumMutation
 }
 
-// Where appends a list predicates to the VideoMetadataDelete builder.
-func (vmd *VideoMetadataDelete) Where(ps ...predicate.VideoMetadata) *VideoMetadataDelete {
+// Where appends a list predicates to the VideoMetadatumDelete builder.
+func (vmd *VideoMetadatumDelete) Where(ps ...predicate.VideoMetadatum) *VideoMetadatumDelete {
 	vmd.mutation.Where(ps...)
 	return vmd
 }
 
 // Exec executes the deletion query and returns how many vertices were deleted.
-func (vmd *VideoMetadataDelete) Exec(ctx context.Context) (int, error) {
+func (vmd *VideoMetadatumDelete) Exec(ctx context.Context) (int, error) {
 	return withHooks(ctx, vmd.sqlExec, vmd.mutation, vmd.hooks)
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (vmd *VideoMetadataDelete) ExecX(ctx context.Context) int {
+func (vmd *VideoMetadatumDelete) ExecX(ctx context.Context) int {
 	n, err := vmd.Exec(ctx)
 	if err != nil {
 		panic(err)
@@ -39,8 +39,8 @@ func (vmd *VideoMetadataDelete) ExecX(ctx context.Context) int {
 	return n
 }
 
-func (vmd *VideoMetadataDelete) sqlExec(ctx context.Context) (int, error) {
-	_spec := sqlgraph.NewDeleteSpec(videometadata.Table, sqlgraph.NewFieldSpec(videometadata.FieldID, field.TypeInt))
+func (vmd *VideoMetadatumDelete) sqlExec(ctx context.Context) (int, error) {
+	_spec := sqlgraph.NewDeleteSpec(videometadatum.Table, sqlgraph.NewFieldSpec(videometadatum.FieldID, field.TypeInt))
 	if ps := vmd.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
@@ -56,32 +56,32 @@ func (vmd *VideoMetadataDelete) sqlExec(ctx context.Context) (int, error) {
 	return affected, err
 }
 
-// VideoMetadataDeleteOne is the builder for deleting a single VideoMetadata entity.
-type VideoMetadataDeleteOne struct {
-	vmd *VideoMetadataDelete
+// VideoMetadatumDeleteOne is the builder for deleting a single VideoMetadatum entity.
+type VideoMetadatumDeleteOne struct {
+	vmd *VideoMetadatumDelete
 }
 
-// Where appends a list predicates to the VideoMetadataDelete builder.
-func (vmdo *VideoMetadataDeleteOne) Where(ps ...predicate.VideoMetadata) *VideoMetadataDeleteOne {
+// Where appends a list predicates to the VideoMetadatumDelete builder.
+func (vmdo *VideoMetadatumDeleteOne) Where(ps ...predicate.VideoMetadatum) *VideoMetadatumDeleteOne {
 	vmdo.vmd.mutation.Where(ps...)
 	return vmdo
 }
 
 // Exec executes the deletion query.
-func (vmdo *VideoMetadataDeleteOne) Exec(ctx context.Context) error {
+func (vmdo *VideoMetadatumDeleteOne) Exec(ctx context.Context) error {
 	n, err := vmdo.vmd.Exec(ctx)
 	switch {
 	case err != nil:
 		return err
 	case n == 0:
-		return &NotFoundError{videometadata.Label}
+		return &NotFoundError{videometadatum.Label}
 	default:
 		return nil
 	}
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (vmdo *VideoMetadataDeleteOne) ExecX(ctx context.Context) {
+func (vmdo *VideoMetadatumDeleteOne) ExecX(ctx context.Context) {
 	if err := vmdo.Exec(ctx); err != nil {
 		panic(err)
 	}

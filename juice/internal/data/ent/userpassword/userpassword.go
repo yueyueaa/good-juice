@@ -17,8 +17,12 @@ const (
 	FieldSalt = "salt"
 	// FieldPwd holds the string denoting the pwd field in the database.
 	FieldPwd = "pwd"
+	// FieldCreateTime holds the string denoting the create_time field in the database.
+	FieldCreateTime = "create_time"
+	// FieldUpdateTime holds the string denoting the update_time field in the database.
+	FieldUpdateTime = "update_time"
 	// Table holds the table name of the userpassword in the database.
-	Table = "user_passwords"
+	Table = "user_password"
 )
 
 // Columns holds all SQL columns for userpassword fields.
@@ -27,6 +31,8 @@ var Columns = []string{
 	FieldUserID,
 	FieldSalt,
 	FieldPwd,
+	FieldCreateTime,
+	FieldUpdateTime,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -38,11 +44,6 @@ func ValidColumn(column string) bool {
 	}
 	return false
 }
-
-var (
-	// UserIDValidator is a validator for the "user_id" field. It is called by the builders before save.
-	UserIDValidator func(int64) error
-)
 
 // OrderOption defines the ordering options for the UserPassword queries.
 type OrderOption func(*sql.Selector)
@@ -65,4 +66,14 @@ func BySalt(opts ...sql.OrderTermOption) OrderOption {
 // ByPwd orders the results by the pwd field.
 func ByPwd(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPwd, opts...).ToFunc()
+}
+
+// ByCreateTime orders the results by the create_time field.
+func ByCreateTime(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCreateTime, opts...).ToFunc()
+}
+
+// ByUpdateTime orders the results by the update_time field.
+func ByUpdateTime(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUpdateTime, opts...).ToFunc()
 }

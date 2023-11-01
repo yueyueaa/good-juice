@@ -21,13 +21,13 @@ type VideoLikeCreate struct {
 }
 
 // SetUserID sets the "user_id" field.
-func (vlc *VideoLikeCreate) SetUserID(i int64) *VideoLikeCreate {
+func (vlc *VideoLikeCreate) SetUserID(i int) *VideoLikeCreate {
 	vlc.mutation.SetUserID(i)
 	return vlc
 }
 
 // SetVideoID sets the "video_id" field.
-func (vlc *VideoLikeCreate) SetVideoID(i int64) *VideoLikeCreate {
+func (vlc *VideoLikeCreate) SetVideoID(i int) *VideoLikeCreate {
 	vlc.mutation.SetVideoID(i)
 	return vlc
 }
@@ -35,14 +35,6 @@ func (vlc *VideoLikeCreate) SetVideoID(i int64) *VideoLikeCreate {
 // SetStatus sets the "status" field.
 func (vlc *VideoLikeCreate) SetStatus(i int8) *VideoLikeCreate {
 	vlc.mutation.SetStatus(i)
-	return vlc
-}
-
-// SetNillableStatus sets the "status" field if the given value is not nil.
-func (vlc *VideoLikeCreate) SetNillableStatus(i *int8) *VideoLikeCreate {
-	if i != nil {
-		vlc.SetStatus(*i)
-	}
 	return vlc
 }
 
@@ -74,6 +66,12 @@ func (vlc *VideoLikeCreate) SetNillableUpdateTime(t *time.Time) *VideoLikeCreate
 	return vlc
 }
 
+// SetID sets the "id" field.
+func (vlc *VideoLikeCreate) SetID(i int) *VideoLikeCreate {
+	vlc.mutation.SetID(i)
+	return vlc
+}
+
 // Mutation returns the VideoLikeMutation object of the builder.
 func (vlc *VideoLikeCreate) Mutation() *VideoLikeMutation {
 	return vlc.mutation
@@ -81,7 +79,6 @@ func (vlc *VideoLikeCreate) Mutation() *VideoLikeMutation {
 
 // Save creates the VideoLike in the database.
 func (vlc *VideoLikeCreate) Save(ctx context.Context) (*VideoLike, error) {
-	vlc.defaults()
 	return withHooks(ctx, vlc.sqlSave, vlc.mutation, vlc.hooks)
 }
 
@@ -107,22 +104,6 @@ func (vlc *VideoLikeCreate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (vlc *VideoLikeCreate) defaults() {
-	if _, ok := vlc.mutation.Status(); !ok {
-		v := videolike.DefaultStatus
-		vlc.mutation.SetStatus(v)
-	}
-	if _, ok := vlc.mutation.CreateTime(); !ok {
-		v := videolike.DefaultCreateTime()
-		vlc.mutation.SetCreateTime(v)
-	}
-	if _, ok := vlc.mutation.UpdateTime(); !ok {
-		v := videolike.DefaultUpdateTime()
-		vlc.mutation.SetUpdateTime(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (vlc *VideoLikeCreate) check() error {
 	if _, ok := vlc.mutation.UserID(); !ok {
@@ -133,12 +114,6 @@ func (vlc *VideoLikeCreate) check() error {
 	}
 	if _, ok := vlc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "VideoLike.status"`)}
-	}
-	if _, ok := vlc.mutation.CreateTime(); !ok {
-		return &ValidationError{Name: "create_time", err: errors.New(`ent: missing required field "VideoLike.create_time"`)}
-	}
-	if _, ok := vlc.mutation.UpdateTime(); !ok {
-		return &ValidationError{Name: "update_time", err: errors.New(`ent: missing required field "VideoLike.update_time"`)}
 	}
 	return nil
 }
@@ -154,8 +129,10 @@ func (vlc *VideoLikeCreate) sqlSave(ctx context.Context) (*VideoLike, error) {
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != _node.ID {
+		id := _spec.ID.Value.(int64)
+		_node.ID = int(id)
+	}
 	vlc.mutation.id = &_node.ID
 	vlc.mutation.done = true
 	return _node, nil
@@ -166,12 +143,16 @@ func (vlc *VideoLikeCreate) createSpec() (*VideoLike, *sqlgraph.CreateSpec) {
 		_node = &VideoLike{config: vlc.config}
 		_spec = sqlgraph.NewCreateSpec(videolike.Table, sqlgraph.NewFieldSpec(videolike.FieldID, field.TypeInt))
 	)
+	if id, ok := vlc.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
 	if value, ok := vlc.mutation.UserID(); ok {
-		_spec.SetField(videolike.FieldUserID, field.TypeInt64, value)
+		_spec.SetField(videolike.FieldUserID, field.TypeInt, value)
 		_node.UserID = value
 	}
 	if value, ok := vlc.mutation.VideoID(); ok {
-		_spec.SetField(videolike.FieldVideoID, field.TypeInt64, value)
+		_spec.SetField(videolike.FieldVideoID, field.TypeInt, value)
 		_node.VideoID = value
 	}
 	if value, ok := vlc.mutation.Status(); ok {
@@ -207,7 +188,6 @@ func (vlcb *VideoLikeCreateBulk) Save(ctx context.Context) ([]*VideoLike, error)
 	for i := range vlcb.builders {
 		func(i int, root context.Context) {
 			builder := vlcb.builders[i]
-			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*VideoLikeMutation)
 				if !ok {
@@ -234,7 +214,7 @@ func (vlcb *VideoLikeCreateBulk) Save(ctx context.Context) ([]*VideoLike, error)
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
+				if specs[i].ID.Value != nil && nodes[i].ID == 0 {
 					id := specs[i].ID.Value.(int64)
 					nodes[i].ID = int(id)
 				}

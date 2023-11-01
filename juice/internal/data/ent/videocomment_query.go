@@ -261,7 +261,7 @@ func (vcq *VideoCommentQuery) Clone() *VideoCommentQuery {
 // Example:
 //
 //	var v []struct {
-//		CommentID int64 `json:"comment_id,omitempty"`
+//		CommentID int `json:"comment_id,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -284,7 +284,7 @@ func (vcq *VideoCommentQuery) GroupBy(field string, fields ...string) *VideoComm
 // Example:
 //
 //	var v []struct {
-//		CommentID int64 `json:"comment_id,omitempty"`
+//		CommentID int `json:"comment_id,omitempty"`
 //	}
 //
 //	client.VideoComment.Query().

@@ -261,7 +261,7 @@ func (upq *UserPasswordQuery) Clone() *UserPasswordQuery {
 // Example:
 //
 //	var v []struct {
-//		UserID int64 `json:"user_id,omitempty"`
+//		UserID uint64 `json:"user_id,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -284,7 +284,7 @@ func (upq *UserPasswordQuery) GroupBy(field string, fields ...string) *UserPassw
 // Example:
 //
 //	var v []struct {
-//		UserID int64 `json:"user_id,omitempty"`
+//		UserID uint64 `json:"user_id,omitempty"`
 //	}
 //
 //	client.UserPassword.Query().

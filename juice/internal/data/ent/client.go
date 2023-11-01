@@ -17,7 +17,7 @@ import (
 	"juice/internal/data/ent/videocollection"
 	"juice/internal/data/ent/videocomment"
 	"juice/internal/data/ent/videolike"
-	"juice/internal/data/ent/videometadata"
+	"juice/internal/data/ent/videometadatum"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
@@ -41,8 +41,8 @@ type Client struct {
 	VideoComment *VideoCommentClient
 	// VideoLike is the client for interacting with the VideoLike builders.
 	VideoLike *VideoLikeClient
-	// VideoMetadata is the client for interacting with the VideoMetadata builders.
-	VideoMetadata *VideoMetadataClient
+	// VideoMetadatum is the client for interacting with the VideoMetadatum builders.
+	VideoMetadatum *VideoMetadatumClient
 }
 
 // NewClient creates a new client configured with the given options.
@@ -62,7 +62,7 @@ func (c *Client) init() {
 	c.VideoCollection = NewVideoCollectionClient(c.config)
 	c.VideoComment = NewVideoCommentClient(c.config)
 	c.VideoLike = NewVideoLikeClient(c.config)
-	c.VideoMetadata = NewVideoMetadataClient(c.config)
+	c.VideoMetadatum = NewVideoMetadatumClient(c.config)
 }
 
 type (
@@ -154,7 +154,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		VideoCollection: NewVideoCollectionClient(cfg),
 		VideoComment:    NewVideoCommentClient(cfg),
 		VideoLike:       NewVideoLikeClient(cfg),
-		VideoMetadata:   NewVideoMetadataClient(cfg),
+		VideoMetadatum:  NewVideoMetadatumClient(cfg),
 	}, nil
 }
 
@@ -180,7 +180,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		VideoCollection: NewVideoCollectionClient(cfg),
 		VideoComment:    NewVideoCommentClient(cfg),
 		VideoLike:       NewVideoLikeClient(cfg),
-		VideoMetadata:   NewVideoMetadataClient(cfg),
+		VideoMetadatum:  NewVideoMetadatumClient(cfg),
 	}, nil
 }
 
@@ -211,7 +211,7 @@ func (c *Client) Close() error {
 func (c *Client) Use(hooks ...Hook) {
 	for _, n := range []interface{ Use(...Hook) }{
 		c.UserBaseInfo, c.UserFollowInfo, c.UserPassword, c.VideoCollection,
-		c.VideoComment, c.VideoLike, c.VideoMetadata,
+		c.VideoComment, c.VideoLike, c.VideoMetadatum,
 	} {
 		n.Use(hooks...)
 	}
@@ -222,7 +222,7 @@ func (c *Client) Use(hooks ...Hook) {
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	for _, n := range []interface{ Intercept(...Interceptor) }{
 		c.UserBaseInfo, c.UserFollowInfo, c.UserPassword, c.VideoCollection,
-		c.VideoComment, c.VideoLike, c.VideoMetadata,
+		c.VideoComment, c.VideoLike, c.VideoMetadatum,
 	} {
 		n.Intercept(interceptors...)
 	}
@@ -243,8 +243,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.VideoComment.mutate(ctx, m)
 	case *VideoLikeMutation:
 		return c.VideoLike.mutate(ctx, m)
-	case *VideoMetadataMutation:
-		return c.VideoMetadata.mutate(ctx, m)
+	case *VideoMetadatumMutation:
+		return c.VideoMetadatum.mutate(ctx, m)
 	default:
 		return nil, fmt.Errorf("ent: unknown mutation type %T", m)
 	}
@@ -1048,107 +1048,107 @@ func (c *VideoLikeClient) mutate(ctx context.Context, m *VideoLikeMutation) (Val
 	}
 }
 
-// VideoMetadataClient is a client for the VideoMetadata schema.
-type VideoMetadataClient struct {
+// VideoMetadatumClient is a client for the VideoMetadatum schema.
+type VideoMetadatumClient struct {
 	config
 }
 
-// NewVideoMetadataClient returns a client for the VideoMetadata from the given config.
-func NewVideoMetadataClient(c config) *VideoMetadataClient {
-	return &VideoMetadataClient{config: c}
+// NewVideoMetadatumClient returns a client for the VideoMetadatum from the given config.
+func NewVideoMetadatumClient(c config) *VideoMetadatumClient {
+	return &VideoMetadatumClient{config: c}
 }
 
 // Use adds a list of mutation hooks to the hooks stack.
-// A call to `Use(f, g, h)` equals to `videometadata.Hooks(f(g(h())))`.
-func (c *VideoMetadataClient) Use(hooks ...Hook) {
-	c.hooks.VideoMetadata = append(c.hooks.VideoMetadata, hooks...)
+// A call to `Use(f, g, h)` equals to `videometadatum.Hooks(f(g(h())))`.
+func (c *VideoMetadatumClient) Use(hooks ...Hook) {
+	c.hooks.VideoMetadatum = append(c.hooks.VideoMetadatum, hooks...)
 }
 
 // Intercept adds a list of query interceptors to the interceptors stack.
-// A call to `Intercept(f, g, h)` equals to `videometadata.Intercept(f(g(h())))`.
-func (c *VideoMetadataClient) Intercept(interceptors ...Interceptor) {
-	c.inters.VideoMetadata = append(c.inters.VideoMetadata, interceptors...)
+// A call to `Intercept(f, g, h)` equals to `videometadatum.Intercept(f(g(h())))`.
+func (c *VideoMetadatumClient) Intercept(interceptors ...Interceptor) {
+	c.inters.VideoMetadatum = append(c.inters.VideoMetadatum, interceptors...)
 }
 
-// Create returns a builder for creating a VideoMetadata entity.
-func (c *VideoMetadataClient) Create() *VideoMetadataCreate {
-	mutation := newVideoMetadataMutation(c.config, OpCreate)
-	return &VideoMetadataCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Create returns a builder for creating a VideoMetadatum entity.
+func (c *VideoMetadatumClient) Create() *VideoMetadatumCreate {
+	mutation := newVideoMetadatumMutation(c.config, OpCreate)
+	return &VideoMetadatumCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
-// CreateBulk returns a builder for creating a bulk of VideoMetadata entities.
-func (c *VideoMetadataClient) CreateBulk(builders ...*VideoMetadataCreate) *VideoMetadataCreateBulk {
-	return &VideoMetadataCreateBulk{config: c.config, builders: builders}
+// CreateBulk returns a builder for creating a bulk of VideoMetadatum entities.
+func (c *VideoMetadatumClient) CreateBulk(builders ...*VideoMetadatumCreate) *VideoMetadatumCreateBulk {
+	return &VideoMetadatumCreateBulk{config: c.config, builders: builders}
 }
 
 // MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
 // a builder and applies setFunc on it.
-func (c *VideoMetadataClient) MapCreateBulk(slice any, setFunc func(*VideoMetadataCreate, int)) *VideoMetadataCreateBulk {
+func (c *VideoMetadatumClient) MapCreateBulk(slice any, setFunc func(*VideoMetadatumCreate, int)) *VideoMetadatumCreateBulk {
 	rv := reflect.ValueOf(slice)
 	if rv.Kind() != reflect.Slice {
-		return &VideoMetadataCreateBulk{err: fmt.Errorf("calling to VideoMetadataClient.MapCreateBulk with wrong type %T, need slice", slice)}
+		return &VideoMetadatumCreateBulk{err: fmt.Errorf("calling to VideoMetadatumClient.MapCreateBulk with wrong type %T, need slice", slice)}
 	}
-	builders := make([]*VideoMetadataCreate, rv.Len())
+	builders := make([]*VideoMetadatumCreate, rv.Len())
 	for i := 0; i < rv.Len(); i++ {
 		builders[i] = c.Create()
 		setFunc(builders[i], i)
 	}
-	return &VideoMetadataCreateBulk{config: c.config, builders: builders}
+	return &VideoMetadatumCreateBulk{config: c.config, builders: builders}
 }
 
-// Update returns an update builder for VideoMetadata.
-func (c *VideoMetadataClient) Update() *VideoMetadataUpdate {
-	mutation := newVideoMetadataMutation(c.config, OpUpdate)
-	return &VideoMetadataUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Update returns an update builder for VideoMetadatum.
+func (c *VideoMetadatumClient) Update() *VideoMetadatumUpdate {
+	mutation := newVideoMetadatumMutation(c.config, OpUpdate)
+	return &VideoMetadatumUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *VideoMetadataClient) UpdateOne(vm *VideoMetadata) *VideoMetadataUpdateOne {
-	mutation := newVideoMetadataMutation(c.config, OpUpdateOne, withVideoMetadata(vm))
-	return &VideoMetadataUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+func (c *VideoMetadatumClient) UpdateOne(vm *VideoMetadatum) *VideoMetadatumUpdateOne {
+	mutation := newVideoMetadatumMutation(c.config, OpUpdateOne, withVideoMetadatum(vm))
+	return &VideoMetadatumUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // UpdateOneID returns an update builder for the given id.
-func (c *VideoMetadataClient) UpdateOneID(id int) *VideoMetadataUpdateOne {
-	mutation := newVideoMetadataMutation(c.config, OpUpdateOne, withVideoMetadataID(id))
-	return &VideoMetadataUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+func (c *VideoMetadatumClient) UpdateOneID(id int) *VideoMetadatumUpdateOne {
+	mutation := newVideoMetadatumMutation(c.config, OpUpdateOne, withVideoMetadatumID(id))
+	return &VideoMetadatumUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
-// Delete returns a delete builder for VideoMetadata.
-func (c *VideoMetadataClient) Delete() *VideoMetadataDelete {
-	mutation := newVideoMetadataMutation(c.config, OpDelete)
-	return &VideoMetadataDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+// Delete returns a delete builder for VideoMetadatum.
+func (c *VideoMetadatumClient) Delete() *VideoMetadatumDelete {
+	mutation := newVideoMetadatumMutation(c.config, OpDelete)
+	return &VideoMetadatumDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
 // DeleteOne returns a builder for deleting the given entity.
-func (c *VideoMetadataClient) DeleteOne(vm *VideoMetadata) *VideoMetadataDeleteOne {
+func (c *VideoMetadatumClient) DeleteOne(vm *VideoMetadatum) *VideoMetadatumDeleteOne {
 	return c.DeleteOneID(vm.ID)
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.
-func (c *VideoMetadataClient) DeleteOneID(id int) *VideoMetadataDeleteOne {
-	builder := c.Delete().Where(videometadata.ID(id))
+func (c *VideoMetadatumClient) DeleteOneID(id int) *VideoMetadatumDeleteOne {
+	builder := c.Delete().Where(videometadatum.ID(id))
 	builder.mutation.id = &id
 	builder.mutation.op = OpDeleteOne
-	return &VideoMetadataDeleteOne{builder}
+	return &VideoMetadatumDeleteOne{builder}
 }
 
-// Query returns a query builder for VideoMetadata.
-func (c *VideoMetadataClient) Query() *VideoMetadataQuery {
-	return &VideoMetadataQuery{
+// Query returns a query builder for VideoMetadatum.
+func (c *VideoMetadatumClient) Query() *VideoMetadatumQuery {
+	return &VideoMetadatumQuery{
 		config: c.config,
-		ctx:    &QueryContext{Type: TypeVideoMetadata},
+		ctx:    &QueryContext{Type: TypeVideoMetadatum},
 		inters: c.Interceptors(),
 	}
 }
 
-// Get returns a VideoMetadata entity by its id.
-func (c *VideoMetadataClient) Get(ctx context.Context, id int) (*VideoMetadata, error) {
-	return c.Query().Where(videometadata.ID(id)).Only(ctx)
+// Get returns a VideoMetadatum entity by its id.
+func (c *VideoMetadatumClient) Get(ctx context.Context, id int) (*VideoMetadatum, error) {
+	return c.Query().Where(videometadatum.ID(id)).Only(ctx)
 }
 
 // GetX is like Get, but panics if an error occurs.
-func (c *VideoMetadataClient) GetX(ctx context.Context, id int) *VideoMetadata {
+func (c *VideoMetadatumClient) GetX(ctx context.Context, id int) *VideoMetadatum {
 	obj, err := c.Get(ctx, id)
 	if err != nil {
 		panic(err)
@@ -1157,27 +1157,27 @@ func (c *VideoMetadataClient) GetX(ctx context.Context, id int) *VideoMetadata {
 }
 
 // Hooks returns the client hooks.
-func (c *VideoMetadataClient) Hooks() []Hook {
-	return c.hooks.VideoMetadata
+func (c *VideoMetadatumClient) Hooks() []Hook {
+	return c.hooks.VideoMetadatum
 }
 
 // Interceptors returns the client interceptors.
-func (c *VideoMetadataClient) Interceptors() []Interceptor {
-	return c.inters.VideoMetadata
+func (c *VideoMetadatumClient) Interceptors() []Interceptor {
+	return c.inters.VideoMetadatum
 }
 
-func (c *VideoMetadataClient) mutate(ctx context.Context, m *VideoMetadataMutation) (Value, error) {
+func (c *VideoMetadatumClient) mutate(ctx context.Context, m *VideoMetadatumMutation) (Value, error) {
 	switch m.Op() {
 	case OpCreate:
-		return (&VideoMetadataCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+		return (&VideoMetadatumCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
 	case OpUpdate:
-		return (&VideoMetadataUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+		return (&VideoMetadatumUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
 	case OpUpdateOne:
-		return (&VideoMetadataUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+		return (&VideoMetadatumUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
 	case OpDelete, OpDeleteOne:
-		return (&VideoMetadataDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+		return (&VideoMetadatumDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
-		return nil, fmt.Errorf("ent: unknown VideoMetadata mutation op: %q", m.Op())
+		return nil, fmt.Errorf("ent: unknown VideoMetadatum mutation op: %q", m.Op())
 	}
 }
 
@@ -1185,10 +1185,10 @@ func (c *VideoMetadataClient) mutate(ctx context.Context, m *VideoMetadataMutati
 type (
 	hooks struct {
 		UserBaseInfo, UserFollowInfo, UserPassword, VideoCollection, VideoComment,
-		VideoLike, VideoMetadata []ent.Hook
+		VideoLike, VideoMetadatum []ent.Hook
 	}
 	inters struct {
 		UserBaseInfo, UserFollowInfo, UserPassword, VideoCollection, VideoComment,
-		VideoLike, VideoMetadata []ent.Interceptor
+		VideoLike, VideoMetadatum []ent.Interceptor
 	}
 )

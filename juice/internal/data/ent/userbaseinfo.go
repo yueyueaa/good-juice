@@ -18,7 +18,7 @@ type UserBaseInfo struct {
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
 	// UserID holds the value of the "user_id" field.
-	UserID int64 `json:"user_id,omitempty"`
+	UserID uint64 `json:"user_id,omitempty"`
 	// Username holds the value of the "username" field.
 	Username string `json:"username,omitempty"`
 	// Sex holds the value of the "sex" field.
@@ -78,7 +78,7 @@ func (ubi *UserBaseInfo) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field user_id", values[i])
 			} else if value.Valid {
-				ubi.UserID = value.Int64
+				ubi.UserID = uint64(value.Int64)
 			}
 		case userbaseinfo.FieldUsername:
 			if value, ok := values[i].(*sql.NullString); !ok {

@@ -3,8 +3,6 @@
 package videolike
 
 import (
-	"time"
-
 	"entgo.io/ent/dialect/sql"
 )
 
@@ -24,7 +22,7 @@ const (
 	// FieldUpdateTime holds the string denoting the update_time field in the database.
 	FieldUpdateTime = "update_time"
 	// Table holds the table name of the videolike in the database.
-	Table = "video_likes"
+	Table = "video_like"
 )
 
 // Columns holds all SQL columns for videolike fields.
@@ -46,17 +44,6 @@ func ValidColumn(column string) bool {
 	}
 	return false
 }
-
-var (
-	// DefaultStatus holds the default value on creation for the "status" field.
-	DefaultStatus int8
-	// DefaultCreateTime holds the default value on creation for the "create_time" field.
-	DefaultCreateTime func() time.Time
-	// DefaultUpdateTime holds the default value on creation for the "update_time" field.
-	DefaultUpdateTime func() time.Time
-	// UpdateDefaultUpdateTime holds the default value on update for the "update_time" field.
-	UpdateDefaultUpdateTime func() time.Time
-)
 
 // OrderOption defines the ordering options for the VideoLike queries.
 type OrderOption func(*sql.Selector)

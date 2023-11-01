@@ -24,5 +24,5 @@ type VideoComment func(*sql.Selector)
 // VideoLike is the predicate function for videolike builders.
 type VideoLike func(*sql.Selector)
 
-// VideoMetadata is the predicate function for videometadata builders.
-type VideoMetadata func(*sql.Selector)
+// VideoMetadatum is the predicate function for videometadatum builders.
+type VideoMetadatum func(*sql.Selector)
