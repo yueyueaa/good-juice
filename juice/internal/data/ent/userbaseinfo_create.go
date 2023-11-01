@@ -21,8 +21,8 @@ type UserBaseInfoCreate struct {
 }
 
 // SetUserID sets the "user_id" field.
-func (ubic *UserBaseInfoCreate) SetUserID(i int64) *UserBaseInfoCreate {
-	ubic.mutation.SetUserID(i)
+func (ubic *UserBaseInfoCreate) SetUserID(u uint64) *UserBaseInfoCreate {
+	ubic.mutation.SetUserID(u)
 	return ubic
 }
 
@@ -92,25 +92,9 @@ func (ubic *UserBaseInfoCreate) SetFollowCount(i int32) *UserBaseInfoCreate {
 	return ubic
 }
 
-// SetNillableFollowCount sets the "follow_count" field if the given value is not nil.
-func (ubic *UserBaseInfoCreate) SetNillableFollowCount(i *int32) *UserBaseInfoCreate {
-	if i != nil {
-		ubic.SetFollowCount(*i)
-	}
-	return ubic
-}
-
 // SetFanCount sets the "fan_count" field.
 func (ubic *UserBaseInfoCreate) SetFanCount(i int32) *UserBaseInfoCreate {
 	ubic.mutation.SetFanCount(i)
-	return ubic
-}
-
-// SetNillableFanCount sets the "fan_count" field if the given value is not nil.
-func (ubic *UserBaseInfoCreate) SetNillableFanCount(i *int32) *UserBaseInfoCreate {
-	if i != nil {
-		ubic.SetFanCount(*i)
-	}
 	return ubic
 }
 
@@ -142,6 +126,12 @@ func (ubic *UserBaseInfoCreate) SetNillableUpdateTime(t *time.Time) *UserBaseInf
 	return ubic
 }
 
+// SetID sets the "id" field.
+func (ubic *UserBaseInfoCreate) SetID(i int) *UserBaseInfoCreate {
+	ubic.mutation.SetID(i)
+	return ubic
+}
+
 // Mutation returns the UserBaseInfoMutation object of the builder.
 func (ubic *UserBaseInfoCreate) Mutation() *UserBaseInfoMutation {
 	return ubic.mutation
@@ -149,7 +139,6 @@ func (ubic *UserBaseInfoCreate) Mutation() *UserBaseInfoMutation {
 
 // Save creates the UserBaseInfo in the database.
 func (ubic *UserBaseInfoCreate) Save(ctx context.Context) (*UserBaseInfo, error) {
-	ubic.defaults()
 	return withHooks(ctx, ubic.sqlSave, ubic.mutation, ubic.hooks)
 }
 
@@ -175,48 +164,16 @@ func (ubic *UserBaseInfoCreate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (ubic *UserBaseInfoCreate) defaults() {
-	if _, ok := ubic.mutation.Birth(); !ok {
-		v := userbaseinfo.DefaultBirth()
-		ubic.mutation.SetBirth(v)
-	}
-	if _, ok := ubic.mutation.FollowCount(); !ok {
-		v := userbaseinfo.DefaultFollowCount
-		ubic.mutation.SetFollowCount(v)
-	}
-	if _, ok := ubic.mutation.FanCount(); !ok {
-		v := userbaseinfo.DefaultFanCount
-		ubic.mutation.SetFanCount(v)
-	}
-	if _, ok := ubic.mutation.CreateTime(); !ok {
-		v := userbaseinfo.DefaultCreateTime()
-		ubic.mutation.SetCreateTime(v)
-	}
-	if _, ok := ubic.mutation.UpdateTime(); !ok {
-		v := userbaseinfo.DefaultUpdateTime()
-		ubic.mutation.SetUpdateTime(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (ubic *UserBaseInfoCreate) check() error {
 	if _, ok := ubic.mutation.UserID(); !ok {
 		return &ValidationError{Name: "user_id", err: errors.New(`ent: missing required field "UserBaseInfo.user_id"`)}
-	}
-	if v, ok := ubic.mutation.UserID(); ok {
-		if err := userbaseinfo.UserIDValidator(v); err != nil {
-			return &ValidationError{Name: "user_id", err: fmt.Errorf(`ent: validator failed for field "UserBaseInfo.user_id": %w`, err)}
-		}
 	}
 	if _, ok := ubic.mutation.Username(); !ok {
 		return &ValidationError{Name: "username", err: errors.New(`ent: missing required field "UserBaseInfo.username"`)}
 	}
 	if _, ok := ubic.mutation.Sex(); !ok {
 		return &ValidationError{Name: "sex", err: errors.New(`ent: missing required field "UserBaseInfo.sex"`)}
-	}
-	if _, ok := ubic.mutation.Birth(); !ok {
-		return &ValidationError{Name: "birth", err: errors.New(`ent: missing required field "UserBaseInfo.birth"`)}
 	}
 	if _, ok := ubic.mutation.Area(); !ok {
 		return &ValidationError{Name: "area", err: errors.New(`ent: missing required field "UserBaseInfo.area"`)}
@@ -226,12 +183,6 @@ func (ubic *UserBaseInfoCreate) check() error {
 	}
 	if _, ok := ubic.mutation.FanCount(); !ok {
 		return &ValidationError{Name: "fan_count", err: errors.New(`ent: missing required field "UserBaseInfo.fan_count"`)}
-	}
-	if _, ok := ubic.mutation.CreateTime(); !ok {
-		return &ValidationError{Name: "create_time", err: errors.New(`ent: missing required field "UserBaseInfo.create_time"`)}
-	}
-	if _, ok := ubic.mutation.UpdateTime(); !ok {
-		return &ValidationError{Name: "update_time", err: errors.New(`ent: missing required field "UserBaseInfo.update_time"`)}
 	}
 	return nil
 }
@@ -247,8 +198,10 @@ func (ubic *UserBaseInfoCreate) sqlSave(ctx context.Context) (*UserBaseInfo, err
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != _node.ID {
+		id := _spec.ID.Value.(int64)
+		_node.ID = int(id)
+	}
 	ubic.mutation.id = &_node.ID
 	ubic.mutation.done = true
 	return _node, nil
@@ -259,8 +212,12 @@ func (ubic *UserBaseInfoCreate) createSpec() (*UserBaseInfo, *sqlgraph.CreateSpe
 		_node = &UserBaseInfo{config: ubic.config}
 		_spec = sqlgraph.NewCreateSpec(userbaseinfo.Table, sqlgraph.NewFieldSpec(userbaseinfo.FieldID, field.TypeInt))
 	)
+	if id, ok := ubic.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
 	if value, ok := ubic.mutation.UserID(); ok {
-		_spec.SetField(userbaseinfo.FieldUserID, field.TypeInt64, value)
+		_spec.SetField(userbaseinfo.FieldUserID, field.TypeUint64, value)
 		_node.UserID = value
 	}
 	if value, ok := ubic.mutation.Username(); ok {
@@ -324,7 +281,6 @@ func (ubicb *UserBaseInfoCreateBulk) Save(ctx context.Context) ([]*UserBaseInfo,
 	for i := range ubicb.builders {
 		func(i int, root context.Context) {
 			builder := ubicb.builders[i]
-			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*UserBaseInfoMutation)
 				if !ok {
@@ -351,7 +307,7 @@ func (ubicb *UserBaseInfoCreateBulk) Save(ctx context.Context) ([]*UserBaseInfo,
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
+				if specs[i].ID.Value != nil && nodes[i].ID == 0 {
 					id := specs[i].ID.Value.(int64)
 					nodes[i].ID = int(id)
 				}

@@ -55,7 +55,7 @@ func IDLTE(id int) predicate.UserBaseInfo {
 }
 
 // UserID applies equality check predicate on the "user_id" field. It's identical to UserIDEQ.
-func UserID(v int64) predicate.UserBaseInfo {
+func UserID(v uint64) predicate.UserBaseInfo {
 	return predicate.UserBaseInfo(sql.FieldEQ(FieldUserID, v))
 }
 
@@ -110,42 +110,42 @@ func UpdateTime(v time.Time) predicate.UserBaseInfo {
 }
 
 // UserIDEQ applies the EQ predicate on the "user_id" field.
-func UserIDEQ(v int64) predicate.UserBaseInfo {
+func UserIDEQ(v uint64) predicate.UserBaseInfo {
 	return predicate.UserBaseInfo(sql.FieldEQ(FieldUserID, v))
 }
 
 // UserIDNEQ applies the NEQ predicate on the "user_id" field.
-func UserIDNEQ(v int64) predicate.UserBaseInfo {
+func UserIDNEQ(v uint64) predicate.UserBaseInfo {
 	return predicate.UserBaseInfo(sql.FieldNEQ(FieldUserID, v))
 }
 
 // UserIDIn applies the In predicate on the "user_id" field.
-func UserIDIn(vs ...int64) predicate.UserBaseInfo {
+func UserIDIn(vs ...uint64) predicate.UserBaseInfo {
 	return predicate.UserBaseInfo(sql.FieldIn(FieldUserID, vs...))
 }
 
 // UserIDNotIn applies the NotIn predicate on the "user_id" field.
-func UserIDNotIn(vs ...int64) predicate.UserBaseInfo {
+func UserIDNotIn(vs ...uint64) predicate.UserBaseInfo {
 	return predicate.UserBaseInfo(sql.FieldNotIn(FieldUserID, vs...))
 }
 
 // UserIDGT applies the GT predicate on the "user_id" field.
-func UserIDGT(v int64) predicate.UserBaseInfo {
+func UserIDGT(v uint64) predicate.UserBaseInfo {
 	return predicate.UserBaseInfo(sql.FieldGT(FieldUserID, v))
 }
 
 // UserIDGTE applies the GTE predicate on the "user_id" field.
-func UserIDGTE(v int64) predicate.UserBaseInfo {
+func UserIDGTE(v uint64) predicate.UserBaseInfo {
 	return predicate.UserBaseInfo(sql.FieldGTE(FieldUserID, v))
 }
 
 // UserIDLT applies the LT predicate on the "user_id" field.
-func UserIDLT(v int64) predicate.UserBaseInfo {
+func UserIDLT(v uint64) predicate.UserBaseInfo {
 	return predicate.UserBaseInfo(sql.FieldLT(FieldUserID, v))
 }
 
 // UserIDLTE applies the LTE predicate on the "user_id" field.
-func UserIDLTE(v int64) predicate.UserBaseInfo {
+func UserIDLTE(v uint64) predicate.UserBaseInfo {
 	return predicate.UserBaseInfo(sql.FieldLTE(FieldUserID, v))
 }
 
@@ -292,6 +292,16 @@ func BirthLT(v time.Time) predicate.UserBaseInfo {
 // BirthLTE applies the LTE predicate on the "birth" field.
 func BirthLTE(v time.Time) predicate.UserBaseInfo {
 	return predicate.UserBaseInfo(sql.FieldLTE(FieldBirth, v))
+}
+
+// BirthIsNil applies the IsNil predicate on the "birth" field.
+func BirthIsNil() predicate.UserBaseInfo {
+	return predicate.UserBaseInfo(sql.FieldIsNull(FieldBirth))
+}
+
+// BirthNotNil applies the NotNil predicate on the "birth" field.
+func BirthNotNil() predicate.UserBaseInfo {
+	return predicate.UserBaseInfo(sql.FieldNotNull(FieldBirth))
 }
 
 // AreaEQ applies the EQ predicate on the "area" field.
@@ -604,6 +614,16 @@ func CreateTimeLTE(v time.Time) predicate.UserBaseInfo {
 	return predicate.UserBaseInfo(sql.FieldLTE(FieldCreateTime, v))
 }
 
+// CreateTimeIsNil applies the IsNil predicate on the "create_time" field.
+func CreateTimeIsNil() predicate.UserBaseInfo {
+	return predicate.UserBaseInfo(sql.FieldIsNull(FieldCreateTime))
+}
+
+// CreateTimeNotNil applies the NotNil predicate on the "create_time" field.
+func CreateTimeNotNil() predicate.UserBaseInfo {
+	return predicate.UserBaseInfo(sql.FieldNotNull(FieldCreateTime))
+}
+
 // UpdateTimeEQ applies the EQ predicate on the "update_time" field.
 func UpdateTimeEQ(v time.Time) predicate.UserBaseInfo {
 	return predicate.UserBaseInfo(sql.FieldEQ(FieldUpdateTime, v))
@@ -642,6 +662,16 @@ func UpdateTimeLT(v time.Time) predicate.UserBaseInfo {
 // UpdateTimeLTE applies the LTE predicate on the "update_time" field.
 func UpdateTimeLTE(v time.Time) predicate.UserBaseInfo {
 	return predicate.UserBaseInfo(sql.FieldLTE(FieldUpdateTime, v))
+}
+
+// UpdateTimeIsNil applies the IsNil predicate on the "update_time" field.
+func UpdateTimeIsNil() predicate.UserBaseInfo {
+	return predicate.UserBaseInfo(sql.FieldIsNull(FieldUpdateTime))
+}
+
+// UpdateTimeNotNil applies the NotNil predicate on the "update_time" field.
+func UpdateTimeNotNil() predicate.UserBaseInfo {
+	return predicate.UserBaseInfo(sql.FieldNotNull(FieldUpdateTime))
 }
 
 // And groups predicates with the AND operator between them.

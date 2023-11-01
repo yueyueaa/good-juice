@@ -261,7 +261,7 @@ func (ufiq *UserFollowInfoQuery) Clone() *UserFollowInfoQuery {
 // Example:
 //
 //	var v []struct {
-//		UserID int64 `json:"user_id,omitempty"`
+//		UserID uint64 `json:"user_id,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
@@ -284,7 +284,7 @@ func (ufiq *UserFollowInfoQuery) GroupBy(field string, fields ...string) *UserFo
 // Example:
 //
 //	var v []struct {
-//		UserID int64 `json:"user_id,omitempty"`
+//		UserID uint64 `json:"user_id,omitempty"`
 //	}
 //
 //	client.UserFollowInfo.Query().

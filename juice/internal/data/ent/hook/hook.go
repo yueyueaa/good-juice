@@ -80,16 +80,16 @@ func (f VideoLikeFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, e
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.VideoLikeMutation", m)
 }
 
-// The VideoMetadataFunc type is an adapter to allow the use of ordinary
-// function as VideoMetadata mutator.
-type VideoMetadataFunc func(context.Context, *ent.VideoMetadataMutation) (ent.Value, error)
+// The VideoMetadatumFunc type is an adapter to allow the use of ordinary
+// function as VideoMetadatum mutator.
+type VideoMetadatumFunc func(context.Context, *ent.VideoMetadatumMutation) (ent.Value, error)
 
 // Mutate calls f(ctx, m).
-func (f VideoMetadataFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
-	if mv, ok := m.(*ent.VideoMetadataMutation); ok {
+func (f VideoMetadatumFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.VideoMetadatumMutation); ok {
 		return f(ctx, mv)
 	}
-	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.VideoMetadataMutation", m)
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.VideoMetadatumMutation", m)
 }
 
 // Condition is a hook condition function.

@@ -21,13 +21,13 @@ type VideoCollectionCreate struct {
 }
 
 // SetUserID sets the "user_id" field.
-func (vcc *VideoCollectionCreate) SetUserID(i int64) *VideoCollectionCreate {
+func (vcc *VideoCollectionCreate) SetUserID(i int) *VideoCollectionCreate {
 	vcc.mutation.SetUserID(i)
 	return vcc
 }
 
 // SetVideoID sets the "video_id" field.
-func (vcc *VideoCollectionCreate) SetVideoID(i int64) *VideoCollectionCreate {
+func (vcc *VideoCollectionCreate) SetVideoID(i int) *VideoCollectionCreate {
 	vcc.mutation.SetVideoID(i)
 	return vcc
 }
@@ -35,14 +35,6 @@ func (vcc *VideoCollectionCreate) SetVideoID(i int64) *VideoCollectionCreate {
 // SetStatus sets the "status" field.
 func (vcc *VideoCollectionCreate) SetStatus(i int8) *VideoCollectionCreate {
 	vcc.mutation.SetStatus(i)
-	return vcc
-}
-
-// SetNillableStatus sets the "status" field if the given value is not nil.
-func (vcc *VideoCollectionCreate) SetNillableStatus(i *int8) *VideoCollectionCreate {
-	if i != nil {
-		vcc.SetStatus(*i)
-	}
 	return vcc
 }
 
@@ -74,6 +66,12 @@ func (vcc *VideoCollectionCreate) SetNillableUpdateTime(t *time.Time) *VideoColl
 	return vcc
 }
 
+// SetID sets the "id" field.
+func (vcc *VideoCollectionCreate) SetID(i int) *VideoCollectionCreate {
+	vcc.mutation.SetID(i)
+	return vcc
+}
+
 // Mutation returns the VideoCollectionMutation object of the builder.
 func (vcc *VideoCollectionCreate) Mutation() *VideoCollectionMutation {
 	return vcc.mutation
@@ -81,7 +79,6 @@ func (vcc *VideoCollectionCreate) Mutation() *VideoCollectionMutation {
 
 // Save creates the VideoCollection in the database.
 func (vcc *VideoCollectionCreate) Save(ctx context.Context) (*VideoCollection, error) {
-	vcc.defaults()
 	return withHooks(ctx, vcc.sqlSave, vcc.mutation, vcc.hooks)
 }
 
@@ -107,22 +104,6 @@ func (vcc *VideoCollectionCreate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (vcc *VideoCollectionCreate) defaults() {
-	if _, ok := vcc.mutation.Status(); !ok {
-		v := videocollection.DefaultStatus
-		vcc.mutation.SetStatus(v)
-	}
-	if _, ok := vcc.mutation.CreateTime(); !ok {
-		v := videocollection.DefaultCreateTime()
-		vcc.mutation.SetCreateTime(v)
-	}
-	if _, ok := vcc.mutation.UpdateTime(); !ok {
-		v := videocollection.DefaultUpdateTime()
-		vcc.mutation.SetUpdateTime(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (vcc *VideoCollectionCreate) check() error {
 	if _, ok := vcc.mutation.UserID(); !ok {
@@ -133,12 +114,6 @@ func (vcc *VideoCollectionCreate) check() error {
 	}
 	if _, ok := vcc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "VideoCollection.status"`)}
-	}
-	if _, ok := vcc.mutation.CreateTime(); !ok {
-		return &ValidationError{Name: "create_time", err: errors.New(`ent: missing required field "VideoCollection.create_time"`)}
-	}
-	if _, ok := vcc.mutation.UpdateTime(); !ok {
-		return &ValidationError{Name: "update_time", err: errors.New(`ent: missing required field "VideoCollection.update_time"`)}
 	}
 	return nil
 }
@@ -154,8 +129,10 @@ func (vcc *VideoCollectionCreate) sqlSave(ctx context.Context) (*VideoCollection
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != _node.ID {
+		id := _spec.ID.Value.(int64)
+		_node.ID = int(id)
+	}
 	vcc.mutation.id = &_node.ID
 	vcc.mutation.done = true
 	return _node, nil
@@ -166,12 +143,16 @@ func (vcc *VideoCollectionCreate) createSpec() (*VideoCollection, *sqlgraph.Crea
 		_node = &VideoCollection{config: vcc.config}
 		_spec = sqlgraph.NewCreateSpec(videocollection.Table, sqlgraph.NewFieldSpec(videocollection.FieldID, field.TypeInt))
 	)
+	if id, ok := vcc.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
 	if value, ok := vcc.mutation.UserID(); ok {
-		_spec.SetField(videocollection.FieldUserID, field.TypeInt64, value)
+		_spec.SetField(videocollection.FieldUserID, field.TypeInt, value)
 		_node.UserID = value
 	}
 	if value, ok := vcc.mutation.VideoID(); ok {
-		_spec.SetField(videocollection.FieldVideoID, field.TypeInt64, value)
+		_spec.SetField(videocollection.FieldVideoID, field.TypeInt, value)
 		_node.VideoID = value
 	}
 	if value, ok := vcc.mutation.Status(); ok {
@@ -207,7 +188,6 @@ func (vccb *VideoCollectionCreateBulk) Save(ctx context.Context) ([]*VideoCollec
 	for i := range vccb.builders {
 		func(i int, root context.Context) {
 			builder := vccb.builders[i]
-			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*VideoCollectionMutation)
 				if !ok {
@@ -234,7 +214,7 @@ func (vccb *VideoCollectionCreateBulk) Save(ctx context.Context) ([]*VideoCollec
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
+				if specs[i].ID.Value != nil && nodes[i].ID == 0 {
 					id := specs[i].ID.Value.(int64)
 					nodes[i].ID = int(id)
 				}

@@ -4,6 +4,7 @@ package userpassword
 
 import (
 	"juice/internal/data/ent/predicate"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 )
@@ -54,7 +55,7 @@ func IDLTE(id int) predicate.UserPassword {
 }
 
 // UserID applies equality check predicate on the "user_id" field. It's identical to UserIDEQ.
-func UserID(v int64) predicate.UserPassword {
+func UserID(v uint64) predicate.UserPassword {
 	return predicate.UserPassword(sql.FieldEQ(FieldUserID, v))
 }
 
@@ -68,43 +69,53 @@ func Pwd(v string) predicate.UserPassword {
 	return predicate.UserPassword(sql.FieldEQ(FieldPwd, v))
 }
 
+// CreateTime applies equality check predicate on the "create_time" field. It's identical to CreateTimeEQ.
+func CreateTime(v time.Time) predicate.UserPassword {
+	return predicate.UserPassword(sql.FieldEQ(FieldCreateTime, v))
+}
+
+// UpdateTime applies equality check predicate on the "update_time" field. It's identical to UpdateTimeEQ.
+func UpdateTime(v time.Time) predicate.UserPassword {
+	return predicate.UserPassword(sql.FieldEQ(FieldUpdateTime, v))
+}
+
 // UserIDEQ applies the EQ predicate on the "user_id" field.
-func UserIDEQ(v int64) predicate.UserPassword {
+func UserIDEQ(v uint64) predicate.UserPassword {
 	return predicate.UserPassword(sql.FieldEQ(FieldUserID, v))
 }
 
 // UserIDNEQ applies the NEQ predicate on the "user_id" field.
-func UserIDNEQ(v int64) predicate.UserPassword {
+func UserIDNEQ(v uint64) predicate.UserPassword {
 	return predicate.UserPassword(sql.FieldNEQ(FieldUserID, v))
 }
 
 // UserIDIn applies the In predicate on the "user_id" field.
-func UserIDIn(vs ...int64) predicate.UserPassword {
+func UserIDIn(vs ...uint64) predicate.UserPassword {
 	return predicate.UserPassword(sql.FieldIn(FieldUserID, vs...))
 }
 
 // UserIDNotIn applies the NotIn predicate on the "user_id" field.
-func UserIDNotIn(vs ...int64) predicate.UserPassword {
+func UserIDNotIn(vs ...uint64) predicate.UserPassword {
 	return predicate.UserPassword(sql.FieldNotIn(FieldUserID, vs...))
 }
 
 // UserIDGT applies the GT predicate on the "user_id" field.
-func UserIDGT(v int64) predicate.UserPassword {
+func UserIDGT(v uint64) predicate.UserPassword {
 	return predicate.UserPassword(sql.FieldGT(FieldUserID, v))
 }
 
 // UserIDGTE applies the GTE predicate on the "user_id" field.
-func UserIDGTE(v int64) predicate.UserPassword {
+func UserIDGTE(v uint64) predicate.UserPassword {
 	return predicate.UserPassword(sql.FieldGTE(FieldUserID, v))
 }
 
 // UserIDLT applies the LT predicate on the "user_id" field.
-func UserIDLT(v int64) predicate.UserPassword {
+func UserIDLT(v uint64) predicate.UserPassword {
 	return predicate.UserPassword(sql.FieldLT(FieldUserID, v))
 }
 
 // UserIDLTE applies the LTE predicate on the "user_id" field.
-func UserIDLTE(v int64) predicate.UserPassword {
+func UserIDLTE(v uint64) predicate.UserPassword {
 	return predicate.UserPassword(sql.FieldLTE(FieldUserID, v))
 }
 
@@ -246,6 +257,106 @@ func PwdEqualFold(v string) predicate.UserPassword {
 // PwdContainsFold applies the ContainsFold predicate on the "pwd" field.
 func PwdContainsFold(v string) predicate.UserPassword {
 	return predicate.UserPassword(sql.FieldContainsFold(FieldPwd, v))
+}
+
+// CreateTimeEQ applies the EQ predicate on the "create_time" field.
+func CreateTimeEQ(v time.Time) predicate.UserPassword {
+	return predicate.UserPassword(sql.FieldEQ(FieldCreateTime, v))
+}
+
+// CreateTimeNEQ applies the NEQ predicate on the "create_time" field.
+func CreateTimeNEQ(v time.Time) predicate.UserPassword {
+	return predicate.UserPassword(sql.FieldNEQ(FieldCreateTime, v))
+}
+
+// CreateTimeIn applies the In predicate on the "create_time" field.
+func CreateTimeIn(vs ...time.Time) predicate.UserPassword {
+	return predicate.UserPassword(sql.FieldIn(FieldCreateTime, vs...))
+}
+
+// CreateTimeNotIn applies the NotIn predicate on the "create_time" field.
+func CreateTimeNotIn(vs ...time.Time) predicate.UserPassword {
+	return predicate.UserPassword(sql.FieldNotIn(FieldCreateTime, vs...))
+}
+
+// CreateTimeGT applies the GT predicate on the "create_time" field.
+func CreateTimeGT(v time.Time) predicate.UserPassword {
+	return predicate.UserPassword(sql.FieldGT(FieldCreateTime, v))
+}
+
+// CreateTimeGTE applies the GTE predicate on the "create_time" field.
+func CreateTimeGTE(v time.Time) predicate.UserPassword {
+	return predicate.UserPassword(sql.FieldGTE(FieldCreateTime, v))
+}
+
+// CreateTimeLT applies the LT predicate on the "create_time" field.
+func CreateTimeLT(v time.Time) predicate.UserPassword {
+	return predicate.UserPassword(sql.FieldLT(FieldCreateTime, v))
+}
+
+// CreateTimeLTE applies the LTE predicate on the "create_time" field.
+func CreateTimeLTE(v time.Time) predicate.UserPassword {
+	return predicate.UserPassword(sql.FieldLTE(FieldCreateTime, v))
+}
+
+// CreateTimeIsNil applies the IsNil predicate on the "create_time" field.
+func CreateTimeIsNil() predicate.UserPassword {
+	return predicate.UserPassword(sql.FieldIsNull(FieldCreateTime))
+}
+
+// CreateTimeNotNil applies the NotNil predicate on the "create_time" field.
+func CreateTimeNotNil() predicate.UserPassword {
+	return predicate.UserPassword(sql.FieldNotNull(FieldCreateTime))
+}
+
+// UpdateTimeEQ applies the EQ predicate on the "update_time" field.
+func UpdateTimeEQ(v time.Time) predicate.UserPassword {
+	return predicate.UserPassword(sql.FieldEQ(FieldUpdateTime, v))
+}
+
+// UpdateTimeNEQ applies the NEQ predicate on the "update_time" field.
+func UpdateTimeNEQ(v time.Time) predicate.UserPassword {
+	return predicate.UserPassword(sql.FieldNEQ(FieldUpdateTime, v))
+}
+
+// UpdateTimeIn applies the In predicate on the "update_time" field.
+func UpdateTimeIn(vs ...time.Time) predicate.UserPassword {
+	return predicate.UserPassword(sql.FieldIn(FieldUpdateTime, vs...))
+}
+
+// UpdateTimeNotIn applies the NotIn predicate on the "update_time" field.
+func UpdateTimeNotIn(vs ...time.Time) predicate.UserPassword {
+	return predicate.UserPassword(sql.FieldNotIn(FieldUpdateTime, vs...))
+}
+
+// UpdateTimeGT applies the GT predicate on the "update_time" field.
+func UpdateTimeGT(v time.Time) predicate.UserPassword {
+	return predicate.UserPassword(sql.FieldGT(FieldUpdateTime, v))
+}
+
+// UpdateTimeGTE applies the GTE predicate on the "update_time" field.
+func UpdateTimeGTE(v time.Time) predicate.UserPassword {
+	return predicate.UserPassword(sql.FieldGTE(FieldUpdateTime, v))
+}
+
+// UpdateTimeLT applies the LT predicate on the "update_time" field.
+func UpdateTimeLT(v time.Time) predicate.UserPassword {
+	return predicate.UserPassword(sql.FieldLT(FieldUpdateTime, v))
+}
+
+// UpdateTimeLTE applies the LTE predicate on the "update_time" field.
+func UpdateTimeLTE(v time.Time) predicate.UserPassword {
+	return predicate.UserPassword(sql.FieldLTE(FieldUpdateTime, v))
+}
+
+// UpdateTimeIsNil applies the IsNil predicate on the "update_time" field.
+func UpdateTimeIsNil() predicate.UserPassword {
+	return predicate.UserPassword(sql.FieldIsNull(FieldUpdateTime))
+}
+
+// UpdateTimeNotNil applies the NotNil predicate on the "update_time" field.
+func UpdateTimeNotNil() predicate.UserPassword {
+	return predicate.UserPassword(sql.FieldNotNull(FieldUpdateTime))
 }
 
 // And groups predicates with the AND operator between them.

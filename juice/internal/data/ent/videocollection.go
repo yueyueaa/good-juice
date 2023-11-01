@@ -18,9 +18,9 @@ type VideoCollection struct {
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
 	// UserID holds the value of the "user_id" field.
-	UserID int64 `json:"user_id,omitempty"`
+	UserID int `json:"user_id,omitempty"`
 	// VideoID holds the value of the "video_id" field.
-	VideoID int64 `json:"video_id,omitempty"`
+	VideoID int `json:"video_id,omitempty"`
 	// Status holds the value of the "status" field.
 	Status int8 `json:"status,omitempty"`
 	// CreateTime holds the value of the "create_time" field.
@@ -64,13 +64,13 @@ func (vc *VideoCollection) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field user_id", values[i])
 			} else if value.Valid {
-				vc.UserID = value.Int64
+				vc.UserID = int(value.Int64)
 			}
 		case videocollection.FieldVideoID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field video_id", values[i])
 			} else if value.Valid {
-				vc.VideoID = value.Int64
+				vc.VideoID = int(value.Int64)
 			}
 		case videocollection.FieldStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {

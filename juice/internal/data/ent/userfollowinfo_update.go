@@ -29,28 +29,28 @@ func (ufiu *UserFollowInfoUpdate) Where(ps ...predicate.UserFollowInfo) *UserFol
 }
 
 // SetUserID sets the "user_id" field.
-func (ufiu *UserFollowInfoUpdate) SetUserID(i int64) *UserFollowInfoUpdate {
+func (ufiu *UserFollowInfoUpdate) SetUserID(u uint64) *UserFollowInfoUpdate {
 	ufiu.mutation.ResetUserID()
-	ufiu.mutation.SetUserID(i)
+	ufiu.mutation.SetUserID(u)
 	return ufiu
 }
 
-// AddUserID adds i to the "user_id" field.
-func (ufiu *UserFollowInfoUpdate) AddUserID(i int64) *UserFollowInfoUpdate {
-	ufiu.mutation.AddUserID(i)
+// AddUserID adds u to the "user_id" field.
+func (ufiu *UserFollowInfoUpdate) AddUserID(u int64) *UserFollowInfoUpdate {
+	ufiu.mutation.AddUserID(u)
 	return ufiu
 }
 
 // SetFollowID sets the "follow_id" field.
-func (ufiu *UserFollowInfoUpdate) SetFollowID(i int64) *UserFollowInfoUpdate {
+func (ufiu *UserFollowInfoUpdate) SetFollowID(u uint64) *UserFollowInfoUpdate {
 	ufiu.mutation.ResetFollowID()
-	ufiu.mutation.SetFollowID(i)
+	ufiu.mutation.SetFollowID(u)
 	return ufiu
 }
 
-// AddFollowID adds i to the "follow_id" field.
-func (ufiu *UserFollowInfoUpdate) AddFollowID(i int64) *UserFollowInfoUpdate {
-	ufiu.mutation.AddFollowID(i)
+// AddFollowID adds u to the "follow_id" field.
+func (ufiu *UserFollowInfoUpdate) AddFollowID(u int64) *UserFollowInfoUpdate {
+	ufiu.mutation.AddFollowID(u)
 	return ufiu
 }
 
@@ -58,14 +58,6 @@ func (ufiu *UserFollowInfoUpdate) AddFollowID(i int64) *UserFollowInfoUpdate {
 func (ufiu *UserFollowInfoUpdate) SetStatus(i int8) *UserFollowInfoUpdate {
 	ufiu.mutation.ResetStatus()
 	ufiu.mutation.SetStatus(i)
-	return ufiu
-}
-
-// SetNillableStatus sets the "status" field if the given value is not nil.
-func (ufiu *UserFollowInfoUpdate) SetNillableStatus(i *int8) *UserFollowInfoUpdate {
-	if i != nil {
-		ufiu.SetStatus(*i)
-	}
 	return ufiu
 }
 
@@ -89,9 +81,29 @@ func (ufiu *UserFollowInfoUpdate) SetNillableCreateTime(t *time.Time) *UserFollo
 	return ufiu
 }
 
+// ClearCreateTime clears the value of the "create_time" field.
+func (ufiu *UserFollowInfoUpdate) ClearCreateTime() *UserFollowInfoUpdate {
+	ufiu.mutation.ClearCreateTime()
+	return ufiu
+}
+
 // SetUpdateTime sets the "update_time" field.
 func (ufiu *UserFollowInfoUpdate) SetUpdateTime(t time.Time) *UserFollowInfoUpdate {
 	ufiu.mutation.SetUpdateTime(t)
+	return ufiu
+}
+
+// SetNillableUpdateTime sets the "update_time" field if the given value is not nil.
+func (ufiu *UserFollowInfoUpdate) SetNillableUpdateTime(t *time.Time) *UserFollowInfoUpdate {
+	if t != nil {
+		ufiu.SetUpdateTime(*t)
+	}
+	return ufiu
+}
+
+// ClearUpdateTime clears the value of the "update_time" field.
+func (ufiu *UserFollowInfoUpdate) ClearUpdateTime() *UserFollowInfoUpdate {
+	ufiu.mutation.ClearUpdateTime()
 	return ufiu
 }
 
@@ -102,7 +114,6 @@ func (ufiu *UserFollowInfoUpdate) Mutation() *UserFollowInfoMutation {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (ufiu *UserFollowInfoUpdate) Save(ctx context.Context) (int, error) {
-	ufiu.defaults()
 	return withHooks(ctx, ufiu.sqlSave, ufiu.mutation, ufiu.hooks)
 }
 
@@ -128,33 +139,7 @@ func (ufiu *UserFollowInfoUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (ufiu *UserFollowInfoUpdate) defaults() {
-	if _, ok := ufiu.mutation.UpdateTime(); !ok {
-		v := userfollowinfo.UpdateDefaultUpdateTime()
-		ufiu.mutation.SetUpdateTime(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (ufiu *UserFollowInfoUpdate) check() error {
-	if v, ok := ufiu.mutation.UserID(); ok {
-		if err := userfollowinfo.UserIDValidator(v); err != nil {
-			return &ValidationError{Name: "user_id", err: fmt.Errorf(`ent: validator failed for field "UserFollowInfo.user_id": %w`, err)}
-		}
-	}
-	if v, ok := ufiu.mutation.FollowID(); ok {
-		if err := userfollowinfo.FollowIDValidator(v); err != nil {
-			return &ValidationError{Name: "follow_id", err: fmt.Errorf(`ent: validator failed for field "UserFollowInfo.follow_id": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (ufiu *UserFollowInfoUpdate) sqlSave(ctx context.Context) (n int, err error) {
-	if err := ufiu.check(); err != nil {
-		return n, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(userfollowinfo.Table, userfollowinfo.Columns, sqlgraph.NewFieldSpec(userfollowinfo.FieldID, field.TypeInt))
 	if ps := ufiu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
@@ -164,16 +149,16 @@ func (ufiu *UserFollowInfoUpdate) sqlSave(ctx context.Context) (n int, err error
 		}
 	}
 	if value, ok := ufiu.mutation.UserID(); ok {
-		_spec.SetField(userfollowinfo.FieldUserID, field.TypeInt64, value)
+		_spec.SetField(userfollowinfo.FieldUserID, field.TypeUint64, value)
 	}
 	if value, ok := ufiu.mutation.AddedUserID(); ok {
-		_spec.AddField(userfollowinfo.FieldUserID, field.TypeInt64, value)
+		_spec.AddField(userfollowinfo.FieldUserID, field.TypeUint64, value)
 	}
 	if value, ok := ufiu.mutation.FollowID(); ok {
-		_spec.SetField(userfollowinfo.FieldFollowID, field.TypeInt64, value)
+		_spec.SetField(userfollowinfo.FieldFollowID, field.TypeUint64, value)
 	}
 	if value, ok := ufiu.mutation.AddedFollowID(); ok {
-		_spec.AddField(userfollowinfo.FieldFollowID, field.TypeInt64, value)
+		_spec.AddField(userfollowinfo.FieldFollowID, field.TypeUint64, value)
 	}
 	if value, ok := ufiu.mutation.Status(); ok {
 		_spec.SetField(userfollowinfo.FieldStatus, field.TypeInt8, value)
@@ -184,8 +169,14 @@ func (ufiu *UserFollowInfoUpdate) sqlSave(ctx context.Context) (n int, err error
 	if value, ok := ufiu.mutation.CreateTime(); ok {
 		_spec.SetField(userfollowinfo.FieldCreateTime, field.TypeTime, value)
 	}
+	if ufiu.mutation.CreateTimeCleared() {
+		_spec.ClearField(userfollowinfo.FieldCreateTime, field.TypeTime)
+	}
 	if value, ok := ufiu.mutation.UpdateTime(); ok {
 		_spec.SetField(userfollowinfo.FieldUpdateTime, field.TypeTime, value)
+	}
+	if ufiu.mutation.UpdateTimeCleared() {
+		_spec.ClearField(userfollowinfo.FieldUpdateTime, field.TypeTime)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, ufiu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -208,28 +199,28 @@ type UserFollowInfoUpdateOne struct {
 }
 
 // SetUserID sets the "user_id" field.
-func (ufiuo *UserFollowInfoUpdateOne) SetUserID(i int64) *UserFollowInfoUpdateOne {
+func (ufiuo *UserFollowInfoUpdateOne) SetUserID(u uint64) *UserFollowInfoUpdateOne {
 	ufiuo.mutation.ResetUserID()
-	ufiuo.mutation.SetUserID(i)
+	ufiuo.mutation.SetUserID(u)
 	return ufiuo
 }
 
-// AddUserID adds i to the "user_id" field.
-func (ufiuo *UserFollowInfoUpdateOne) AddUserID(i int64) *UserFollowInfoUpdateOne {
-	ufiuo.mutation.AddUserID(i)
+// AddUserID adds u to the "user_id" field.
+func (ufiuo *UserFollowInfoUpdateOne) AddUserID(u int64) *UserFollowInfoUpdateOne {
+	ufiuo.mutation.AddUserID(u)
 	return ufiuo
 }
 
 // SetFollowID sets the "follow_id" field.
-func (ufiuo *UserFollowInfoUpdateOne) SetFollowID(i int64) *UserFollowInfoUpdateOne {
+func (ufiuo *UserFollowInfoUpdateOne) SetFollowID(u uint64) *UserFollowInfoUpdateOne {
 	ufiuo.mutation.ResetFollowID()
-	ufiuo.mutation.SetFollowID(i)
+	ufiuo.mutation.SetFollowID(u)
 	return ufiuo
 }
 
-// AddFollowID adds i to the "follow_id" field.
-func (ufiuo *UserFollowInfoUpdateOne) AddFollowID(i int64) *UserFollowInfoUpdateOne {
-	ufiuo.mutation.AddFollowID(i)
+// AddFollowID adds u to the "follow_id" field.
+func (ufiuo *UserFollowInfoUpdateOne) AddFollowID(u int64) *UserFollowInfoUpdateOne {
+	ufiuo.mutation.AddFollowID(u)
 	return ufiuo
 }
 
@@ -237,14 +228,6 @@ func (ufiuo *UserFollowInfoUpdateOne) AddFollowID(i int64) *UserFollowInfoUpdate
 func (ufiuo *UserFollowInfoUpdateOne) SetStatus(i int8) *UserFollowInfoUpdateOne {
 	ufiuo.mutation.ResetStatus()
 	ufiuo.mutation.SetStatus(i)
-	return ufiuo
-}
-
-// SetNillableStatus sets the "status" field if the given value is not nil.
-func (ufiuo *UserFollowInfoUpdateOne) SetNillableStatus(i *int8) *UserFollowInfoUpdateOne {
-	if i != nil {
-		ufiuo.SetStatus(*i)
-	}
 	return ufiuo
 }
 
@@ -268,9 +251,29 @@ func (ufiuo *UserFollowInfoUpdateOne) SetNillableCreateTime(t *time.Time) *UserF
 	return ufiuo
 }
 
+// ClearCreateTime clears the value of the "create_time" field.
+func (ufiuo *UserFollowInfoUpdateOne) ClearCreateTime() *UserFollowInfoUpdateOne {
+	ufiuo.mutation.ClearCreateTime()
+	return ufiuo
+}
+
 // SetUpdateTime sets the "update_time" field.
 func (ufiuo *UserFollowInfoUpdateOne) SetUpdateTime(t time.Time) *UserFollowInfoUpdateOne {
 	ufiuo.mutation.SetUpdateTime(t)
+	return ufiuo
+}
+
+// SetNillableUpdateTime sets the "update_time" field if the given value is not nil.
+func (ufiuo *UserFollowInfoUpdateOne) SetNillableUpdateTime(t *time.Time) *UserFollowInfoUpdateOne {
+	if t != nil {
+		ufiuo.SetUpdateTime(*t)
+	}
+	return ufiuo
+}
+
+// ClearUpdateTime clears the value of the "update_time" field.
+func (ufiuo *UserFollowInfoUpdateOne) ClearUpdateTime() *UserFollowInfoUpdateOne {
+	ufiuo.mutation.ClearUpdateTime()
 	return ufiuo
 }
 
@@ -294,7 +297,6 @@ func (ufiuo *UserFollowInfoUpdateOne) Select(field string, fields ...string) *Us
 
 // Save executes the query and returns the updated UserFollowInfo entity.
 func (ufiuo *UserFollowInfoUpdateOne) Save(ctx context.Context) (*UserFollowInfo, error) {
-	ufiuo.defaults()
 	return withHooks(ctx, ufiuo.sqlSave, ufiuo.mutation, ufiuo.hooks)
 }
 
@@ -320,33 +322,7 @@ func (ufiuo *UserFollowInfoUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (ufiuo *UserFollowInfoUpdateOne) defaults() {
-	if _, ok := ufiuo.mutation.UpdateTime(); !ok {
-		v := userfollowinfo.UpdateDefaultUpdateTime()
-		ufiuo.mutation.SetUpdateTime(v)
-	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (ufiuo *UserFollowInfoUpdateOne) check() error {
-	if v, ok := ufiuo.mutation.UserID(); ok {
-		if err := userfollowinfo.UserIDValidator(v); err != nil {
-			return &ValidationError{Name: "user_id", err: fmt.Errorf(`ent: validator failed for field "UserFollowInfo.user_id": %w`, err)}
-		}
-	}
-	if v, ok := ufiuo.mutation.FollowID(); ok {
-		if err := userfollowinfo.FollowIDValidator(v); err != nil {
-			return &ValidationError{Name: "follow_id", err: fmt.Errorf(`ent: validator failed for field "UserFollowInfo.follow_id": %w`, err)}
-		}
-	}
-	return nil
-}
-
 func (ufiuo *UserFollowInfoUpdateOne) sqlSave(ctx context.Context) (_node *UserFollowInfo, err error) {
-	if err := ufiuo.check(); err != nil {
-		return _node, err
-	}
 	_spec := sqlgraph.NewUpdateSpec(userfollowinfo.Table, userfollowinfo.Columns, sqlgraph.NewFieldSpec(userfollowinfo.FieldID, field.TypeInt))
 	id, ok := ufiuo.mutation.ID()
 	if !ok {
@@ -373,16 +349,16 @@ func (ufiuo *UserFollowInfoUpdateOne) sqlSave(ctx context.Context) (_node *UserF
 		}
 	}
 	if value, ok := ufiuo.mutation.UserID(); ok {
-		_spec.SetField(userfollowinfo.FieldUserID, field.TypeInt64, value)
+		_spec.SetField(userfollowinfo.FieldUserID, field.TypeUint64, value)
 	}
 	if value, ok := ufiuo.mutation.AddedUserID(); ok {
-		_spec.AddField(userfollowinfo.FieldUserID, field.TypeInt64, value)
+		_spec.AddField(userfollowinfo.FieldUserID, field.TypeUint64, value)
 	}
 	if value, ok := ufiuo.mutation.FollowID(); ok {
-		_spec.SetField(userfollowinfo.FieldFollowID, field.TypeInt64, value)
+		_spec.SetField(userfollowinfo.FieldFollowID, field.TypeUint64, value)
 	}
 	if value, ok := ufiuo.mutation.AddedFollowID(); ok {
-		_spec.AddField(userfollowinfo.FieldFollowID, field.TypeInt64, value)
+		_spec.AddField(userfollowinfo.FieldFollowID, field.TypeUint64, value)
 	}
 	if value, ok := ufiuo.mutation.Status(); ok {
 		_spec.SetField(userfollowinfo.FieldStatus, field.TypeInt8, value)
@@ -393,8 +369,14 @@ func (ufiuo *UserFollowInfoUpdateOne) sqlSave(ctx context.Context) (_node *UserF
 	if value, ok := ufiuo.mutation.CreateTime(); ok {
 		_spec.SetField(userfollowinfo.FieldCreateTime, field.TypeTime, value)
 	}
+	if ufiuo.mutation.CreateTimeCleared() {
+		_spec.ClearField(userfollowinfo.FieldCreateTime, field.TypeTime)
+	}
 	if value, ok := ufiuo.mutation.UpdateTime(); ok {
 		_spec.SetField(userfollowinfo.FieldUpdateTime, field.TypeTime, value)
+	}
+	if ufiuo.mutation.UpdateTimeCleared() {
+		_spec.ClearField(userfollowinfo.FieldUpdateTime, field.TypeTime)
 	}
 	_node = &UserFollowInfo{config: ufiuo.config}
 	_spec.Assign = _node.assignValues

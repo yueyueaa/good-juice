@@ -13,7 +13,7 @@ import (
 	"juice/internal/data/ent/videocollection"
 	"juice/internal/data/ent/videocomment"
 	"juice/internal/data/ent/videolike"
-	"juice/internal/data/ent/videometadata"
+	"juice/internal/data/ent/videometadatum"
 	"sync"
 	"time"
 
@@ -36,7 +36,7 @@ const (
 	TypeVideoCollection = "VideoCollection"
 	TypeVideoComment    = "VideoComment"
 	TypeVideoLike       = "VideoLike"
-	TypeVideoMetadata   = "VideoMetadata"
+	TypeVideoMetadatum  = "VideoMetadatum"
 )
 
 // UserBaseInfoMutation represents an operation that mutates the UserBaseInfo nodes in the graph.
@@ -45,7 +45,7 @@ type UserBaseInfoMutation struct {
 	op                     Op
 	typ                    string
 	id                     *int
-	user_id                *int64
+	user_id                *uint64
 	adduser_id             *int64
 	username               *string
 	sex                    *int8
@@ -137,6 +137,12 @@ func (m UserBaseInfoMutation) Tx() (*Tx, error) {
 	return tx, nil
 }
 
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of UserBaseInfo entities.
+func (m *UserBaseInfoMutation) SetID(id int) {
+	m.id = &id
+}
+
 // ID returns the ID value in the mutation. Note that the ID is only available
 // if it was provided to the builder or after it was returned from the database.
 func (m *UserBaseInfoMutation) ID() (id int, exists bool) {
@@ -166,13 +172,13 @@ func (m *UserBaseInfoMutation) IDs(ctx context.Context) ([]int, error) {
 }
 
 // SetUserID sets the "user_id" field.
-func (m *UserBaseInfoMutation) SetUserID(i int64) {
-	m.user_id = &i
+func (m *UserBaseInfoMutation) SetUserID(u uint64) {
+	m.user_id = &u
 	m.adduser_id = nil
 }
 
 // UserID returns the value of the "user_id" field in the mutation.
-func (m *UserBaseInfoMutation) UserID() (r int64, exists bool) {
+func (m *UserBaseInfoMutation) UserID() (r uint64, exists bool) {
 	v := m.user_id
 	if v == nil {
 		return
@@ -183,7 +189,7 @@ func (m *UserBaseInfoMutation) UserID() (r int64, exists bool) {
 // OldUserID returns the old "user_id" field's value of the UserBaseInfo entity.
 // If the UserBaseInfo object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserBaseInfoMutation) OldUserID(ctx context.Context) (v int64, err error) {
+func (m *UserBaseInfoMutation) OldUserID(ctx context.Context) (v uint64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldUserID is only allowed on UpdateOne operations")
 	}
@@ -197,12 +203,12 @@ func (m *UserBaseInfoMutation) OldUserID(ctx context.Context) (v int64, err erro
 	return oldValue.UserID, nil
 }
 
-// AddUserID adds i to the "user_id" field.
-func (m *UserBaseInfoMutation) AddUserID(i int64) {
+// AddUserID adds u to the "user_id" field.
+func (m *UserBaseInfoMutation) AddUserID(u int64) {
 	if m.adduser_id != nil {
-		*m.adduser_id += i
+		*m.adduser_id += u
 	} else {
-		m.adduser_id = &i
+		m.adduser_id = &u
 	}
 }
 
@@ -344,9 +350,22 @@ func (m *UserBaseInfoMutation) OldBirth(ctx context.Context) (v time.Time, err e
 	return oldValue.Birth, nil
 }
 
+// ClearBirth clears the value of the "birth" field.
+func (m *UserBaseInfoMutation) ClearBirth() {
+	m.birth = nil
+	m.clearedFields[userbaseinfo.FieldBirth] = struct{}{}
+}
+
+// BirthCleared returns if the "birth" field was cleared in this mutation.
+func (m *UserBaseInfoMutation) BirthCleared() bool {
+	_, ok := m.clearedFields[userbaseinfo.FieldBirth]
+	return ok
+}
+
 // ResetBirth resets all changes to the "birth" field.
 func (m *UserBaseInfoMutation) ResetBirth() {
 	m.birth = nil
+	delete(m.clearedFields, userbaseinfo.FieldBirth)
 }
 
 // SetArea sets the "area" field.
@@ -646,9 +665,22 @@ func (m *UserBaseInfoMutation) OldCreateTime(ctx context.Context) (v time.Time, 
 	return oldValue.CreateTime, nil
 }
 
+// ClearCreateTime clears the value of the "create_time" field.
+func (m *UserBaseInfoMutation) ClearCreateTime() {
+	m.create_time = nil
+	m.clearedFields[userbaseinfo.FieldCreateTime] = struct{}{}
+}
+
+// CreateTimeCleared returns if the "create_time" field was cleared in this mutation.
+func (m *UserBaseInfoMutation) CreateTimeCleared() bool {
+	_, ok := m.clearedFields[userbaseinfo.FieldCreateTime]
+	return ok
+}
+
 // ResetCreateTime resets all changes to the "create_time" field.
 func (m *UserBaseInfoMutation) ResetCreateTime() {
 	m.create_time = nil
+	delete(m.clearedFields, userbaseinfo.FieldCreateTime)
 }
 
 // SetUpdateTime sets the "update_time" field.
@@ -682,9 +714,22 @@ func (m *UserBaseInfoMutation) OldUpdateTime(ctx context.Context) (v time.Time, 
 	return oldValue.UpdateTime, nil
 }
 
+// ClearUpdateTime clears the value of the "update_time" field.
+func (m *UserBaseInfoMutation) ClearUpdateTime() {
+	m.update_time = nil
+	m.clearedFields[userbaseinfo.FieldUpdateTime] = struct{}{}
+}
+
+// UpdateTimeCleared returns if the "update_time" field was cleared in this mutation.
+func (m *UserBaseInfoMutation) UpdateTimeCleared() bool {
+	_, ok := m.clearedFields[userbaseinfo.FieldUpdateTime]
+	return ok
+}
+
 // ResetUpdateTime resets all changes to the "update_time" field.
 func (m *UserBaseInfoMutation) ResetUpdateTime() {
 	m.update_time = nil
+	delete(m.clearedFields, userbaseinfo.FieldUpdateTime)
 }
 
 // Where appends a list predicates to the UserBaseInfoMutation builder.
@@ -826,7 +871,7 @@ func (m *UserBaseInfoMutation) OldField(ctx context.Context, name string) (ent.V
 func (m *UserBaseInfoMutation) SetField(name string, value ent.Value) error {
 	switch name {
 	case userbaseinfo.FieldUserID:
-		v, ok := value.(int64)
+		v, ok := value.(uint64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -995,11 +1040,20 @@ func (m *UserBaseInfoMutation) AddField(name string, value ent.Value) error {
 // mutation.
 func (m *UserBaseInfoMutation) ClearedFields() []string {
 	var fields []string
+	if m.FieldCleared(userbaseinfo.FieldBirth) {
+		fields = append(fields, userbaseinfo.FieldBirth)
+	}
 	if m.FieldCleared(userbaseinfo.FieldUserProfile) {
 		fields = append(fields, userbaseinfo.FieldUserProfile)
 	}
 	if m.FieldCleared(userbaseinfo.FieldUserProfilePhotoURL) {
 		fields = append(fields, userbaseinfo.FieldUserProfilePhotoURL)
+	}
+	if m.FieldCleared(userbaseinfo.FieldCreateTime) {
+		fields = append(fields, userbaseinfo.FieldCreateTime)
+	}
+	if m.FieldCleared(userbaseinfo.FieldUpdateTime) {
+		fields = append(fields, userbaseinfo.FieldUpdateTime)
 	}
 	return fields
 }
@@ -1015,11 +1069,20 @@ func (m *UserBaseInfoMutation) FieldCleared(name string) bool {
 // error if the field is not defined in the schema.
 func (m *UserBaseInfoMutation) ClearField(name string) error {
 	switch name {
+	case userbaseinfo.FieldBirth:
+		m.ClearBirth()
+		return nil
 	case userbaseinfo.FieldUserProfile:
 		m.ClearUserProfile()
 		return nil
 	case userbaseinfo.FieldUserProfilePhotoURL:
 		m.ClearUserProfilePhotoURL()
+		return nil
+	case userbaseinfo.FieldCreateTime:
+		m.ClearCreateTime()
+		return nil
+	case userbaseinfo.FieldUpdateTime:
+		m.ClearUpdateTime()
 		return nil
 	}
 	return fmt.Errorf("unknown UserBaseInfo nullable field %s", name)
@@ -1120,9 +1183,9 @@ type UserFollowInfoMutation struct {
 	op            Op
 	typ           string
 	id            *int
-	user_id       *int64
+	user_id       *uint64
 	adduser_id    *int64
-	follow_id     *int64
+	follow_id     *uint64
 	addfollow_id  *int64
 	status        *int8
 	addstatus     *int8
@@ -1204,6 +1267,12 @@ func (m UserFollowInfoMutation) Tx() (*Tx, error) {
 	return tx, nil
 }
 
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of UserFollowInfo entities.
+func (m *UserFollowInfoMutation) SetID(id int) {
+	m.id = &id
+}
+
 // ID returns the ID value in the mutation. Note that the ID is only available
 // if it was provided to the builder or after it was returned from the database.
 func (m *UserFollowInfoMutation) ID() (id int, exists bool) {
@@ -1233,13 +1302,13 @@ func (m *UserFollowInfoMutation) IDs(ctx context.Context) ([]int, error) {
 }
 
 // SetUserID sets the "user_id" field.
-func (m *UserFollowInfoMutation) SetUserID(i int64) {
-	m.user_id = &i
+func (m *UserFollowInfoMutation) SetUserID(u uint64) {
+	m.user_id = &u
 	m.adduser_id = nil
 }
 
 // UserID returns the value of the "user_id" field in the mutation.
-func (m *UserFollowInfoMutation) UserID() (r int64, exists bool) {
+func (m *UserFollowInfoMutation) UserID() (r uint64, exists bool) {
 	v := m.user_id
 	if v == nil {
 		return
@@ -1250,7 +1319,7 @@ func (m *UserFollowInfoMutation) UserID() (r int64, exists bool) {
 // OldUserID returns the old "user_id" field's value of the UserFollowInfo entity.
 // If the UserFollowInfo object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserFollowInfoMutation) OldUserID(ctx context.Context) (v int64, err error) {
+func (m *UserFollowInfoMutation) OldUserID(ctx context.Context) (v uint64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldUserID is only allowed on UpdateOne operations")
 	}
@@ -1264,12 +1333,12 @@ func (m *UserFollowInfoMutation) OldUserID(ctx context.Context) (v int64, err er
 	return oldValue.UserID, nil
 }
 
-// AddUserID adds i to the "user_id" field.
-func (m *UserFollowInfoMutation) AddUserID(i int64) {
+// AddUserID adds u to the "user_id" field.
+func (m *UserFollowInfoMutation) AddUserID(u int64) {
 	if m.adduser_id != nil {
-		*m.adduser_id += i
+		*m.adduser_id += u
 	} else {
-		m.adduser_id = &i
+		m.adduser_id = &u
 	}
 }
 
@@ -1289,13 +1358,13 @@ func (m *UserFollowInfoMutation) ResetUserID() {
 }
 
 // SetFollowID sets the "follow_id" field.
-func (m *UserFollowInfoMutation) SetFollowID(i int64) {
-	m.follow_id = &i
+func (m *UserFollowInfoMutation) SetFollowID(u uint64) {
+	m.follow_id = &u
 	m.addfollow_id = nil
 }
 
 // FollowID returns the value of the "follow_id" field in the mutation.
-func (m *UserFollowInfoMutation) FollowID() (r int64, exists bool) {
+func (m *UserFollowInfoMutation) FollowID() (r uint64, exists bool) {
 	v := m.follow_id
 	if v == nil {
 		return
@@ -1306,7 +1375,7 @@ func (m *UserFollowInfoMutation) FollowID() (r int64, exists bool) {
 // OldFollowID returns the old "follow_id" field's value of the UserFollowInfo entity.
 // If the UserFollowInfo object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserFollowInfoMutation) OldFollowID(ctx context.Context) (v int64, err error) {
+func (m *UserFollowInfoMutation) OldFollowID(ctx context.Context) (v uint64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldFollowID is only allowed on UpdateOne operations")
 	}
@@ -1320,12 +1389,12 @@ func (m *UserFollowInfoMutation) OldFollowID(ctx context.Context) (v int64, err 
 	return oldValue.FollowID, nil
 }
 
-// AddFollowID adds i to the "follow_id" field.
-func (m *UserFollowInfoMutation) AddFollowID(i int64) {
+// AddFollowID adds u to the "follow_id" field.
+func (m *UserFollowInfoMutation) AddFollowID(u int64) {
 	if m.addfollow_id != nil {
-		*m.addfollow_id += i
+		*m.addfollow_id += u
 	} else {
-		m.addfollow_id = &i
+		m.addfollow_id = &u
 	}
 }
 
@@ -1431,9 +1500,22 @@ func (m *UserFollowInfoMutation) OldCreateTime(ctx context.Context) (v time.Time
 	return oldValue.CreateTime, nil
 }
 
+// ClearCreateTime clears the value of the "create_time" field.
+func (m *UserFollowInfoMutation) ClearCreateTime() {
+	m.create_time = nil
+	m.clearedFields[userfollowinfo.FieldCreateTime] = struct{}{}
+}
+
+// CreateTimeCleared returns if the "create_time" field was cleared in this mutation.
+func (m *UserFollowInfoMutation) CreateTimeCleared() bool {
+	_, ok := m.clearedFields[userfollowinfo.FieldCreateTime]
+	return ok
+}
+
 // ResetCreateTime resets all changes to the "create_time" field.
 func (m *UserFollowInfoMutation) ResetCreateTime() {
 	m.create_time = nil
+	delete(m.clearedFields, userfollowinfo.FieldCreateTime)
 }
 
 // SetUpdateTime sets the "update_time" field.
@@ -1467,9 +1549,22 @@ func (m *UserFollowInfoMutation) OldUpdateTime(ctx context.Context) (v time.Time
 	return oldValue.UpdateTime, nil
 }
 
+// ClearUpdateTime clears the value of the "update_time" field.
+func (m *UserFollowInfoMutation) ClearUpdateTime() {
+	m.update_time = nil
+	m.clearedFields[userfollowinfo.FieldUpdateTime] = struct{}{}
+}
+
+// UpdateTimeCleared returns if the "update_time" field was cleared in this mutation.
+func (m *UserFollowInfoMutation) UpdateTimeCleared() bool {
+	_, ok := m.clearedFields[userfollowinfo.FieldUpdateTime]
+	return ok
+}
+
 // ResetUpdateTime resets all changes to the "update_time" field.
 func (m *UserFollowInfoMutation) ResetUpdateTime() {
 	m.update_time = nil
+	delete(m.clearedFields, userfollowinfo.FieldUpdateTime)
 }
 
 // Where appends a list predicates to the UserFollowInfoMutation builder.
@@ -1569,14 +1664,14 @@ func (m *UserFollowInfoMutation) OldField(ctx context.Context, name string) (ent
 func (m *UserFollowInfoMutation) SetField(name string, value ent.Value) error {
 	switch name {
 	case userfollowinfo.FieldUserID:
-		v, ok := value.(int64)
+		v, ok := value.(uint64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetUserID(v)
 		return nil
 	case userfollowinfo.FieldFollowID:
-		v, ok := value.(int64)
+		v, ok := value.(uint64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -1671,7 +1766,14 @@ func (m *UserFollowInfoMutation) AddField(name string, value ent.Value) error {
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *UserFollowInfoMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(userfollowinfo.FieldCreateTime) {
+		fields = append(fields, userfollowinfo.FieldCreateTime)
+	}
+	if m.FieldCleared(userfollowinfo.FieldUpdateTime) {
+		fields = append(fields, userfollowinfo.FieldUpdateTime)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -1684,6 +1786,14 @@ func (m *UserFollowInfoMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *UserFollowInfoMutation) ClearField(name string) error {
+	switch name {
+	case userfollowinfo.FieldCreateTime:
+		m.ClearCreateTime()
+		return nil
+	case userfollowinfo.FieldUpdateTime:
+		m.ClearUpdateTime()
+		return nil
+	}
 	return fmt.Errorf("unknown UserFollowInfo nullable field %s", name)
 }
 
@@ -1764,10 +1874,12 @@ type UserPasswordMutation struct {
 	op            Op
 	typ           string
 	id            *int
-	user_id       *int64
+	user_id       *uint64
 	adduser_id    *int64
 	salt          *string
 	pwd           *string
+	create_time   *time.Time
+	update_time   *time.Time
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*UserPassword, error)
@@ -1844,6 +1956,12 @@ func (m UserPasswordMutation) Tx() (*Tx, error) {
 	return tx, nil
 }
 
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of UserPassword entities.
+func (m *UserPasswordMutation) SetID(id int) {
+	m.id = &id
+}
+
 // ID returns the ID value in the mutation. Note that the ID is only available
 // if it was provided to the builder or after it was returned from the database.
 func (m *UserPasswordMutation) ID() (id int, exists bool) {
@@ -1873,13 +1991,13 @@ func (m *UserPasswordMutation) IDs(ctx context.Context) ([]int, error) {
 }
 
 // SetUserID sets the "user_id" field.
-func (m *UserPasswordMutation) SetUserID(i int64) {
-	m.user_id = &i
+func (m *UserPasswordMutation) SetUserID(u uint64) {
+	m.user_id = &u
 	m.adduser_id = nil
 }
 
 // UserID returns the value of the "user_id" field in the mutation.
-func (m *UserPasswordMutation) UserID() (r int64, exists bool) {
+func (m *UserPasswordMutation) UserID() (r uint64, exists bool) {
 	v := m.user_id
 	if v == nil {
 		return
@@ -1890,7 +2008,7 @@ func (m *UserPasswordMutation) UserID() (r int64, exists bool) {
 // OldUserID returns the old "user_id" field's value of the UserPassword entity.
 // If the UserPassword object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserPasswordMutation) OldUserID(ctx context.Context) (v int64, err error) {
+func (m *UserPasswordMutation) OldUserID(ctx context.Context) (v uint64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldUserID is only allowed on UpdateOne operations")
 	}
@@ -1904,12 +2022,12 @@ func (m *UserPasswordMutation) OldUserID(ctx context.Context) (v int64, err erro
 	return oldValue.UserID, nil
 }
 
-// AddUserID adds i to the "user_id" field.
-func (m *UserPasswordMutation) AddUserID(i int64) {
+// AddUserID adds u to the "user_id" field.
+func (m *UserPasswordMutation) AddUserID(u int64) {
 	if m.adduser_id != nil {
-		*m.adduser_id += i
+		*m.adduser_id += u
 	} else {
-		m.adduser_id = &i
+		m.adduser_id = &u
 	}
 }
 
@@ -2014,6 +2132,104 @@ func (m *UserPasswordMutation) ResetPwd() {
 	m.pwd = nil
 }
 
+// SetCreateTime sets the "create_time" field.
+func (m *UserPasswordMutation) SetCreateTime(t time.Time) {
+	m.create_time = &t
+}
+
+// CreateTime returns the value of the "create_time" field in the mutation.
+func (m *UserPasswordMutation) CreateTime() (r time.Time, exists bool) {
+	v := m.create_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreateTime returns the old "create_time" field's value of the UserPassword entity.
+// If the UserPassword object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserPasswordMutation) OldCreateTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreateTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreateTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreateTime: %w", err)
+	}
+	return oldValue.CreateTime, nil
+}
+
+// ClearCreateTime clears the value of the "create_time" field.
+func (m *UserPasswordMutation) ClearCreateTime() {
+	m.create_time = nil
+	m.clearedFields[userpassword.FieldCreateTime] = struct{}{}
+}
+
+// CreateTimeCleared returns if the "create_time" field was cleared in this mutation.
+func (m *UserPasswordMutation) CreateTimeCleared() bool {
+	_, ok := m.clearedFields[userpassword.FieldCreateTime]
+	return ok
+}
+
+// ResetCreateTime resets all changes to the "create_time" field.
+func (m *UserPasswordMutation) ResetCreateTime() {
+	m.create_time = nil
+	delete(m.clearedFields, userpassword.FieldCreateTime)
+}
+
+// SetUpdateTime sets the "update_time" field.
+func (m *UserPasswordMutation) SetUpdateTime(t time.Time) {
+	m.update_time = &t
+}
+
+// UpdateTime returns the value of the "update_time" field in the mutation.
+func (m *UserPasswordMutation) UpdateTime() (r time.Time, exists bool) {
+	v := m.update_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdateTime returns the old "update_time" field's value of the UserPassword entity.
+// If the UserPassword object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserPasswordMutation) OldUpdateTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdateTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdateTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdateTime: %w", err)
+	}
+	return oldValue.UpdateTime, nil
+}
+
+// ClearUpdateTime clears the value of the "update_time" field.
+func (m *UserPasswordMutation) ClearUpdateTime() {
+	m.update_time = nil
+	m.clearedFields[userpassword.FieldUpdateTime] = struct{}{}
+}
+
+// UpdateTimeCleared returns if the "update_time" field was cleared in this mutation.
+func (m *UserPasswordMutation) UpdateTimeCleared() bool {
+	_, ok := m.clearedFields[userpassword.FieldUpdateTime]
+	return ok
+}
+
+// ResetUpdateTime resets all changes to the "update_time" field.
+func (m *UserPasswordMutation) ResetUpdateTime() {
+	m.update_time = nil
+	delete(m.clearedFields, userpassword.FieldUpdateTime)
+}
+
 // Where appends a list predicates to the UserPasswordMutation builder.
 func (m *UserPasswordMutation) Where(ps ...predicate.UserPassword) {
 	m.predicates = append(m.predicates, ps...)
@@ -2048,7 +2264,7 @@ func (m *UserPasswordMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *UserPasswordMutation) Fields() []string {
-	fields := make([]string, 0, 3)
+	fields := make([]string, 0, 5)
 	if m.user_id != nil {
 		fields = append(fields, userpassword.FieldUserID)
 	}
@@ -2057,6 +2273,12 @@ func (m *UserPasswordMutation) Fields() []string {
 	}
 	if m.pwd != nil {
 		fields = append(fields, userpassword.FieldPwd)
+	}
+	if m.create_time != nil {
+		fields = append(fields, userpassword.FieldCreateTime)
+	}
+	if m.update_time != nil {
+		fields = append(fields, userpassword.FieldUpdateTime)
 	}
 	return fields
 }
@@ -2072,6 +2294,10 @@ func (m *UserPasswordMutation) Field(name string) (ent.Value, bool) {
 		return m.Salt()
 	case userpassword.FieldPwd:
 		return m.Pwd()
+	case userpassword.FieldCreateTime:
+		return m.CreateTime()
+	case userpassword.FieldUpdateTime:
+		return m.UpdateTime()
 	}
 	return nil, false
 }
@@ -2087,6 +2313,10 @@ func (m *UserPasswordMutation) OldField(ctx context.Context, name string) (ent.V
 		return m.OldSalt(ctx)
 	case userpassword.FieldPwd:
 		return m.OldPwd(ctx)
+	case userpassword.FieldCreateTime:
+		return m.OldCreateTime(ctx)
+	case userpassword.FieldUpdateTime:
+		return m.OldUpdateTime(ctx)
 	}
 	return nil, fmt.Errorf("unknown UserPassword field %s", name)
 }
@@ -2097,7 +2327,7 @@ func (m *UserPasswordMutation) OldField(ctx context.Context, name string) (ent.V
 func (m *UserPasswordMutation) SetField(name string, value ent.Value) error {
 	switch name {
 	case userpassword.FieldUserID:
-		v, ok := value.(int64)
+		v, ok := value.(uint64)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -2116,6 +2346,20 @@ func (m *UserPasswordMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetPwd(v)
+		return nil
+	case userpassword.FieldCreateTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreateTime(v)
+		return nil
+	case userpassword.FieldUpdateTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdateTime(v)
 		return nil
 	}
 	return fmt.Errorf("unknown UserPassword field %s", name)
@@ -2165,6 +2409,12 @@ func (m *UserPasswordMutation) ClearedFields() []string {
 	if m.FieldCleared(userpassword.FieldUserID) {
 		fields = append(fields, userpassword.FieldUserID)
 	}
+	if m.FieldCleared(userpassword.FieldCreateTime) {
+		fields = append(fields, userpassword.FieldCreateTime)
+	}
+	if m.FieldCleared(userpassword.FieldUpdateTime) {
+		fields = append(fields, userpassword.FieldUpdateTime)
+	}
 	return fields
 }
 
@@ -2182,6 +2432,12 @@ func (m *UserPasswordMutation) ClearField(name string) error {
 	case userpassword.FieldUserID:
 		m.ClearUserID()
 		return nil
+	case userpassword.FieldCreateTime:
+		m.ClearCreateTime()
+		return nil
+	case userpassword.FieldUpdateTime:
+		m.ClearUpdateTime()
+		return nil
 	}
 	return fmt.Errorf("unknown UserPassword nullable field %s", name)
 }
@@ -2198,6 +2454,12 @@ func (m *UserPasswordMutation) ResetField(name string) error {
 		return nil
 	case userpassword.FieldPwd:
 		m.ResetPwd()
+		return nil
+	case userpassword.FieldCreateTime:
+		m.ResetCreateTime()
+		return nil
+	case userpassword.FieldUpdateTime:
+		m.ResetUpdateTime()
 		return nil
 	}
 	return fmt.Errorf("unknown UserPassword field %s", name)
@@ -2257,10 +2519,10 @@ type VideoCollectionMutation struct {
 	op            Op
 	typ           string
 	id            *int
-	user_id       *int64
-	adduser_id    *int64
-	video_id      *int64
-	addvideo_id   *int64
+	user_id       *int
+	adduser_id    *int
+	video_id      *int
+	addvideo_id   *int
 	status        *int8
 	addstatus     *int8
 	create_time   *time.Time
@@ -2341,6 +2603,12 @@ func (m VideoCollectionMutation) Tx() (*Tx, error) {
 	return tx, nil
 }
 
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of VideoCollection entities.
+func (m *VideoCollectionMutation) SetID(id int) {
+	m.id = &id
+}
+
 // ID returns the ID value in the mutation. Note that the ID is only available
 // if it was provided to the builder or after it was returned from the database.
 func (m *VideoCollectionMutation) ID() (id int, exists bool) {
@@ -2370,13 +2638,13 @@ func (m *VideoCollectionMutation) IDs(ctx context.Context) ([]int, error) {
 }
 
 // SetUserID sets the "user_id" field.
-func (m *VideoCollectionMutation) SetUserID(i int64) {
+func (m *VideoCollectionMutation) SetUserID(i int) {
 	m.user_id = &i
 	m.adduser_id = nil
 }
 
 // UserID returns the value of the "user_id" field in the mutation.
-func (m *VideoCollectionMutation) UserID() (r int64, exists bool) {
+func (m *VideoCollectionMutation) UserID() (r int, exists bool) {
 	v := m.user_id
 	if v == nil {
 		return
@@ -2387,7 +2655,7 @@ func (m *VideoCollectionMutation) UserID() (r int64, exists bool) {
 // OldUserID returns the old "user_id" field's value of the VideoCollection entity.
 // If the VideoCollection object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *VideoCollectionMutation) OldUserID(ctx context.Context) (v int64, err error) {
+func (m *VideoCollectionMutation) OldUserID(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldUserID is only allowed on UpdateOne operations")
 	}
@@ -2402,7 +2670,7 @@ func (m *VideoCollectionMutation) OldUserID(ctx context.Context) (v int64, err e
 }
 
 // AddUserID adds i to the "user_id" field.
-func (m *VideoCollectionMutation) AddUserID(i int64) {
+func (m *VideoCollectionMutation) AddUserID(i int) {
 	if m.adduser_id != nil {
 		*m.adduser_id += i
 	} else {
@@ -2411,7 +2679,7 @@ func (m *VideoCollectionMutation) AddUserID(i int64) {
 }
 
 // AddedUserID returns the value that was added to the "user_id" field in this mutation.
-func (m *VideoCollectionMutation) AddedUserID() (r int64, exists bool) {
+func (m *VideoCollectionMutation) AddedUserID() (r int, exists bool) {
 	v := m.adduser_id
 	if v == nil {
 		return
@@ -2426,13 +2694,13 @@ func (m *VideoCollectionMutation) ResetUserID() {
 }
 
 // SetVideoID sets the "video_id" field.
-func (m *VideoCollectionMutation) SetVideoID(i int64) {
+func (m *VideoCollectionMutation) SetVideoID(i int) {
 	m.video_id = &i
 	m.addvideo_id = nil
 }
 
 // VideoID returns the value of the "video_id" field in the mutation.
-func (m *VideoCollectionMutation) VideoID() (r int64, exists bool) {
+func (m *VideoCollectionMutation) VideoID() (r int, exists bool) {
 	v := m.video_id
 	if v == nil {
 		return
@@ -2443,7 +2711,7 @@ func (m *VideoCollectionMutation) VideoID() (r int64, exists bool) {
 // OldVideoID returns the old "video_id" field's value of the VideoCollection entity.
 // If the VideoCollection object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *VideoCollectionMutation) OldVideoID(ctx context.Context) (v int64, err error) {
+func (m *VideoCollectionMutation) OldVideoID(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldVideoID is only allowed on UpdateOne operations")
 	}
@@ -2458,7 +2726,7 @@ func (m *VideoCollectionMutation) OldVideoID(ctx context.Context) (v int64, err 
 }
 
 // AddVideoID adds i to the "video_id" field.
-func (m *VideoCollectionMutation) AddVideoID(i int64) {
+func (m *VideoCollectionMutation) AddVideoID(i int) {
 	if m.addvideo_id != nil {
 		*m.addvideo_id += i
 	} else {
@@ -2467,7 +2735,7 @@ func (m *VideoCollectionMutation) AddVideoID(i int64) {
 }
 
 // AddedVideoID returns the value that was added to the "video_id" field in this mutation.
-func (m *VideoCollectionMutation) AddedVideoID() (r int64, exists bool) {
+func (m *VideoCollectionMutation) AddedVideoID() (r int, exists bool) {
 	v := m.addvideo_id
 	if v == nil {
 		return
@@ -2568,9 +2836,22 @@ func (m *VideoCollectionMutation) OldCreateTime(ctx context.Context) (v time.Tim
 	return oldValue.CreateTime, nil
 }
 
+// ClearCreateTime clears the value of the "create_time" field.
+func (m *VideoCollectionMutation) ClearCreateTime() {
+	m.create_time = nil
+	m.clearedFields[videocollection.FieldCreateTime] = struct{}{}
+}
+
+// CreateTimeCleared returns if the "create_time" field was cleared in this mutation.
+func (m *VideoCollectionMutation) CreateTimeCleared() bool {
+	_, ok := m.clearedFields[videocollection.FieldCreateTime]
+	return ok
+}
+
 // ResetCreateTime resets all changes to the "create_time" field.
 func (m *VideoCollectionMutation) ResetCreateTime() {
 	m.create_time = nil
+	delete(m.clearedFields, videocollection.FieldCreateTime)
 }
 
 // SetUpdateTime sets the "update_time" field.
@@ -2604,9 +2885,22 @@ func (m *VideoCollectionMutation) OldUpdateTime(ctx context.Context) (v time.Tim
 	return oldValue.UpdateTime, nil
 }
 
+// ClearUpdateTime clears the value of the "update_time" field.
+func (m *VideoCollectionMutation) ClearUpdateTime() {
+	m.update_time = nil
+	m.clearedFields[videocollection.FieldUpdateTime] = struct{}{}
+}
+
+// UpdateTimeCleared returns if the "update_time" field was cleared in this mutation.
+func (m *VideoCollectionMutation) UpdateTimeCleared() bool {
+	_, ok := m.clearedFields[videocollection.FieldUpdateTime]
+	return ok
+}
+
 // ResetUpdateTime resets all changes to the "update_time" field.
 func (m *VideoCollectionMutation) ResetUpdateTime() {
 	m.update_time = nil
+	delete(m.clearedFields, videocollection.FieldUpdateTime)
 }
 
 // Where appends a list predicates to the VideoCollectionMutation builder.
@@ -2706,14 +3000,14 @@ func (m *VideoCollectionMutation) OldField(ctx context.Context, name string) (en
 func (m *VideoCollectionMutation) SetField(name string, value ent.Value) error {
 	switch name {
 	case videocollection.FieldUserID:
-		v, ok := value.(int64)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetUserID(v)
 		return nil
 	case videocollection.FieldVideoID:
-		v, ok := value.(int64)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -2781,14 +3075,14 @@ func (m *VideoCollectionMutation) AddedField(name string) (ent.Value, bool) {
 func (m *VideoCollectionMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case videocollection.FieldUserID:
-		v, ok := value.(int64)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddUserID(v)
 		return nil
 	case videocollection.FieldVideoID:
-		v, ok := value.(int64)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -2808,7 +3102,14 @@ func (m *VideoCollectionMutation) AddField(name string, value ent.Value) error {
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *VideoCollectionMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(videocollection.FieldCreateTime) {
+		fields = append(fields, videocollection.FieldCreateTime)
+	}
+	if m.FieldCleared(videocollection.FieldUpdateTime) {
+		fields = append(fields, videocollection.FieldUpdateTime)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -2821,6 +3122,14 @@ func (m *VideoCollectionMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *VideoCollectionMutation) ClearField(name string) error {
+	switch name {
+	case videocollection.FieldCreateTime:
+		m.ClearCreateTime()
+		return nil
+	case videocollection.FieldUpdateTime:
+		m.ClearUpdateTime()
+		return nil
+	}
 	return fmt.Errorf("unknown VideoCollection nullable field %s", name)
 }
 
@@ -2901,14 +3210,14 @@ type VideoCommentMutation struct {
 	op             Op
 	typ            string
 	id             *int
-	comment_id     *int64
-	addcomment_id  *int64
-	pcomment_id    *int64
-	addpcomment_id *int64
-	video_id       *int64
-	addvideo_id    *int64
-	user_id        *int64
-	adduser_id     *int64
+	comment_id     *int
+	addcomment_id  *int
+	pcomment_id    *int
+	addpcomment_id *int
+	video_id       *int
+	addvideo_id    *int
+	user_id        *int
+	adduser_id     *int
 	comment_text   *string
 	create_time    *time.Time
 	update_time    *time.Time
@@ -2988,6 +3297,12 @@ func (m VideoCommentMutation) Tx() (*Tx, error) {
 	return tx, nil
 }
 
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of VideoComment entities.
+func (m *VideoCommentMutation) SetID(id int) {
+	m.id = &id
+}
+
 // ID returns the ID value in the mutation. Note that the ID is only available
 // if it was provided to the builder or after it was returned from the database.
 func (m *VideoCommentMutation) ID() (id int, exists bool) {
@@ -3017,13 +3332,13 @@ func (m *VideoCommentMutation) IDs(ctx context.Context) ([]int, error) {
 }
 
 // SetCommentID sets the "comment_id" field.
-func (m *VideoCommentMutation) SetCommentID(i int64) {
+func (m *VideoCommentMutation) SetCommentID(i int) {
 	m.comment_id = &i
 	m.addcomment_id = nil
 }
 
 // CommentID returns the value of the "comment_id" field in the mutation.
-func (m *VideoCommentMutation) CommentID() (r int64, exists bool) {
+func (m *VideoCommentMutation) CommentID() (r int, exists bool) {
 	v := m.comment_id
 	if v == nil {
 		return
@@ -3034,7 +3349,7 @@ func (m *VideoCommentMutation) CommentID() (r int64, exists bool) {
 // OldCommentID returns the old "comment_id" field's value of the VideoComment entity.
 // If the VideoComment object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *VideoCommentMutation) OldCommentID(ctx context.Context) (v int64, err error) {
+func (m *VideoCommentMutation) OldCommentID(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldCommentID is only allowed on UpdateOne operations")
 	}
@@ -3049,7 +3364,7 @@ func (m *VideoCommentMutation) OldCommentID(ctx context.Context) (v int64, err e
 }
 
 // AddCommentID adds i to the "comment_id" field.
-func (m *VideoCommentMutation) AddCommentID(i int64) {
+func (m *VideoCommentMutation) AddCommentID(i int) {
 	if m.addcomment_id != nil {
 		*m.addcomment_id += i
 	} else {
@@ -3058,7 +3373,7 @@ func (m *VideoCommentMutation) AddCommentID(i int64) {
 }
 
 // AddedCommentID returns the value that was added to the "comment_id" field in this mutation.
-func (m *VideoCommentMutation) AddedCommentID() (r int64, exists bool) {
+func (m *VideoCommentMutation) AddedCommentID() (r int, exists bool) {
 	v := m.addcomment_id
 	if v == nil {
 		return
@@ -3073,13 +3388,13 @@ func (m *VideoCommentMutation) ResetCommentID() {
 }
 
 // SetPcommentID sets the "pcomment_id" field.
-func (m *VideoCommentMutation) SetPcommentID(i int64) {
+func (m *VideoCommentMutation) SetPcommentID(i int) {
 	m.pcomment_id = &i
 	m.addpcomment_id = nil
 }
 
 // PcommentID returns the value of the "pcomment_id" field in the mutation.
-func (m *VideoCommentMutation) PcommentID() (r int64, exists bool) {
+func (m *VideoCommentMutation) PcommentID() (r int, exists bool) {
 	v := m.pcomment_id
 	if v == nil {
 		return
@@ -3090,7 +3405,7 @@ func (m *VideoCommentMutation) PcommentID() (r int64, exists bool) {
 // OldPcommentID returns the old "pcomment_id" field's value of the VideoComment entity.
 // If the VideoComment object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *VideoCommentMutation) OldPcommentID(ctx context.Context) (v int64, err error) {
+func (m *VideoCommentMutation) OldPcommentID(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldPcommentID is only allowed on UpdateOne operations")
 	}
@@ -3105,7 +3420,7 @@ func (m *VideoCommentMutation) OldPcommentID(ctx context.Context) (v int64, err 
 }
 
 // AddPcommentID adds i to the "pcomment_id" field.
-func (m *VideoCommentMutation) AddPcommentID(i int64) {
+func (m *VideoCommentMutation) AddPcommentID(i int) {
 	if m.addpcomment_id != nil {
 		*m.addpcomment_id += i
 	} else {
@@ -3114,7 +3429,7 @@ func (m *VideoCommentMutation) AddPcommentID(i int64) {
 }
 
 // AddedPcommentID returns the value that was added to the "pcomment_id" field in this mutation.
-func (m *VideoCommentMutation) AddedPcommentID() (r int64, exists bool) {
+func (m *VideoCommentMutation) AddedPcommentID() (r int, exists bool) {
 	v := m.addpcomment_id
 	if v == nil {
 		return
@@ -3129,13 +3444,13 @@ func (m *VideoCommentMutation) ResetPcommentID() {
 }
 
 // SetVideoID sets the "video_id" field.
-func (m *VideoCommentMutation) SetVideoID(i int64) {
+func (m *VideoCommentMutation) SetVideoID(i int) {
 	m.video_id = &i
 	m.addvideo_id = nil
 }
 
 // VideoID returns the value of the "video_id" field in the mutation.
-func (m *VideoCommentMutation) VideoID() (r int64, exists bool) {
+func (m *VideoCommentMutation) VideoID() (r int, exists bool) {
 	v := m.video_id
 	if v == nil {
 		return
@@ -3146,7 +3461,7 @@ func (m *VideoCommentMutation) VideoID() (r int64, exists bool) {
 // OldVideoID returns the old "video_id" field's value of the VideoComment entity.
 // If the VideoComment object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *VideoCommentMutation) OldVideoID(ctx context.Context) (v int64, err error) {
+func (m *VideoCommentMutation) OldVideoID(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldVideoID is only allowed on UpdateOne operations")
 	}
@@ -3161,7 +3476,7 @@ func (m *VideoCommentMutation) OldVideoID(ctx context.Context) (v int64, err err
 }
 
 // AddVideoID adds i to the "video_id" field.
-func (m *VideoCommentMutation) AddVideoID(i int64) {
+func (m *VideoCommentMutation) AddVideoID(i int) {
 	if m.addvideo_id != nil {
 		*m.addvideo_id += i
 	} else {
@@ -3170,7 +3485,7 @@ func (m *VideoCommentMutation) AddVideoID(i int64) {
 }
 
 // AddedVideoID returns the value that was added to the "video_id" field in this mutation.
-func (m *VideoCommentMutation) AddedVideoID() (r int64, exists bool) {
+func (m *VideoCommentMutation) AddedVideoID() (r int, exists bool) {
 	v := m.addvideo_id
 	if v == nil {
 		return
@@ -3185,13 +3500,13 @@ func (m *VideoCommentMutation) ResetVideoID() {
 }
 
 // SetUserID sets the "user_id" field.
-func (m *VideoCommentMutation) SetUserID(i int64) {
+func (m *VideoCommentMutation) SetUserID(i int) {
 	m.user_id = &i
 	m.adduser_id = nil
 }
 
 // UserID returns the value of the "user_id" field in the mutation.
-func (m *VideoCommentMutation) UserID() (r int64, exists bool) {
+func (m *VideoCommentMutation) UserID() (r int, exists bool) {
 	v := m.user_id
 	if v == nil {
 		return
@@ -3202,7 +3517,7 @@ func (m *VideoCommentMutation) UserID() (r int64, exists bool) {
 // OldUserID returns the old "user_id" field's value of the VideoComment entity.
 // If the VideoComment object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *VideoCommentMutation) OldUserID(ctx context.Context) (v int64, err error) {
+func (m *VideoCommentMutation) OldUserID(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldUserID is only allowed on UpdateOne operations")
 	}
@@ -3217,7 +3532,7 @@ func (m *VideoCommentMutation) OldUserID(ctx context.Context) (v int64, err erro
 }
 
 // AddUserID adds i to the "user_id" field.
-func (m *VideoCommentMutation) AddUserID(i int64) {
+func (m *VideoCommentMutation) AddUserID(i int) {
 	if m.adduser_id != nil {
 		*m.adduser_id += i
 	} else {
@@ -3226,7 +3541,7 @@ func (m *VideoCommentMutation) AddUserID(i int64) {
 }
 
 // AddedUserID returns the value that was added to the "user_id" field in this mutation.
-func (m *VideoCommentMutation) AddedUserID() (r int64, exists bool) {
+func (m *VideoCommentMutation) AddedUserID() (r int, exists bool) {
 	v := m.adduser_id
 	if v == nil {
 		return
@@ -3320,9 +3635,22 @@ func (m *VideoCommentMutation) OldCreateTime(ctx context.Context) (v time.Time, 
 	return oldValue.CreateTime, nil
 }
 
+// ClearCreateTime clears the value of the "create_time" field.
+func (m *VideoCommentMutation) ClearCreateTime() {
+	m.create_time = nil
+	m.clearedFields[videocomment.FieldCreateTime] = struct{}{}
+}
+
+// CreateTimeCleared returns if the "create_time" field was cleared in this mutation.
+func (m *VideoCommentMutation) CreateTimeCleared() bool {
+	_, ok := m.clearedFields[videocomment.FieldCreateTime]
+	return ok
+}
+
 // ResetCreateTime resets all changes to the "create_time" field.
 func (m *VideoCommentMutation) ResetCreateTime() {
 	m.create_time = nil
+	delete(m.clearedFields, videocomment.FieldCreateTime)
 }
 
 // SetUpdateTime sets the "update_time" field.
@@ -3356,9 +3684,22 @@ func (m *VideoCommentMutation) OldUpdateTime(ctx context.Context) (v time.Time, 
 	return oldValue.UpdateTime, nil
 }
 
+// ClearUpdateTime clears the value of the "update_time" field.
+func (m *VideoCommentMutation) ClearUpdateTime() {
+	m.update_time = nil
+	m.clearedFields[videocomment.FieldUpdateTime] = struct{}{}
+}
+
+// UpdateTimeCleared returns if the "update_time" field was cleared in this mutation.
+func (m *VideoCommentMutation) UpdateTimeCleared() bool {
+	_, ok := m.clearedFields[videocomment.FieldUpdateTime]
+	return ok
+}
+
 // ResetUpdateTime resets all changes to the "update_time" field.
 func (m *VideoCommentMutation) ResetUpdateTime() {
 	m.update_time = nil
+	delete(m.clearedFields, videocomment.FieldUpdateTime)
 }
 
 // Where appends a list predicates to the VideoCommentMutation builder.
@@ -3472,28 +3813,28 @@ func (m *VideoCommentMutation) OldField(ctx context.Context, name string) (ent.V
 func (m *VideoCommentMutation) SetField(name string, value ent.Value) error {
 	switch name {
 	case videocomment.FieldCommentID:
-		v, ok := value.(int64)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetCommentID(v)
 		return nil
 	case videocomment.FieldPcommentID:
-		v, ok := value.(int64)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetPcommentID(v)
 		return nil
 	case videocomment.FieldVideoID:
-		v, ok := value.(int64)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetVideoID(v)
 		return nil
 	case videocomment.FieldUserID:
-		v, ok := value.(int64)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -3566,28 +3907,28 @@ func (m *VideoCommentMutation) AddedField(name string) (ent.Value, bool) {
 func (m *VideoCommentMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case videocomment.FieldCommentID:
-		v, ok := value.(int64)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddCommentID(v)
 		return nil
 	case videocomment.FieldPcommentID:
-		v, ok := value.(int64)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddPcommentID(v)
 		return nil
 	case videocomment.FieldVideoID:
-		v, ok := value.(int64)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddVideoID(v)
 		return nil
 	case videocomment.FieldUserID:
-		v, ok := value.(int64)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -3603,6 +3944,12 @@ func (m *VideoCommentMutation) ClearedFields() []string {
 	var fields []string
 	if m.FieldCleared(videocomment.FieldCommentText) {
 		fields = append(fields, videocomment.FieldCommentText)
+	}
+	if m.FieldCleared(videocomment.FieldCreateTime) {
+		fields = append(fields, videocomment.FieldCreateTime)
+	}
+	if m.FieldCleared(videocomment.FieldUpdateTime) {
+		fields = append(fields, videocomment.FieldUpdateTime)
 	}
 	return fields
 }
@@ -3620,6 +3967,12 @@ func (m *VideoCommentMutation) ClearField(name string) error {
 	switch name {
 	case videocomment.FieldCommentText:
 		m.ClearCommentText()
+		return nil
+	case videocomment.FieldCreateTime:
+		m.ClearCreateTime()
+		return nil
+	case videocomment.FieldUpdateTime:
+		m.ClearUpdateTime()
 		return nil
 	}
 	return fmt.Errorf("unknown VideoComment nullable field %s", name)
@@ -3708,10 +4061,10 @@ type VideoLikeMutation struct {
 	op            Op
 	typ           string
 	id            *int
-	user_id       *int64
-	adduser_id    *int64
-	video_id      *int64
-	addvideo_id   *int64
+	user_id       *int
+	adduser_id    *int
+	video_id      *int
+	addvideo_id   *int
 	status        *int8
 	addstatus     *int8
 	create_time   *time.Time
@@ -3792,6 +4145,12 @@ func (m VideoLikeMutation) Tx() (*Tx, error) {
 	return tx, nil
 }
 
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of VideoLike entities.
+func (m *VideoLikeMutation) SetID(id int) {
+	m.id = &id
+}
+
 // ID returns the ID value in the mutation. Note that the ID is only available
 // if it was provided to the builder or after it was returned from the database.
 func (m *VideoLikeMutation) ID() (id int, exists bool) {
@@ -3821,13 +4180,13 @@ func (m *VideoLikeMutation) IDs(ctx context.Context) ([]int, error) {
 }
 
 // SetUserID sets the "user_id" field.
-func (m *VideoLikeMutation) SetUserID(i int64) {
+func (m *VideoLikeMutation) SetUserID(i int) {
 	m.user_id = &i
 	m.adduser_id = nil
 }
 
 // UserID returns the value of the "user_id" field in the mutation.
-func (m *VideoLikeMutation) UserID() (r int64, exists bool) {
+func (m *VideoLikeMutation) UserID() (r int, exists bool) {
 	v := m.user_id
 	if v == nil {
 		return
@@ -3838,7 +4197,7 @@ func (m *VideoLikeMutation) UserID() (r int64, exists bool) {
 // OldUserID returns the old "user_id" field's value of the VideoLike entity.
 // If the VideoLike object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *VideoLikeMutation) OldUserID(ctx context.Context) (v int64, err error) {
+func (m *VideoLikeMutation) OldUserID(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldUserID is only allowed on UpdateOne operations")
 	}
@@ -3853,7 +4212,7 @@ func (m *VideoLikeMutation) OldUserID(ctx context.Context) (v int64, err error) 
 }
 
 // AddUserID adds i to the "user_id" field.
-func (m *VideoLikeMutation) AddUserID(i int64) {
+func (m *VideoLikeMutation) AddUserID(i int) {
 	if m.adduser_id != nil {
 		*m.adduser_id += i
 	} else {
@@ -3862,7 +4221,7 @@ func (m *VideoLikeMutation) AddUserID(i int64) {
 }
 
 // AddedUserID returns the value that was added to the "user_id" field in this mutation.
-func (m *VideoLikeMutation) AddedUserID() (r int64, exists bool) {
+func (m *VideoLikeMutation) AddedUserID() (r int, exists bool) {
 	v := m.adduser_id
 	if v == nil {
 		return
@@ -3877,13 +4236,13 @@ func (m *VideoLikeMutation) ResetUserID() {
 }
 
 // SetVideoID sets the "video_id" field.
-func (m *VideoLikeMutation) SetVideoID(i int64) {
+func (m *VideoLikeMutation) SetVideoID(i int) {
 	m.video_id = &i
 	m.addvideo_id = nil
 }
 
 // VideoID returns the value of the "video_id" field in the mutation.
-func (m *VideoLikeMutation) VideoID() (r int64, exists bool) {
+func (m *VideoLikeMutation) VideoID() (r int, exists bool) {
 	v := m.video_id
 	if v == nil {
 		return
@@ -3894,7 +4253,7 @@ func (m *VideoLikeMutation) VideoID() (r int64, exists bool) {
 // OldVideoID returns the old "video_id" field's value of the VideoLike entity.
 // If the VideoLike object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *VideoLikeMutation) OldVideoID(ctx context.Context) (v int64, err error) {
+func (m *VideoLikeMutation) OldVideoID(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldVideoID is only allowed on UpdateOne operations")
 	}
@@ -3909,7 +4268,7 @@ func (m *VideoLikeMutation) OldVideoID(ctx context.Context) (v int64, err error)
 }
 
 // AddVideoID adds i to the "video_id" field.
-func (m *VideoLikeMutation) AddVideoID(i int64) {
+func (m *VideoLikeMutation) AddVideoID(i int) {
 	if m.addvideo_id != nil {
 		*m.addvideo_id += i
 	} else {
@@ -3918,7 +4277,7 @@ func (m *VideoLikeMutation) AddVideoID(i int64) {
 }
 
 // AddedVideoID returns the value that was added to the "video_id" field in this mutation.
-func (m *VideoLikeMutation) AddedVideoID() (r int64, exists bool) {
+func (m *VideoLikeMutation) AddedVideoID() (r int, exists bool) {
 	v := m.addvideo_id
 	if v == nil {
 		return
@@ -4019,9 +4378,22 @@ func (m *VideoLikeMutation) OldCreateTime(ctx context.Context) (v time.Time, err
 	return oldValue.CreateTime, nil
 }
 
+// ClearCreateTime clears the value of the "create_time" field.
+func (m *VideoLikeMutation) ClearCreateTime() {
+	m.create_time = nil
+	m.clearedFields[videolike.FieldCreateTime] = struct{}{}
+}
+
+// CreateTimeCleared returns if the "create_time" field was cleared in this mutation.
+func (m *VideoLikeMutation) CreateTimeCleared() bool {
+	_, ok := m.clearedFields[videolike.FieldCreateTime]
+	return ok
+}
+
 // ResetCreateTime resets all changes to the "create_time" field.
 func (m *VideoLikeMutation) ResetCreateTime() {
 	m.create_time = nil
+	delete(m.clearedFields, videolike.FieldCreateTime)
 }
 
 // SetUpdateTime sets the "update_time" field.
@@ -4055,9 +4427,22 @@ func (m *VideoLikeMutation) OldUpdateTime(ctx context.Context) (v time.Time, err
 	return oldValue.UpdateTime, nil
 }
 
+// ClearUpdateTime clears the value of the "update_time" field.
+func (m *VideoLikeMutation) ClearUpdateTime() {
+	m.update_time = nil
+	m.clearedFields[videolike.FieldUpdateTime] = struct{}{}
+}
+
+// UpdateTimeCleared returns if the "update_time" field was cleared in this mutation.
+func (m *VideoLikeMutation) UpdateTimeCleared() bool {
+	_, ok := m.clearedFields[videolike.FieldUpdateTime]
+	return ok
+}
+
 // ResetUpdateTime resets all changes to the "update_time" field.
 func (m *VideoLikeMutation) ResetUpdateTime() {
 	m.update_time = nil
+	delete(m.clearedFields, videolike.FieldUpdateTime)
 }
 
 // Where appends a list predicates to the VideoLikeMutation builder.
@@ -4157,14 +4542,14 @@ func (m *VideoLikeMutation) OldField(ctx context.Context, name string) (ent.Valu
 func (m *VideoLikeMutation) SetField(name string, value ent.Value) error {
 	switch name {
 	case videolike.FieldUserID:
-		v, ok := value.(int64)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetUserID(v)
 		return nil
 	case videolike.FieldVideoID:
-		v, ok := value.(int64)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -4232,14 +4617,14 @@ func (m *VideoLikeMutation) AddedField(name string) (ent.Value, bool) {
 func (m *VideoLikeMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case videolike.FieldUserID:
-		v, ok := value.(int64)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddUserID(v)
 		return nil
 	case videolike.FieldVideoID:
-		v, ok := value.(int64)
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -4259,7 +4644,14 @@ func (m *VideoLikeMutation) AddField(name string, value ent.Value) error {
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *VideoLikeMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(videolike.FieldCreateTime) {
+		fields = append(fields, videolike.FieldCreateTime)
+	}
+	if m.FieldCleared(videolike.FieldUpdateTime) {
+		fields = append(fields, videolike.FieldUpdateTime)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -4272,6 +4664,14 @@ func (m *VideoLikeMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *VideoLikeMutation) ClearField(name string) error {
+	switch name {
+	case videolike.FieldCreateTime:
+		m.ClearCreateTime()
+		return nil
+	case videolike.FieldUpdateTime:
+		m.ClearUpdateTime()
+		return nil
+	}
 	return fmt.Errorf("unknown VideoLike nullable field %s", name)
 }
 
@@ -4346,42 +4746,42 @@ func (m *VideoLikeMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown VideoLike edge %s", name)
 }
 
-// VideoMetadataMutation represents an operation that mutates the VideoMetadata nodes in the graph.
-type VideoMetadataMutation struct {
+// VideoMetadatumMutation represents an operation that mutates the VideoMetadatum nodes in the graph.
+type VideoMetadatumMutation struct {
 	config
 	op                 Op
 	typ                string
 	id                 *int
-	video_id           *int64
-	addvideo_id        *int64
-	user_id            *int64
-	adduser_id         *int64
+	video_id           *int
+	addvideo_id        *int
+	user_id            *int
+	adduser_id         *int
 	cover_url          *string
 	video_url          *string
 	video_intro        *string
-	video_type         *int64
-	addvideo_type      *int64
+	video_type         *int
+	addvideo_type      *int
 	publish_address    *int32
 	addpublish_address *int32
 	create_time        *time.Time
 	update_time        *time.Time
 	clearedFields      map[string]struct{}
 	done               bool
-	oldValue           func(context.Context) (*VideoMetadata, error)
-	predicates         []predicate.VideoMetadata
+	oldValue           func(context.Context) (*VideoMetadatum, error)
+	predicates         []predicate.VideoMetadatum
 }
 
-var _ ent.Mutation = (*VideoMetadataMutation)(nil)
+var _ ent.Mutation = (*VideoMetadatumMutation)(nil)
 
-// videometadataOption allows management of the mutation configuration using functional options.
-type videometadataOption func(*VideoMetadataMutation)
+// videometadatumOption allows management of the mutation configuration using functional options.
+type videometadatumOption func(*VideoMetadatumMutation)
 
-// newVideoMetadataMutation creates new mutation for the VideoMetadata entity.
-func newVideoMetadataMutation(c config, op Op, opts ...videometadataOption) *VideoMetadataMutation {
-	m := &VideoMetadataMutation{
+// newVideoMetadatumMutation creates new mutation for the VideoMetadatum entity.
+func newVideoMetadatumMutation(c config, op Op, opts ...videometadatumOption) *VideoMetadatumMutation {
+	m := &VideoMetadatumMutation{
 		config:        c,
 		op:            op,
-		typ:           TypeVideoMetadata,
+		typ:           TypeVideoMetadatum,
 		clearedFields: make(map[string]struct{}),
 	}
 	for _, opt := range opts {
@@ -4390,20 +4790,20 @@ func newVideoMetadataMutation(c config, op Op, opts ...videometadataOption) *Vid
 	return m
 }
 
-// withVideoMetadataID sets the ID field of the mutation.
-func withVideoMetadataID(id int) videometadataOption {
-	return func(m *VideoMetadataMutation) {
+// withVideoMetadatumID sets the ID field of the mutation.
+func withVideoMetadatumID(id int) videometadatumOption {
+	return func(m *VideoMetadatumMutation) {
 		var (
 			err   error
 			once  sync.Once
-			value *VideoMetadata
+			value *VideoMetadatum
 		)
-		m.oldValue = func(ctx context.Context) (*VideoMetadata, error) {
+		m.oldValue = func(ctx context.Context) (*VideoMetadatum, error) {
 			once.Do(func() {
 				if m.done {
 					err = errors.New("querying old values post mutation is not allowed")
 				} else {
-					value, err = m.Client().VideoMetadata.Get(ctx, id)
+					value, err = m.Client().VideoMetadatum.Get(ctx, id)
 				}
 			})
 			return value, err
@@ -4412,10 +4812,10 @@ func withVideoMetadataID(id int) videometadataOption {
 	}
 }
 
-// withVideoMetadata sets the old VideoMetadata of the mutation.
-func withVideoMetadata(node *VideoMetadata) videometadataOption {
-	return func(m *VideoMetadataMutation) {
-		m.oldValue = func(context.Context) (*VideoMetadata, error) {
+// withVideoMetadatum sets the old VideoMetadatum of the mutation.
+func withVideoMetadatum(node *VideoMetadatum) videometadatumOption {
+	return func(m *VideoMetadatumMutation) {
+		m.oldValue = func(context.Context) (*VideoMetadatum, error) {
 			return node, nil
 		}
 		m.id = &node.ID
@@ -4424,7 +4824,7 @@ func withVideoMetadata(node *VideoMetadata) videometadataOption {
 
 // Client returns a new `ent.Client` from the mutation. If the mutation was
 // executed in a transaction (ent.Tx), a transactional client is returned.
-func (m VideoMetadataMutation) Client() *Client {
+func (m VideoMetadatumMutation) Client() *Client {
 	client := &Client{config: m.config}
 	client.init()
 	return client
@@ -4432,7 +4832,7 @@ func (m VideoMetadataMutation) Client() *Client {
 
 // Tx returns an `ent.Tx` for mutations that were executed in transactions;
 // it returns an error otherwise.
-func (m VideoMetadataMutation) Tx() (*Tx, error) {
+func (m VideoMetadatumMutation) Tx() (*Tx, error) {
 	if _, ok := m.driver.(*txDriver); !ok {
 		return nil, errors.New("ent: mutation is not running in a transaction")
 	}
@@ -4441,9 +4841,15 @@ func (m VideoMetadataMutation) Tx() (*Tx, error) {
 	return tx, nil
 }
 
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of VideoMetadatum entities.
+func (m *VideoMetadatumMutation) SetID(id int) {
+	m.id = &id
+}
+
 // ID returns the ID value in the mutation. Note that the ID is only available
 // if it was provided to the builder or after it was returned from the database.
-func (m *VideoMetadataMutation) ID() (id int, exists bool) {
+func (m *VideoMetadatumMutation) ID() (id int, exists bool) {
 	if m.id == nil {
 		return
 	}
@@ -4454,7 +4860,7 @@ func (m *VideoMetadataMutation) ID() (id int, exists bool) {
 // That means, if the mutation is applied within a transaction with an isolation level such
 // as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
 // or updated by the mutation.
-func (m *VideoMetadataMutation) IDs(ctx context.Context) ([]int, error) {
+func (m *VideoMetadatumMutation) IDs(ctx context.Context) ([]int, error) {
 	switch {
 	case m.op.Is(OpUpdateOne | OpDeleteOne):
 		id, exists := m.ID()
@@ -4463,20 +4869,20 @@ func (m *VideoMetadataMutation) IDs(ctx context.Context) ([]int, error) {
 		}
 		fallthrough
 	case m.op.Is(OpUpdate | OpDelete):
-		return m.Client().VideoMetadata.Query().Where(m.predicates...).IDs(ctx)
+		return m.Client().VideoMetadatum.Query().Where(m.predicates...).IDs(ctx)
 	default:
 		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
 	}
 }
 
 // SetVideoID sets the "video_id" field.
-func (m *VideoMetadataMutation) SetVideoID(i int64) {
+func (m *VideoMetadatumMutation) SetVideoID(i int) {
 	m.video_id = &i
 	m.addvideo_id = nil
 }
 
 // VideoID returns the value of the "video_id" field in the mutation.
-func (m *VideoMetadataMutation) VideoID() (r int64, exists bool) {
+func (m *VideoMetadatumMutation) VideoID() (r int, exists bool) {
 	v := m.video_id
 	if v == nil {
 		return
@@ -4484,10 +4890,10 @@ func (m *VideoMetadataMutation) VideoID() (r int64, exists bool) {
 	return *v, true
 }
 
-// OldVideoID returns the old "video_id" field's value of the VideoMetadata entity.
-// If the VideoMetadata object wasn't provided to the builder, the object is fetched from the database.
+// OldVideoID returns the old "video_id" field's value of the VideoMetadatum entity.
+// If the VideoMetadatum object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *VideoMetadataMutation) OldVideoID(ctx context.Context) (v int64, err error) {
+func (m *VideoMetadatumMutation) OldVideoID(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldVideoID is only allowed on UpdateOne operations")
 	}
@@ -4502,7 +4908,7 @@ func (m *VideoMetadataMutation) OldVideoID(ctx context.Context) (v int64, err er
 }
 
 // AddVideoID adds i to the "video_id" field.
-func (m *VideoMetadataMutation) AddVideoID(i int64) {
+func (m *VideoMetadatumMutation) AddVideoID(i int) {
 	if m.addvideo_id != nil {
 		*m.addvideo_id += i
 	} else {
@@ -4511,7 +4917,7 @@ func (m *VideoMetadataMutation) AddVideoID(i int64) {
 }
 
 // AddedVideoID returns the value that was added to the "video_id" field in this mutation.
-func (m *VideoMetadataMutation) AddedVideoID() (r int64, exists bool) {
+func (m *VideoMetadatumMutation) AddedVideoID() (r int, exists bool) {
 	v := m.addvideo_id
 	if v == nil {
 		return
@@ -4520,19 +4926,19 @@ func (m *VideoMetadataMutation) AddedVideoID() (r int64, exists bool) {
 }
 
 // ResetVideoID resets all changes to the "video_id" field.
-func (m *VideoMetadataMutation) ResetVideoID() {
+func (m *VideoMetadatumMutation) ResetVideoID() {
 	m.video_id = nil
 	m.addvideo_id = nil
 }
 
 // SetUserID sets the "user_id" field.
-func (m *VideoMetadataMutation) SetUserID(i int64) {
+func (m *VideoMetadatumMutation) SetUserID(i int) {
 	m.user_id = &i
 	m.adduser_id = nil
 }
 
 // UserID returns the value of the "user_id" field in the mutation.
-func (m *VideoMetadataMutation) UserID() (r int64, exists bool) {
+func (m *VideoMetadatumMutation) UserID() (r int, exists bool) {
 	v := m.user_id
 	if v == nil {
 		return
@@ -4540,10 +4946,10 @@ func (m *VideoMetadataMutation) UserID() (r int64, exists bool) {
 	return *v, true
 }
 
-// OldUserID returns the old "user_id" field's value of the VideoMetadata entity.
-// If the VideoMetadata object wasn't provided to the builder, the object is fetched from the database.
+// OldUserID returns the old "user_id" field's value of the VideoMetadatum entity.
+// If the VideoMetadatum object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *VideoMetadataMutation) OldUserID(ctx context.Context) (v int64, err error) {
+func (m *VideoMetadatumMutation) OldUserID(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldUserID is only allowed on UpdateOne operations")
 	}
@@ -4558,7 +4964,7 @@ func (m *VideoMetadataMutation) OldUserID(ctx context.Context) (v int64, err err
 }
 
 // AddUserID adds i to the "user_id" field.
-func (m *VideoMetadataMutation) AddUserID(i int64) {
+func (m *VideoMetadatumMutation) AddUserID(i int) {
 	if m.adduser_id != nil {
 		*m.adduser_id += i
 	} else {
@@ -4567,7 +4973,7 @@ func (m *VideoMetadataMutation) AddUserID(i int64) {
 }
 
 // AddedUserID returns the value that was added to the "user_id" field in this mutation.
-func (m *VideoMetadataMutation) AddedUserID() (r int64, exists bool) {
+func (m *VideoMetadatumMutation) AddedUserID() (r int, exists bool) {
 	v := m.adduser_id
 	if v == nil {
 		return
@@ -4576,18 +4982,18 @@ func (m *VideoMetadataMutation) AddedUserID() (r int64, exists bool) {
 }
 
 // ResetUserID resets all changes to the "user_id" field.
-func (m *VideoMetadataMutation) ResetUserID() {
+func (m *VideoMetadatumMutation) ResetUserID() {
 	m.user_id = nil
 	m.adduser_id = nil
 }
 
 // SetCoverURL sets the "cover_url" field.
-func (m *VideoMetadataMutation) SetCoverURL(s string) {
+func (m *VideoMetadatumMutation) SetCoverURL(s string) {
 	m.cover_url = &s
 }
 
 // CoverURL returns the value of the "cover_url" field in the mutation.
-func (m *VideoMetadataMutation) CoverURL() (r string, exists bool) {
+func (m *VideoMetadatumMutation) CoverURL() (r string, exists bool) {
 	v := m.cover_url
 	if v == nil {
 		return
@@ -4595,10 +5001,10 @@ func (m *VideoMetadataMutation) CoverURL() (r string, exists bool) {
 	return *v, true
 }
 
-// OldCoverURL returns the old "cover_url" field's value of the VideoMetadata entity.
-// If the VideoMetadata object wasn't provided to the builder, the object is fetched from the database.
+// OldCoverURL returns the old "cover_url" field's value of the VideoMetadatum entity.
+// If the VideoMetadatum object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *VideoMetadataMutation) OldCoverURL(ctx context.Context) (v string, err error) {
+func (m *VideoMetadatumMutation) OldCoverURL(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldCoverURL is only allowed on UpdateOne operations")
 	}
@@ -4613,17 +5019,17 @@ func (m *VideoMetadataMutation) OldCoverURL(ctx context.Context) (v string, err 
 }
 
 // ResetCoverURL resets all changes to the "cover_url" field.
-func (m *VideoMetadataMutation) ResetCoverURL() {
+func (m *VideoMetadatumMutation) ResetCoverURL() {
 	m.cover_url = nil
 }
 
 // SetVideoURL sets the "video_url" field.
-func (m *VideoMetadataMutation) SetVideoURL(s string) {
+func (m *VideoMetadatumMutation) SetVideoURL(s string) {
 	m.video_url = &s
 }
 
 // VideoURL returns the value of the "video_url" field in the mutation.
-func (m *VideoMetadataMutation) VideoURL() (r string, exists bool) {
+func (m *VideoMetadatumMutation) VideoURL() (r string, exists bool) {
 	v := m.video_url
 	if v == nil {
 		return
@@ -4631,10 +5037,10 @@ func (m *VideoMetadataMutation) VideoURL() (r string, exists bool) {
 	return *v, true
 }
 
-// OldVideoURL returns the old "video_url" field's value of the VideoMetadata entity.
-// If the VideoMetadata object wasn't provided to the builder, the object is fetched from the database.
+// OldVideoURL returns the old "video_url" field's value of the VideoMetadatum entity.
+// If the VideoMetadatum object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *VideoMetadataMutation) OldVideoURL(ctx context.Context) (v string, err error) {
+func (m *VideoMetadatumMutation) OldVideoURL(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldVideoURL is only allowed on UpdateOne operations")
 	}
@@ -4649,17 +5055,17 @@ func (m *VideoMetadataMutation) OldVideoURL(ctx context.Context) (v string, err 
 }
 
 // ResetVideoURL resets all changes to the "video_url" field.
-func (m *VideoMetadataMutation) ResetVideoURL() {
+func (m *VideoMetadatumMutation) ResetVideoURL() {
 	m.video_url = nil
 }
 
 // SetVideoIntro sets the "video_intro" field.
-func (m *VideoMetadataMutation) SetVideoIntro(s string) {
+func (m *VideoMetadatumMutation) SetVideoIntro(s string) {
 	m.video_intro = &s
 }
 
 // VideoIntro returns the value of the "video_intro" field in the mutation.
-func (m *VideoMetadataMutation) VideoIntro() (r string, exists bool) {
+func (m *VideoMetadatumMutation) VideoIntro() (r string, exists bool) {
 	v := m.video_intro
 	if v == nil {
 		return
@@ -4667,10 +5073,10 @@ func (m *VideoMetadataMutation) VideoIntro() (r string, exists bool) {
 	return *v, true
 }
 
-// OldVideoIntro returns the old "video_intro" field's value of the VideoMetadata entity.
-// If the VideoMetadata object wasn't provided to the builder, the object is fetched from the database.
+// OldVideoIntro returns the old "video_intro" field's value of the VideoMetadatum entity.
+// If the VideoMetadatum object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *VideoMetadataMutation) OldVideoIntro(ctx context.Context) (v string, err error) {
+func (m *VideoMetadatumMutation) OldVideoIntro(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldVideoIntro is only allowed on UpdateOne operations")
 	}
@@ -4685,31 +5091,31 @@ func (m *VideoMetadataMutation) OldVideoIntro(ctx context.Context) (v string, er
 }
 
 // ClearVideoIntro clears the value of the "video_intro" field.
-func (m *VideoMetadataMutation) ClearVideoIntro() {
+func (m *VideoMetadatumMutation) ClearVideoIntro() {
 	m.video_intro = nil
-	m.clearedFields[videometadata.FieldVideoIntro] = struct{}{}
+	m.clearedFields[videometadatum.FieldVideoIntro] = struct{}{}
 }
 
 // VideoIntroCleared returns if the "video_intro" field was cleared in this mutation.
-func (m *VideoMetadataMutation) VideoIntroCleared() bool {
-	_, ok := m.clearedFields[videometadata.FieldVideoIntro]
+func (m *VideoMetadatumMutation) VideoIntroCleared() bool {
+	_, ok := m.clearedFields[videometadatum.FieldVideoIntro]
 	return ok
 }
 
 // ResetVideoIntro resets all changes to the "video_intro" field.
-func (m *VideoMetadataMutation) ResetVideoIntro() {
+func (m *VideoMetadatumMutation) ResetVideoIntro() {
 	m.video_intro = nil
-	delete(m.clearedFields, videometadata.FieldVideoIntro)
+	delete(m.clearedFields, videometadatum.FieldVideoIntro)
 }
 
 // SetVideoType sets the "video_type" field.
-func (m *VideoMetadataMutation) SetVideoType(i int64) {
+func (m *VideoMetadatumMutation) SetVideoType(i int) {
 	m.video_type = &i
 	m.addvideo_type = nil
 }
 
 // VideoType returns the value of the "video_type" field in the mutation.
-func (m *VideoMetadataMutation) VideoType() (r int64, exists bool) {
+func (m *VideoMetadatumMutation) VideoType() (r int, exists bool) {
 	v := m.video_type
 	if v == nil {
 		return
@@ -4717,10 +5123,10 @@ func (m *VideoMetadataMutation) VideoType() (r int64, exists bool) {
 	return *v, true
 }
 
-// OldVideoType returns the old "video_type" field's value of the VideoMetadata entity.
-// If the VideoMetadata object wasn't provided to the builder, the object is fetched from the database.
+// OldVideoType returns the old "video_type" field's value of the VideoMetadatum entity.
+// If the VideoMetadatum object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *VideoMetadataMutation) OldVideoType(ctx context.Context) (v int64, err error) {
+func (m *VideoMetadatumMutation) OldVideoType(ctx context.Context) (v int, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldVideoType is only allowed on UpdateOne operations")
 	}
@@ -4735,7 +5141,7 @@ func (m *VideoMetadataMutation) OldVideoType(ctx context.Context) (v int64, err 
 }
 
 // AddVideoType adds i to the "video_type" field.
-func (m *VideoMetadataMutation) AddVideoType(i int64) {
+func (m *VideoMetadatumMutation) AddVideoType(i int) {
 	if m.addvideo_type != nil {
 		*m.addvideo_type += i
 	} else {
@@ -4744,7 +5150,7 @@ func (m *VideoMetadataMutation) AddVideoType(i int64) {
 }
 
 // AddedVideoType returns the value that was added to the "video_type" field in this mutation.
-func (m *VideoMetadataMutation) AddedVideoType() (r int64, exists bool) {
+func (m *VideoMetadatumMutation) AddedVideoType() (r int, exists bool) {
 	v := m.addvideo_type
 	if v == nil {
 		return
@@ -4753,19 +5159,19 @@ func (m *VideoMetadataMutation) AddedVideoType() (r int64, exists bool) {
 }
 
 // ResetVideoType resets all changes to the "video_type" field.
-func (m *VideoMetadataMutation) ResetVideoType() {
+func (m *VideoMetadatumMutation) ResetVideoType() {
 	m.video_type = nil
 	m.addvideo_type = nil
 }
 
 // SetPublishAddress sets the "publish_address" field.
-func (m *VideoMetadataMutation) SetPublishAddress(i int32) {
+func (m *VideoMetadatumMutation) SetPublishAddress(i int32) {
 	m.publish_address = &i
 	m.addpublish_address = nil
 }
 
 // PublishAddress returns the value of the "publish_address" field in the mutation.
-func (m *VideoMetadataMutation) PublishAddress() (r int32, exists bool) {
+func (m *VideoMetadatumMutation) PublishAddress() (r int32, exists bool) {
 	v := m.publish_address
 	if v == nil {
 		return
@@ -4773,10 +5179,10 @@ func (m *VideoMetadataMutation) PublishAddress() (r int32, exists bool) {
 	return *v, true
 }
 
-// OldPublishAddress returns the old "publish_address" field's value of the VideoMetadata entity.
-// If the VideoMetadata object wasn't provided to the builder, the object is fetched from the database.
+// OldPublishAddress returns the old "publish_address" field's value of the VideoMetadatum entity.
+// If the VideoMetadatum object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *VideoMetadataMutation) OldPublishAddress(ctx context.Context) (v int32, err error) {
+func (m *VideoMetadatumMutation) OldPublishAddress(ctx context.Context) (v int32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldPublishAddress is only allowed on UpdateOne operations")
 	}
@@ -4791,7 +5197,7 @@ func (m *VideoMetadataMutation) OldPublishAddress(ctx context.Context) (v int32,
 }
 
 // AddPublishAddress adds i to the "publish_address" field.
-func (m *VideoMetadataMutation) AddPublishAddress(i int32) {
+func (m *VideoMetadatumMutation) AddPublishAddress(i int32) {
 	if m.addpublish_address != nil {
 		*m.addpublish_address += i
 	} else {
@@ -4800,7 +5206,7 @@ func (m *VideoMetadataMutation) AddPublishAddress(i int32) {
 }
 
 // AddedPublishAddress returns the value that was added to the "publish_address" field in this mutation.
-func (m *VideoMetadataMutation) AddedPublishAddress() (r int32, exists bool) {
+func (m *VideoMetadatumMutation) AddedPublishAddress() (r int32, exists bool) {
 	v := m.addpublish_address
 	if v == nil {
 		return
@@ -4809,18 +5215,18 @@ func (m *VideoMetadataMutation) AddedPublishAddress() (r int32, exists bool) {
 }
 
 // ResetPublishAddress resets all changes to the "publish_address" field.
-func (m *VideoMetadataMutation) ResetPublishAddress() {
+func (m *VideoMetadatumMutation) ResetPublishAddress() {
 	m.publish_address = nil
 	m.addpublish_address = nil
 }
 
 // SetCreateTime sets the "create_time" field.
-func (m *VideoMetadataMutation) SetCreateTime(t time.Time) {
+func (m *VideoMetadatumMutation) SetCreateTime(t time.Time) {
 	m.create_time = &t
 }
 
 // CreateTime returns the value of the "create_time" field in the mutation.
-func (m *VideoMetadataMutation) CreateTime() (r time.Time, exists bool) {
+func (m *VideoMetadatumMutation) CreateTime() (r time.Time, exists bool) {
 	v := m.create_time
 	if v == nil {
 		return
@@ -4828,10 +5234,10 @@ func (m *VideoMetadataMutation) CreateTime() (r time.Time, exists bool) {
 	return *v, true
 }
 
-// OldCreateTime returns the old "create_time" field's value of the VideoMetadata entity.
-// If the VideoMetadata object wasn't provided to the builder, the object is fetched from the database.
+// OldCreateTime returns the old "create_time" field's value of the VideoMetadatum entity.
+// If the VideoMetadatum object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *VideoMetadataMutation) OldCreateTime(ctx context.Context) (v time.Time, err error) {
+func (m *VideoMetadatumMutation) OldCreateTime(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldCreateTime is only allowed on UpdateOne operations")
 	}
@@ -4845,18 +5251,31 @@ func (m *VideoMetadataMutation) OldCreateTime(ctx context.Context) (v time.Time,
 	return oldValue.CreateTime, nil
 }
 
-// ResetCreateTime resets all changes to the "create_time" field.
-func (m *VideoMetadataMutation) ResetCreateTime() {
+// ClearCreateTime clears the value of the "create_time" field.
+func (m *VideoMetadatumMutation) ClearCreateTime() {
 	m.create_time = nil
+	m.clearedFields[videometadatum.FieldCreateTime] = struct{}{}
+}
+
+// CreateTimeCleared returns if the "create_time" field was cleared in this mutation.
+func (m *VideoMetadatumMutation) CreateTimeCleared() bool {
+	_, ok := m.clearedFields[videometadatum.FieldCreateTime]
+	return ok
+}
+
+// ResetCreateTime resets all changes to the "create_time" field.
+func (m *VideoMetadatumMutation) ResetCreateTime() {
+	m.create_time = nil
+	delete(m.clearedFields, videometadatum.FieldCreateTime)
 }
 
 // SetUpdateTime sets the "update_time" field.
-func (m *VideoMetadataMutation) SetUpdateTime(t time.Time) {
+func (m *VideoMetadatumMutation) SetUpdateTime(t time.Time) {
 	m.update_time = &t
 }
 
 // UpdateTime returns the value of the "update_time" field in the mutation.
-func (m *VideoMetadataMutation) UpdateTime() (r time.Time, exists bool) {
+func (m *VideoMetadatumMutation) UpdateTime() (r time.Time, exists bool) {
 	v := m.update_time
 	if v == nil {
 		return
@@ -4864,10 +5283,10 @@ func (m *VideoMetadataMutation) UpdateTime() (r time.Time, exists bool) {
 	return *v, true
 }
 
-// OldUpdateTime returns the old "update_time" field's value of the VideoMetadata entity.
-// If the VideoMetadata object wasn't provided to the builder, the object is fetched from the database.
+// OldUpdateTime returns the old "update_time" field's value of the VideoMetadatum entity.
+// If the VideoMetadatum object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *VideoMetadataMutation) OldUpdateTime(ctx context.Context) (v time.Time, err error) {
+func (m *VideoMetadatumMutation) OldUpdateTime(ctx context.Context) (v time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldUpdateTime is only allowed on UpdateOne operations")
 	}
@@ -4881,20 +5300,33 @@ func (m *VideoMetadataMutation) OldUpdateTime(ctx context.Context) (v time.Time,
 	return oldValue.UpdateTime, nil
 }
 
-// ResetUpdateTime resets all changes to the "update_time" field.
-func (m *VideoMetadataMutation) ResetUpdateTime() {
+// ClearUpdateTime clears the value of the "update_time" field.
+func (m *VideoMetadatumMutation) ClearUpdateTime() {
 	m.update_time = nil
+	m.clearedFields[videometadatum.FieldUpdateTime] = struct{}{}
 }
 
-// Where appends a list predicates to the VideoMetadataMutation builder.
-func (m *VideoMetadataMutation) Where(ps ...predicate.VideoMetadata) {
+// UpdateTimeCleared returns if the "update_time" field was cleared in this mutation.
+func (m *VideoMetadatumMutation) UpdateTimeCleared() bool {
+	_, ok := m.clearedFields[videometadatum.FieldUpdateTime]
+	return ok
+}
+
+// ResetUpdateTime resets all changes to the "update_time" field.
+func (m *VideoMetadatumMutation) ResetUpdateTime() {
+	m.update_time = nil
+	delete(m.clearedFields, videometadatum.FieldUpdateTime)
+}
+
+// Where appends a list predicates to the VideoMetadatumMutation builder.
+func (m *VideoMetadatumMutation) Where(ps ...predicate.VideoMetadatum) {
 	m.predicates = append(m.predicates, ps...)
 }
 
-// WhereP appends storage-level predicates to the VideoMetadataMutation builder. Using this method,
+// WhereP appends storage-level predicates to the VideoMetadatumMutation builder. Using this method,
 // users can use type-assertion to append predicates that do not depend on any generated package.
-func (m *VideoMetadataMutation) WhereP(ps ...func(*sql.Selector)) {
-	p := make([]predicate.VideoMetadata, len(ps))
+func (m *VideoMetadatumMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.VideoMetadatum, len(ps))
 	for i := range ps {
 		p[i] = ps[i]
 	}
@@ -4902,51 +5334,51 @@ func (m *VideoMetadataMutation) WhereP(ps ...func(*sql.Selector)) {
 }
 
 // Op returns the operation name.
-func (m *VideoMetadataMutation) Op() Op {
+func (m *VideoMetadatumMutation) Op() Op {
 	return m.op
 }
 
 // SetOp allows setting the mutation operation.
-func (m *VideoMetadataMutation) SetOp(op Op) {
+func (m *VideoMetadatumMutation) SetOp(op Op) {
 	m.op = op
 }
 
-// Type returns the node type of this mutation (VideoMetadata).
-func (m *VideoMetadataMutation) Type() string {
+// Type returns the node type of this mutation (VideoMetadatum).
+func (m *VideoMetadatumMutation) Type() string {
 	return m.typ
 }
 
 // Fields returns all fields that were changed during this mutation. Note that in
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
-func (m *VideoMetadataMutation) Fields() []string {
+func (m *VideoMetadatumMutation) Fields() []string {
 	fields := make([]string, 0, 9)
 	if m.video_id != nil {
-		fields = append(fields, videometadata.FieldVideoID)
+		fields = append(fields, videometadatum.FieldVideoID)
 	}
 	if m.user_id != nil {
-		fields = append(fields, videometadata.FieldUserID)
+		fields = append(fields, videometadatum.FieldUserID)
 	}
 	if m.cover_url != nil {
-		fields = append(fields, videometadata.FieldCoverURL)
+		fields = append(fields, videometadatum.FieldCoverURL)
 	}
 	if m.video_url != nil {
-		fields = append(fields, videometadata.FieldVideoURL)
+		fields = append(fields, videometadatum.FieldVideoURL)
 	}
 	if m.video_intro != nil {
-		fields = append(fields, videometadata.FieldVideoIntro)
+		fields = append(fields, videometadatum.FieldVideoIntro)
 	}
 	if m.video_type != nil {
-		fields = append(fields, videometadata.FieldVideoType)
+		fields = append(fields, videometadatum.FieldVideoType)
 	}
 	if m.publish_address != nil {
-		fields = append(fields, videometadata.FieldPublishAddress)
+		fields = append(fields, videometadatum.FieldPublishAddress)
 	}
 	if m.create_time != nil {
-		fields = append(fields, videometadata.FieldCreateTime)
+		fields = append(fields, videometadatum.FieldCreateTime)
 	}
 	if m.update_time != nil {
-		fields = append(fields, videometadata.FieldUpdateTime)
+		fields = append(fields, videometadatum.FieldUpdateTime)
 	}
 	return fields
 }
@@ -4954,25 +5386,25 @@ func (m *VideoMetadataMutation) Fields() []string {
 // Field returns the value of a field with the given name. The second boolean
 // return value indicates that this field was not set, or was not defined in the
 // schema.
-func (m *VideoMetadataMutation) Field(name string) (ent.Value, bool) {
+func (m *VideoMetadatumMutation) Field(name string) (ent.Value, bool) {
 	switch name {
-	case videometadata.FieldVideoID:
+	case videometadatum.FieldVideoID:
 		return m.VideoID()
-	case videometadata.FieldUserID:
+	case videometadatum.FieldUserID:
 		return m.UserID()
-	case videometadata.FieldCoverURL:
+	case videometadatum.FieldCoverURL:
 		return m.CoverURL()
-	case videometadata.FieldVideoURL:
+	case videometadatum.FieldVideoURL:
 		return m.VideoURL()
-	case videometadata.FieldVideoIntro:
+	case videometadatum.FieldVideoIntro:
 		return m.VideoIntro()
-	case videometadata.FieldVideoType:
+	case videometadatum.FieldVideoType:
 		return m.VideoType()
-	case videometadata.FieldPublishAddress:
+	case videometadatum.FieldPublishAddress:
 		return m.PublishAddress()
-	case videometadata.FieldCreateTime:
+	case videometadatum.FieldCreateTime:
 		return m.CreateTime()
-	case videometadata.FieldUpdateTime:
+	case videometadatum.FieldUpdateTime:
 		return m.UpdateTime()
 	}
 	return nil, false
@@ -4981,92 +5413,92 @@ func (m *VideoMetadataMutation) Field(name string) (ent.Value, bool) {
 // OldField returns the old value of the field from the database. An error is
 // returned if the mutation operation is not UpdateOne, or the query to the
 // database failed.
-func (m *VideoMetadataMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+func (m *VideoMetadatumMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
-	case videometadata.FieldVideoID:
+	case videometadatum.FieldVideoID:
 		return m.OldVideoID(ctx)
-	case videometadata.FieldUserID:
+	case videometadatum.FieldUserID:
 		return m.OldUserID(ctx)
-	case videometadata.FieldCoverURL:
+	case videometadatum.FieldCoverURL:
 		return m.OldCoverURL(ctx)
-	case videometadata.FieldVideoURL:
+	case videometadatum.FieldVideoURL:
 		return m.OldVideoURL(ctx)
-	case videometadata.FieldVideoIntro:
+	case videometadatum.FieldVideoIntro:
 		return m.OldVideoIntro(ctx)
-	case videometadata.FieldVideoType:
+	case videometadatum.FieldVideoType:
 		return m.OldVideoType(ctx)
-	case videometadata.FieldPublishAddress:
+	case videometadatum.FieldPublishAddress:
 		return m.OldPublishAddress(ctx)
-	case videometadata.FieldCreateTime:
+	case videometadatum.FieldCreateTime:
 		return m.OldCreateTime(ctx)
-	case videometadata.FieldUpdateTime:
+	case videometadatum.FieldUpdateTime:
 		return m.OldUpdateTime(ctx)
 	}
-	return nil, fmt.Errorf("unknown VideoMetadata field %s", name)
+	return nil, fmt.Errorf("unknown VideoMetadatum field %s", name)
 }
 
 // SetField sets the value of a field with the given name. It returns an error if
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
-func (m *VideoMetadataMutation) SetField(name string, value ent.Value) error {
+func (m *VideoMetadatumMutation) SetField(name string, value ent.Value) error {
 	switch name {
-	case videometadata.FieldVideoID:
-		v, ok := value.(int64)
+	case videometadatum.FieldVideoID:
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetVideoID(v)
 		return nil
-	case videometadata.FieldUserID:
-		v, ok := value.(int64)
+	case videometadatum.FieldUserID:
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetUserID(v)
 		return nil
-	case videometadata.FieldCoverURL:
+	case videometadatum.FieldCoverURL:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetCoverURL(v)
 		return nil
-	case videometadata.FieldVideoURL:
+	case videometadatum.FieldVideoURL:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetVideoURL(v)
 		return nil
-	case videometadata.FieldVideoIntro:
+	case videometadatum.FieldVideoIntro:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetVideoIntro(v)
 		return nil
-	case videometadata.FieldVideoType:
-		v, ok := value.(int64)
+	case videometadatum.FieldVideoType:
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetVideoType(v)
 		return nil
-	case videometadata.FieldPublishAddress:
+	case videometadatum.FieldPublishAddress:
 		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetPublishAddress(v)
 		return nil
-	case videometadata.FieldCreateTime:
+	case videometadatum.FieldCreateTime:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetCreateTime(v)
 		return nil
-	case videometadata.FieldUpdateTime:
+	case videometadatum.FieldUpdateTime:
 		v, ok := value.(time.Time)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
@@ -5074,24 +5506,24 @@ func (m *VideoMetadataMutation) SetField(name string, value ent.Value) error {
 		m.SetUpdateTime(v)
 		return nil
 	}
-	return fmt.Errorf("unknown VideoMetadata field %s", name)
+	return fmt.Errorf("unknown VideoMetadatum field %s", name)
 }
 
 // AddedFields returns all numeric fields that were incremented/decremented during
 // this mutation.
-func (m *VideoMetadataMutation) AddedFields() []string {
+func (m *VideoMetadatumMutation) AddedFields() []string {
 	var fields []string
 	if m.addvideo_id != nil {
-		fields = append(fields, videometadata.FieldVideoID)
+		fields = append(fields, videometadatum.FieldVideoID)
 	}
 	if m.adduser_id != nil {
-		fields = append(fields, videometadata.FieldUserID)
+		fields = append(fields, videometadatum.FieldUserID)
 	}
 	if m.addvideo_type != nil {
-		fields = append(fields, videometadata.FieldVideoType)
+		fields = append(fields, videometadatum.FieldVideoType)
 	}
 	if m.addpublish_address != nil {
-		fields = append(fields, videometadata.FieldPublishAddress)
+		fields = append(fields, videometadatum.FieldPublishAddress)
 	}
 	return fields
 }
@@ -5099,15 +5531,15 @@ func (m *VideoMetadataMutation) AddedFields() []string {
 // AddedField returns the numeric value that was incremented/decremented on a field
 // with the given name. The second boolean return value indicates that this field
 // was not set, or was not defined in the schema.
-func (m *VideoMetadataMutation) AddedField(name string) (ent.Value, bool) {
+func (m *VideoMetadatumMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
-	case videometadata.FieldVideoID:
+	case videometadatum.FieldVideoID:
 		return m.AddedVideoID()
-	case videometadata.FieldUserID:
+	case videometadatum.FieldUserID:
 		return m.AddedUserID()
-	case videometadata.FieldVideoType:
+	case videometadatum.FieldVideoType:
 		return m.AddedVideoType()
-	case videometadata.FieldPublishAddress:
+	case videometadatum.FieldPublishAddress:
 		return m.AddedPublishAddress()
 	}
 	return nil, false
@@ -5116,30 +5548,30 @@ func (m *VideoMetadataMutation) AddedField(name string) (ent.Value, bool) {
 // AddField adds the value to the field with the given name. It returns an error if
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
-func (m *VideoMetadataMutation) AddField(name string, value ent.Value) error {
+func (m *VideoMetadatumMutation) AddField(name string, value ent.Value) error {
 	switch name {
-	case videometadata.FieldVideoID:
-		v, ok := value.(int64)
+	case videometadatum.FieldVideoID:
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddVideoID(v)
 		return nil
-	case videometadata.FieldUserID:
-		v, ok := value.(int64)
+	case videometadatum.FieldUserID:
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddUserID(v)
 		return nil
-	case videometadata.FieldVideoType:
-		v, ok := value.(int64)
+	case videometadatum.FieldVideoType:
+		v, ok := value.(int)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddVideoType(v)
 		return nil
-	case videometadata.FieldPublishAddress:
+	case videometadatum.FieldPublishAddress:
 		v, ok := value.(int32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
@@ -5147,116 +5579,128 @@ func (m *VideoMetadataMutation) AddField(name string, value ent.Value) error {
 		m.AddPublishAddress(v)
 		return nil
 	}
-	return fmt.Errorf("unknown VideoMetadata numeric field %s", name)
+	return fmt.Errorf("unknown VideoMetadatum numeric field %s", name)
 }
 
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
-func (m *VideoMetadataMutation) ClearedFields() []string {
+func (m *VideoMetadatumMutation) ClearedFields() []string {
 	var fields []string
-	if m.FieldCleared(videometadata.FieldVideoIntro) {
-		fields = append(fields, videometadata.FieldVideoIntro)
+	if m.FieldCleared(videometadatum.FieldVideoIntro) {
+		fields = append(fields, videometadatum.FieldVideoIntro)
+	}
+	if m.FieldCleared(videometadatum.FieldCreateTime) {
+		fields = append(fields, videometadatum.FieldCreateTime)
+	}
+	if m.FieldCleared(videometadatum.FieldUpdateTime) {
+		fields = append(fields, videometadatum.FieldUpdateTime)
 	}
 	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
 // cleared in this mutation.
-func (m *VideoMetadataMutation) FieldCleared(name string) bool {
+func (m *VideoMetadatumMutation) FieldCleared(name string) bool {
 	_, ok := m.clearedFields[name]
 	return ok
 }
 
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
-func (m *VideoMetadataMutation) ClearField(name string) error {
+func (m *VideoMetadatumMutation) ClearField(name string) error {
 	switch name {
-	case videometadata.FieldVideoIntro:
+	case videometadatum.FieldVideoIntro:
 		m.ClearVideoIntro()
 		return nil
+	case videometadatum.FieldCreateTime:
+		m.ClearCreateTime()
+		return nil
+	case videometadatum.FieldUpdateTime:
+		m.ClearUpdateTime()
+		return nil
 	}
-	return fmt.Errorf("unknown VideoMetadata nullable field %s", name)
+	return fmt.Errorf("unknown VideoMetadatum nullable field %s", name)
 }
 
 // ResetField resets all changes in the mutation for the field with the given name.
 // It returns an error if the field is not defined in the schema.
-func (m *VideoMetadataMutation) ResetField(name string) error {
+func (m *VideoMetadatumMutation) ResetField(name string) error {
 	switch name {
-	case videometadata.FieldVideoID:
+	case videometadatum.FieldVideoID:
 		m.ResetVideoID()
 		return nil
-	case videometadata.FieldUserID:
+	case videometadatum.FieldUserID:
 		m.ResetUserID()
 		return nil
-	case videometadata.FieldCoverURL:
+	case videometadatum.FieldCoverURL:
 		m.ResetCoverURL()
 		return nil
-	case videometadata.FieldVideoURL:
+	case videometadatum.FieldVideoURL:
 		m.ResetVideoURL()
 		return nil
-	case videometadata.FieldVideoIntro:
+	case videometadatum.FieldVideoIntro:
 		m.ResetVideoIntro()
 		return nil
-	case videometadata.FieldVideoType:
+	case videometadatum.FieldVideoType:
 		m.ResetVideoType()
 		return nil
-	case videometadata.FieldPublishAddress:
+	case videometadatum.FieldPublishAddress:
 		m.ResetPublishAddress()
 		return nil
-	case videometadata.FieldCreateTime:
+	case videometadatum.FieldCreateTime:
 		m.ResetCreateTime()
 		return nil
-	case videometadata.FieldUpdateTime:
+	case videometadatum.FieldUpdateTime:
 		m.ResetUpdateTime()
 		return nil
 	}
-	return fmt.Errorf("unknown VideoMetadata field %s", name)
+	return fmt.Errorf("unknown VideoMetadatum field %s", name)
 }
 
 // AddedEdges returns all edge names that were set/added in this mutation.
-func (m *VideoMetadataMutation) AddedEdges() []string {
+func (m *VideoMetadatumMutation) AddedEdges() []string {
 	edges := make([]string, 0, 0)
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
-func (m *VideoMetadataMutation) AddedIDs(name string) []ent.Value {
+func (m *VideoMetadatumMutation) AddedIDs(name string) []ent.Value {
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
-func (m *VideoMetadataMutation) RemovedEdges() []string {
+func (m *VideoMetadatumMutation) RemovedEdges() []string {
 	edges := make([]string, 0, 0)
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
-func (m *VideoMetadataMutation) RemovedIDs(name string) []ent.Value {
+func (m *VideoMetadatumMutation) RemovedIDs(name string) []ent.Value {
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
-func (m *VideoMetadataMutation) ClearedEdges() []string {
+func (m *VideoMetadatumMutation) ClearedEdges() []string {
 	edges := make([]string, 0, 0)
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
-func (m *VideoMetadataMutation) EdgeCleared(name string) bool {
+func (m *VideoMetadatumMutation) EdgeCleared(name string) bool {
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
-func (m *VideoMetadataMutation) ClearEdge(name string) error {
-	return fmt.Errorf("unknown VideoMetadata unique edge %s", name)
+func (m *VideoMetadatumMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown VideoMetadatum unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
-func (m *VideoMetadataMutation) ResetEdge(name string) error {
-	return fmt.Errorf("unknown VideoMetadata edge %s", name)
+func (m *VideoMetadatumMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown VideoMetadatum edge %s", name)
 }

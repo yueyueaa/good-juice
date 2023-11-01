@@ -55,12 +55,12 @@ func IDLTE(id int) predicate.UserFollowInfo {
 }
 
 // UserID applies equality check predicate on the "user_id" field. It's identical to UserIDEQ.
-func UserID(v int64) predicate.UserFollowInfo {
+func UserID(v uint64) predicate.UserFollowInfo {
 	return predicate.UserFollowInfo(sql.FieldEQ(FieldUserID, v))
 }
 
 // FollowID applies equality check predicate on the "follow_id" field. It's identical to FollowIDEQ.
-func FollowID(v int64) predicate.UserFollowInfo {
+func FollowID(v uint64) predicate.UserFollowInfo {
 	return predicate.UserFollowInfo(sql.FieldEQ(FieldFollowID, v))
 }
 
@@ -80,82 +80,82 @@ func UpdateTime(v time.Time) predicate.UserFollowInfo {
 }
 
 // UserIDEQ applies the EQ predicate on the "user_id" field.
-func UserIDEQ(v int64) predicate.UserFollowInfo {
+func UserIDEQ(v uint64) predicate.UserFollowInfo {
 	return predicate.UserFollowInfo(sql.FieldEQ(FieldUserID, v))
 }
 
 // UserIDNEQ applies the NEQ predicate on the "user_id" field.
-func UserIDNEQ(v int64) predicate.UserFollowInfo {
+func UserIDNEQ(v uint64) predicate.UserFollowInfo {
 	return predicate.UserFollowInfo(sql.FieldNEQ(FieldUserID, v))
 }
 
 // UserIDIn applies the In predicate on the "user_id" field.
-func UserIDIn(vs ...int64) predicate.UserFollowInfo {
+func UserIDIn(vs ...uint64) predicate.UserFollowInfo {
 	return predicate.UserFollowInfo(sql.FieldIn(FieldUserID, vs...))
 }
 
 // UserIDNotIn applies the NotIn predicate on the "user_id" field.
-func UserIDNotIn(vs ...int64) predicate.UserFollowInfo {
+func UserIDNotIn(vs ...uint64) predicate.UserFollowInfo {
 	return predicate.UserFollowInfo(sql.FieldNotIn(FieldUserID, vs...))
 }
 
 // UserIDGT applies the GT predicate on the "user_id" field.
-func UserIDGT(v int64) predicate.UserFollowInfo {
+func UserIDGT(v uint64) predicate.UserFollowInfo {
 	return predicate.UserFollowInfo(sql.FieldGT(FieldUserID, v))
 }
 
 // UserIDGTE applies the GTE predicate on the "user_id" field.
-func UserIDGTE(v int64) predicate.UserFollowInfo {
+func UserIDGTE(v uint64) predicate.UserFollowInfo {
 	return predicate.UserFollowInfo(sql.FieldGTE(FieldUserID, v))
 }
 
 // UserIDLT applies the LT predicate on the "user_id" field.
-func UserIDLT(v int64) predicate.UserFollowInfo {
+func UserIDLT(v uint64) predicate.UserFollowInfo {
 	return predicate.UserFollowInfo(sql.FieldLT(FieldUserID, v))
 }
 
 // UserIDLTE applies the LTE predicate on the "user_id" field.
-func UserIDLTE(v int64) predicate.UserFollowInfo {
+func UserIDLTE(v uint64) predicate.UserFollowInfo {
 	return predicate.UserFollowInfo(sql.FieldLTE(FieldUserID, v))
 }
 
 // FollowIDEQ applies the EQ predicate on the "follow_id" field.
-func FollowIDEQ(v int64) predicate.UserFollowInfo {
+func FollowIDEQ(v uint64) predicate.UserFollowInfo {
 	return predicate.UserFollowInfo(sql.FieldEQ(FieldFollowID, v))
 }
 
 // FollowIDNEQ applies the NEQ predicate on the "follow_id" field.
-func FollowIDNEQ(v int64) predicate.UserFollowInfo {
+func FollowIDNEQ(v uint64) predicate.UserFollowInfo {
 	return predicate.UserFollowInfo(sql.FieldNEQ(FieldFollowID, v))
 }
 
 // FollowIDIn applies the In predicate on the "follow_id" field.
-func FollowIDIn(vs ...int64) predicate.UserFollowInfo {
+func FollowIDIn(vs ...uint64) predicate.UserFollowInfo {
 	return predicate.UserFollowInfo(sql.FieldIn(FieldFollowID, vs...))
 }
 
 // FollowIDNotIn applies the NotIn predicate on the "follow_id" field.
-func FollowIDNotIn(vs ...int64) predicate.UserFollowInfo {
+func FollowIDNotIn(vs ...uint64) predicate.UserFollowInfo {
 	return predicate.UserFollowInfo(sql.FieldNotIn(FieldFollowID, vs...))
 }
 
 // FollowIDGT applies the GT predicate on the "follow_id" field.
-func FollowIDGT(v int64) predicate.UserFollowInfo {
+func FollowIDGT(v uint64) predicate.UserFollowInfo {
 	return predicate.UserFollowInfo(sql.FieldGT(FieldFollowID, v))
 }
 
 // FollowIDGTE applies the GTE predicate on the "follow_id" field.
-func FollowIDGTE(v int64) predicate.UserFollowInfo {
+func FollowIDGTE(v uint64) predicate.UserFollowInfo {
 	return predicate.UserFollowInfo(sql.FieldGTE(FieldFollowID, v))
 }
 
 // FollowIDLT applies the LT predicate on the "follow_id" field.
-func FollowIDLT(v int64) predicate.UserFollowInfo {
+func FollowIDLT(v uint64) predicate.UserFollowInfo {
 	return predicate.UserFollowInfo(sql.FieldLT(FieldFollowID, v))
 }
 
 // FollowIDLTE applies the LTE predicate on the "follow_id" field.
-func FollowIDLTE(v int64) predicate.UserFollowInfo {
+func FollowIDLTE(v uint64) predicate.UserFollowInfo {
 	return predicate.UserFollowInfo(sql.FieldLTE(FieldFollowID, v))
 }
 
@@ -239,6 +239,16 @@ func CreateTimeLTE(v time.Time) predicate.UserFollowInfo {
 	return predicate.UserFollowInfo(sql.FieldLTE(FieldCreateTime, v))
 }
 
+// CreateTimeIsNil applies the IsNil predicate on the "create_time" field.
+func CreateTimeIsNil() predicate.UserFollowInfo {
+	return predicate.UserFollowInfo(sql.FieldIsNull(FieldCreateTime))
+}
+
+// CreateTimeNotNil applies the NotNil predicate on the "create_time" field.
+func CreateTimeNotNil() predicate.UserFollowInfo {
+	return predicate.UserFollowInfo(sql.FieldNotNull(FieldCreateTime))
+}
+
 // UpdateTimeEQ applies the EQ predicate on the "update_time" field.
 func UpdateTimeEQ(v time.Time) predicate.UserFollowInfo {
 	return predicate.UserFollowInfo(sql.FieldEQ(FieldUpdateTime, v))
@@ -277,6 +287,16 @@ func UpdateTimeLT(v time.Time) predicate.UserFollowInfo {
 // UpdateTimeLTE applies the LTE predicate on the "update_time" field.
 func UpdateTimeLTE(v time.Time) predicate.UserFollowInfo {
 	return predicate.UserFollowInfo(sql.FieldLTE(FieldUpdateTime, v))
+}
+
+// UpdateTimeIsNil applies the IsNil predicate on the "update_time" field.
+func UpdateTimeIsNil() predicate.UserFollowInfo {
+	return predicate.UserFollowInfo(sql.FieldIsNull(FieldUpdateTime))
+}
+
+// UpdateTimeNotNil applies the NotNil predicate on the "update_time" field.
+func UpdateTimeNotNil() predicate.UserFollowInfo {
+	return predicate.UserFollowInfo(sql.FieldNotNull(FieldUpdateTime))
 }
 
 // And groups predicates with the AND operator between them.

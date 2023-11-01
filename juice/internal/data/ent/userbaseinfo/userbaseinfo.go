@@ -3,8 +3,6 @@
 package userbaseinfo
 
 import (
-	"time"
-
 	"entgo.io/ent/dialect/sql"
 )
 
@@ -36,7 +34,7 @@ const (
 	// FieldUpdateTime holds the string denoting the update_time field in the database.
 	FieldUpdateTime = "update_time"
 	// Table holds the table name of the userbaseinfo in the database.
-	Table = "user_base_infos"
+	Table = "user_base_info"
 )
 
 // Columns holds all SQL columns for userbaseinfo fields.
@@ -64,23 +62,6 @@ func ValidColumn(column string) bool {
 	}
 	return false
 }
-
-var (
-	// UserIDValidator is a validator for the "user_id" field. It is called by the builders before save.
-	UserIDValidator func(int64) error
-	// DefaultBirth holds the default value on creation for the "birth" field.
-	DefaultBirth func() time.Time
-	// DefaultFollowCount holds the default value on creation for the "follow_count" field.
-	DefaultFollowCount int32
-	// DefaultFanCount holds the default value on creation for the "fan_count" field.
-	DefaultFanCount int32
-	// DefaultCreateTime holds the default value on creation for the "create_time" field.
-	DefaultCreateTime func() time.Time
-	// DefaultUpdateTime holds the default value on creation for the "update_time" field.
-	DefaultUpdateTime func() time.Time
-	// UpdateDefaultUpdateTime holds the default value on update for the "update_time" field.
-	UpdateDefaultUpdateTime func() time.Time
-)
 
 // OrderOption defines the ordering options for the UserBaseInfo queries.
 type OrderOption func(*sql.Selector)

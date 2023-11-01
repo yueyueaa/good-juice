@@ -3,8 +3,6 @@
 package videocomment
 
 import (
-	"time"
-
 	"entgo.io/ent/dialect/sql"
 )
 
@@ -28,7 +26,7 @@ const (
 	// FieldUpdateTime holds the string denoting the update_time field in the database.
 	FieldUpdateTime = "update_time"
 	// Table holds the table name of the videocomment in the database.
-	Table = "video_comments"
+	Table = "video_comment"
 )
 
 // Columns holds all SQL columns for videocomment fields.
@@ -52,15 +50,6 @@ func ValidColumn(column string) bool {
 	}
 	return false
 }
-
-var (
-	// DefaultCreateTime holds the default value on creation for the "create_time" field.
-	DefaultCreateTime func() time.Time
-	// DefaultUpdateTime holds the default value on creation for the "update_time" field.
-	DefaultUpdateTime func() time.Time
-	// UpdateDefaultUpdateTime holds the default value on update for the "update_time" field.
-	UpdateDefaultUpdateTime func() time.Time
-)
 
 // OrderOption defines the ordering options for the VideoComment queries.
 type OrderOption func(*sql.Selector)

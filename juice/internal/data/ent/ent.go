@@ -12,7 +12,7 @@ import (
 	"juice/internal/data/ent/videocollection"
 	"juice/internal/data/ent/videocomment"
 	"juice/internal/data/ent/videolike"
-	"juice/internal/data/ent/videometadata"
+	"juice/internal/data/ent/videometadatum"
 	"reflect"
 	"sync"
 
@@ -85,7 +85,7 @@ func checkColumn(table, column string) error {
 			videocollection.Table: videocollection.ValidColumn,
 			videocomment.Table:    videocomment.ValidColumn,
 			videolike.Table:       videolike.ValidColumn,
-			videometadata.Table:   videometadata.ValidColumn,
+			videometadatum.Table:  videometadatum.ValidColumn,
 		})
 	})
 	return columnCheck(table, column)

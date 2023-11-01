@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"juice/internal/data/ent/userpassword"
+	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -20,15 +21,15 @@ type UserPasswordCreate struct {
 }
 
 // SetUserID sets the "user_id" field.
-func (upc *UserPasswordCreate) SetUserID(i int64) *UserPasswordCreate {
-	upc.mutation.SetUserID(i)
+func (upc *UserPasswordCreate) SetUserID(u uint64) *UserPasswordCreate {
+	upc.mutation.SetUserID(u)
 	return upc
 }
 
 // SetNillableUserID sets the "user_id" field if the given value is not nil.
-func (upc *UserPasswordCreate) SetNillableUserID(i *int64) *UserPasswordCreate {
-	if i != nil {
-		upc.SetUserID(*i)
+func (upc *UserPasswordCreate) SetNillableUserID(u *uint64) *UserPasswordCreate {
+	if u != nil {
+		upc.SetUserID(*u)
 	}
 	return upc
 }
@@ -42,6 +43,40 @@ func (upc *UserPasswordCreate) SetSalt(s string) *UserPasswordCreate {
 // SetPwd sets the "pwd" field.
 func (upc *UserPasswordCreate) SetPwd(s string) *UserPasswordCreate {
 	upc.mutation.SetPwd(s)
+	return upc
+}
+
+// SetCreateTime sets the "create_time" field.
+func (upc *UserPasswordCreate) SetCreateTime(t time.Time) *UserPasswordCreate {
+	upc.mutation.SetCreateTime(t)
+	return upc
+}
+
+// SetNillableCreateTime sets the "create_time" field if the given value is not nil.
+func (upc *UserPasswordCreate) SetNillableCreateTime(t *time.Time) *UserPasswordCreate {
+	if t != nil {
+		upc.SetCreateTime(*t)
+	}
+	return upc
+}
+
+// SetUpdateTime sets the "update_time" field.
+func (upc *UserPasswordCreate) SetUpdateTime(t time.Time) *UserPasswordCreate {
+	upc.mutation.SetUpdateTime(t)
+	return upc
+}
+
+// SetNillableUpdateTime sets the "update_time" field if the given value is not nil.
+func (upc *UserPasswordCreate) SetNillableUpdateTime(t *time.Time) *UserPasswordCreate {
+	if t != nil {
+		upc.SetUpdateTime(*t)
+	}
+	return upc
+}
+
+// SetID sets the "id" field.
+func (upc *UserPasswordCreate) SetID(i int) *UserPasswordCreate {
+	upc.mutation.SetID(i)
 	return upc
 }
 
@@ -79,11 +114,6 @@ func (upc *UserPasswordCreate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (upc *UserPasswordCreate) check() error {
-	if v, ok := upc.mutation.UserID(); ok {
-		if err := userpassword.UserIDValidator(v); err != nil {
-			return &ValidationError{Name: "user_id", err: fmt.Errorf(`ent: validator failed for field "UserPassword.user_id": %w`, err)}
-		}
-	}
 	if _, ok := upc.mutation.Salt(); !ok {
 		return &ValidationError{Name: "salt", err: errors.New(`ent: missing required field "UserPassword.salt"`)}
 	}
@@ -104,8 +134,10 @@ func (upc *UserPasswordCreate) sqlSave(ctx context.Context) (*UserPassword, erro
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != _node.ID {
+		id := _spec.ID.Value.(int64)
+		_node.ID = int(id)
+	}
 	upc.mutation.id = &_node.ID
 	upc.mutation.done = true
 	return _node, nil
@@ -116,8 +148,12 @@ func (upc *UserPasswordCreate) createSpec() (*UserPassword, *sqlgraph.CreateSpec
 		_node = &UserPassword{config: upc.config}
 		_spec = sqlgraph.NewCreateSpec(userpassword.Table, sqlgraph.NewFieldSpec(userpassword.FieldID, field.TypeInt))
 	)
+	if id, ok := upc.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
 	if value, ok := upc.mutation.UserID(); ok {
-		_spec.SetField(userpassword.FieldUserID, field.TypeInt64, value)
+		_spec.SetField(userpassword.FieldUserID, field.TypeUint64, value)
 		_node.UserID = value
 	}
 	if value, ok := upc.mutation.Salt(); ok {
@@ -127,6 +163,14 @@ func (upc *UserPasswordCreate) createSpec() (*UserPassword, *sqlgraph.CreateSpec
 	if value, ok := upc.mutation.Pwd(); ok {
 		_spec.SetField(userpassword.FieldPwd, field.TypeString, value)
 		_node.Pwd = value
+	}
+	if value, ok := upc.mutation.CreateTime(); ok {
+		_spec.SetField(userpassword.FieldCreateTime, field.TypeTime, value)
+		_node.CreateTime = value
+	}
+	if value, ok := upc.mutation.UpdateTime(); ok {
+		_spec.SetField(userpassword.FieldUpdateTime, field.TypeTime, value)
+		_node.UpdateTime = value
 	}
 	return _node, _spec
 }
@@ -175,7 +219,7 @@ func (upcb *UserPasswordCreateBulk) Save(ctx context.Context) ([]*UserPassword, 
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
+				if specs[i].ID.Value != nil && nodes[i].ID == 0 {
 					id := specs[i].ID.Value.(int64)
 					nodes[i].ID = int(id)
 				}

@@ -29,27 +29,27 @@ func (vcu *VideoCollectionUpdate) Where(ps ...predicate.VideoCollection) *VideoC
 }
 
 // SetUserID sets the "user_id" field.
-func (vcu *VideoCollectionUpdate) SetUserID(i int64) *VideoCollectionUpdate {
+func (vcu *VideoCollectionUpdate) SetUserID(i int) *VideoCollectionUpdate {
 	vcu.mutation.ResetUserID()
 	vcu.mutation.SetUserID(i)
 	return vcu
 }
 
 // AddUserID adds i to the "user_id" field.
-func (vcu *VideoCollectionUpdate) AddUserID(i int64) *VideoCollectionUpdate {
+func (vcu *VideoCollectionUpdate) AddUserID(i int) *VideoCollectionUpdate {
 	vcu.mutation.AddUserID(i)
 	return vcu
 }
 
 // SetVideoID sets the "video_id" field.
-func (vcu *VideoCollectionUpdate) SetVideoID(i int64) *VideoCollectionUpdate {
+func (vcu *VideoCollectionUpdate) SetVideoID(i int) *VideoCollectionUpdate {
 	vcu.mutation.ResetVideoID()
 	vcu.mutation.SetVideoID(i)
 	return vcu
 }
 
 // AddVideoID adds i to the "video_id" field.
-func (vcu *VideoCollectionUpdate) AddVideoID(i int64) *VideoCollectionUpdate {
+func (vcu *VideoCollectionUpdate) AddVideoID(i int) *VideoCollectionUpdate {
 	vcu.mutation.AddVideoID(i)
 	return vcu
 }
@@ -58,14 +58,6 @@ func (vcu *VideoCollectionUpdate) AddVideoID(i int64) *VideoCollectionUpdate {
 func (vcu *VideoCollectionUpdate) SetStatus(i int8) *VideoCollectionUpdate {
 	vcu.mutation.ResetStatus()
 	vcu.mutation.SetStatus(i)
-	return vcu
-}
-
-// SetNillableStatus sets the "status" field if the given value is not nil.
-func (vcu *VideoCollectionUpdate) SetNillableStatus(i *int8) *VideoCollectionUpdate {
-	if i != nil {
-		vcu.SetStatus(*i)
-	}
 	return vcu
 }
 
@@ -89,9 +81,29 @@ func (vcu *VideoCollectionUpdate) SetNillableCreateTime(t *time.Time) *VideoColl
 	return vcu
 }
 
+// ClearCreateTime clears the value of the "create_time" field.
+func (vcu *VideoCollectionUpdate) ClearCreateTime() *VideoCollectionUpdate {
+	vcu.mutation.ClearCreateTime()
+	return vcu
+}
+
 // SetUpdateTime sets the "update_time" field.
 func (vcu *VideoCollectionUpdate) SetUpdateTime(t time.Time) *VideoCollectionUpdate {
 	vcu.mutation.SetUpdateTime(t)
+	return vcu
+}
+
+// SetNillableUpdateTime sets the "update_time" field if the given value is not nil.
+func (vcu *VideoCollectionUpdate) SetNillableUpdateTime(t *time.Time) *VideoCollectionUpdate {
+	if t != nil {
+		vcu.SetUpdateTime(*t)
+	}
+	return vcu
+}
+
+// ClearUpdateTime clears the value of the "update_time" field.
+func (vcu *VideoCollectionUpdate) ClearUpdateTime() *VideoCollectionUpdate {
+	vcu.mutation.ClearUpdateTime()
 	return vcu
 }
 
@@ -102,7 +114,6 @@ func (vcu *VideoCollectionUpdate) Mutation() *VideoCollectionMutation {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (vcu *VideoCollectionUpdate) Save(ctx context.Context) (int, error) {
-	vcu.defaults()
 	return withHooks(ctx, vcu.sqlSave, vcu.mutation, vcu.hooks)
 }
 
@@ -128,14 +139,6 @@ func (vcu *VideoCollectionUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (vcu *VideoCollectionUpdate) defaults() {
-	if _, ok := vcu.mutation.UpdateTime(); !ok {
-		v := videocollection.UpdateDefaultUpdateTime()
-		vcu.mutation.SetUpdateTime(v)
-	}
-}
-
 func (vcu *VideoCollectionUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := sqlgraph.NewUpdateSpec(videocollection.Table, videocollection.Columns, sqlgraph.NewFieldSpec(videocollection.FieldID, field.TypeInt))
 	if ps := vcu.mutation.predicates; len(ps) > 0 {
@@ -146,16 +149,16 @@ func (vcu *VideoCollectionUpdate) sqlSave(ctx context.Context) (n int, err error
 		}
 	}
 	if value, ok := vcu.mutation.UserID(); ok {
-		_spec.SetField(videocollection.FieldUserID, field.TypeInt64, value)
+		_spec.SetField(videocollection.FieldUserID, field.TypeInt, value)
 	}
 	if value, ok := vcu.mutation.AddedUserID(); ok {
-		_spec.AddField(videocollection.FieldUserID, field.TypeInt64, value)
+		_spec.AddField(videocollection.FieldUserID, field.TypeInt, value)
 	}
 	if value, ok := vcu.mutation.VideoID(); ok {
-		_spec.SetField(videocollection.FieldVideoID, field.TypeInt64, value)
+		_spec.SetField(videocollection.FieldVideoID, field.TypeInt, value)
 	}
 	if value, ok := vcu.mutation.AddedVideoID(); ok {
-		_spec.AddField(videocollection.FieldVideoID, field.TypeInt64, value)
+		_spec.AddField(videocollection.FieldVideoID, field.TypeInt, value)
 	}
 	if value, ok := vcu.mutation.Status(); ok {
 		_spec.SetField(videocollection.FieldStatus, field.TypeInt8, value)
@@ -166,8 +169,14 @@ func (vcu *VideoCollectionUpdate) sqlSave(ctx context.Context) (n int, err error
 	if value, ok := vcu.mutation.CreateTime(); ok {
 		_spec.SetField(videocollection.FieldCreateTime, field.TypeTime, value)
 	}
+	if vcu.mutation.CreateTimeCleared() {
+		_spec.ClearField(videocollection.FieldCreateTime, field.TypeTime)
+	}
 	if value, ok := vcu.mutation.UpdateTime(); ok {
 		_spec.SetField(videocollection.FieldUpdateTime, field.TypeTime, value)
+	}
+	if vcu.mutation.UpdateTimeCleared() {
+		_spec.ClearField(videocollection.FieldUpdateTime, field.TypeTime)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, vcu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -190,27 +199,27 @@ type VideoCollectionUpdateOne struct {
 }
 
 // SetUserID sets the "user_id" field.
-func (vcuo *VideoCollectionUpdateOne) SetUserID(i int64) *VideoCollectionUpdateOne {
+func (vcuo *VideoCollectionUpdateOne) SetUserID(i int) *VideoCollectionUpdateOne {
 	vcuo.mutation.ResetUserID()
 	vcuo.mutation.SetUserID(i)
 	return vcuo
 }
 
 // AddUserID adds i to the "user_id" field.
-func (vcuo *VideoCollectionUpdateOne) AddUserID(i int64) *VideoCollectionUpdateOne {
+func (vcuo *VideoCollectionUpdateOne) AddUserID(i int) *VideoCollectionUpdateOne {
 	vcuo.mutation.AddUserID(i)
 	return vcuo
 }
 
 // SetVideoID sets the "video_id" field.
-func (vcuo *VideoCollectionUpdateOne) SetVideoID(i int64) *VideoCollectionUpdateOne {
+func (vcuo *VideoCollectionUpdateOne) SetVideoID(i int) *VideoCollectionUpdateOne {
 	vcuo.mutation.ResetVideoID()
 	vcuo.mutation.SetVideoID(i)
 	return vcuo
 }
 
 // AddVideoID adds i to the "video_id" field.
-func (vcuo *VideoCollectionUpdateOne) AddVideoID(i int64) *VideoCollectionUpdateOne {
+func (vcuo *VideoCollectionUpdateOne) AddVideoID(i int) *VideoCollectionUpdateOne {
 	vcuo.mutation.AddVideoID(i)
 	return vcuo
 }
@@ -219,14 +228,6 @@ func (vcuo *VideoCollectionUpdateOne) AddVideoID(i int64) *VideoCollectionUpdate
 func (vcuo *VideoCollectionUpdateOne) SetStatus(i int8) *VideoCollectionUpdateOne {
 	vcuo.mutation.ResetStatus()
 	vcuo.mutation.SetStatus(i)
-	return vcuo
-}
-
-// SetNillableStatus sets the "status" field if the given value is not nil.
-func (vcuo *VideoCollectionUpdateOne) SetNillableStatus(i *int8) *VideoCollectionUpdateOne {
-	if i != nil {
-		vcuo.SetStatus(*i)
-	}
 	return vcuo
 }
 
@@ -250,9 +251,29 @@ func (vcuo *VideoCollectionUpdateOne) SetNillableCreateTime(t *time.Time) *Video
 	return vcuo
 }
 
+// ClearCreateTime clears the value of the "create_time" field.
+func (vcuo *VideoCollectionUpdateOne) ClearCreateTime() *VideoCollectionUpdateOne {
+	vcuo.mutation.ClearCreateTime()
+	return vcuo
+}
+
 // SetUpdateTime sets the "update_time" field.
 func (vcuo *VideoCollectionUpdateOne) SetUpdateTime(t time.Time) *VideoCollectionUpdateOne {
 	vcuo.mutation.SetUpdateTime(t)
+	return vcuo
+}
+
+// SetNillableUpdateTime sets the "update_time" field if the given value is not nil.
+func (vcuo *VideoCollectionUpdateOne) SetNillableUpdateTime(t *time.Time) *VideoCollectionUpdateOne {
+	if t != nil {
+		vcuo.SetUpdateTime(*t)
+	}
+	return vcuo
+}
+
+// ClearUpdateTime clears the value of the "update_time" field.
+func (vcuo *VideoCollectionUpdateOne) ClearUpdateTime() *VideoCollectionUpdateOne {
+	vcuo.mutation.ClearUpdateTime()
 	return vcuo
 }
 
@@ -276,7 +297,6 @@ func (vcuo *VideoCollectionUpdateOne) Select(field string, fields ...string) *Vi
 
 // Save executes the query and returns the updated VideoCollection entity.
 func (vcuo *VideoCollectionUpdateOne) Save(ctx context.Context) (*VideoCollection, error) {
-	vcuo.defaults()
 	return withHooks(ctx, vcuo.sqlSave, vcuo.mutation, vcuo.hooks)
 }
 
@@ -299,14 +319,6 @@ func (vcuo *VideoCollectionUpdateOne) Exec(ctx context.Context) error {
 func (vcuo *VideoCollectionUpdateOne) ExecX(ctx context.Context) {
 	if err := vcuo.Exec(ctx); err != nil {
 		panic(err)
-	}
-}
-
-// defaults sets the default values of the builder before save.
-func (vcuo *VideoCollectionUpdateOne) defaults() {
-	if _, ok := vcuo.mutation.UpdateTime(); !ok {
-		v := videocollection.UpdateDefaultUpdateTime()
-		vcuo.mutation.SetUpdateTime(v)
 	}
 }
 
@@ -337,16 +349,16 @@ func (vcuo *VideoCollectionUpdateOne) sqlSave(ctx context.Context) (_node *Video
 		}
 	}
 	if value, ok := vcuo.mutation.UserID(); ok {
-		_spec.SetField(videocollection.FieldUserID, field.TypeInt64, value)
+		_spec.SetField(videocollection.FieldUserID, field.TypeInt, value)
 	}
 	if value, ok := vcuo.mutation.AddedUserID(); ok {
-		_spec.AddField(videocollection.FieldUserID, field.TypeInt64, value)
+		_spec.AddField(videocollection.FieldUserID, field.TypeInt, value)
 	}
 	if value, ok := vcuo.mutation.VideoID(); ok {
-		_spec.SetField(videocollection.FieldVideoID, field.TypeInt64, value)
+		_spec.SetField(videocollection.FieldVideoID, field.TypeInt, value)
 	}
 	if value, ok := vcuo.mutation.AddedVideoID(); ok {
-		_spec.AddField(videocollection.FieldVideoID, field.TypeInt64, value)
+		_spec.AddField(videocollection.FieldVideoID, field.TypeInt, value)
 	}
 	if value, ok := vcuo.mutation.Status(); ok {
 		_spec.SetField(videocollection.FieldStatus, field.TypeInt8, value)
@@ -357,8 +369,14 @@ func (vcuo *VideoCollectionUpdateOne) sqlSave(ctx context.Context) (_node *Video
 	if value, ok := vcuo.mutation.CreateTime(); ok {
 		_spec.SetField(videocollection.FieldCreateTime, field.TypeTime, value)
 	}
+	if vcuo.mutation.CreateTimeCleared() {
+		_spec.ClearField(videocollection.FieldCreateTime, field.TypeTime)
+	}
 	if value, ok := vcuo.mutation.UpdateTime(); ok {
 		_spec.SetField(videocollection.FieldUpdateTime, field.TypeTime, value)
+	}
+	if vcuo.mutation.UpdateTimeCleared() {
+		_spec.ClearField(videocollection.FieldUpdateTime, field.TypeTime)
 	}
 	_node = &VideoCollection{config: vcuo.config}
 	_spec.Assign = _node.assignValues

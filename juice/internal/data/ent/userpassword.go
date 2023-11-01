@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"juice/internal/data/ent/userpassword"
 	"strings"
+	"time"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
@@ -17,11 +18,15 @@ type UserPassword struct {
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
 	// UserID holds the value of the "user_id" field.
-	UserID int64 `json:"user_id,omitempty"`
+	UserID uint64 `json:"user_id,omitempty"`
 	// Salt holds the value of the "salt" field.
 	Salt string `json:"salt,omitempty"`
 	// Pwd holds the value of the "pwd" field.
-	Pwd          string `json:"pwd,omitempty"`
+	Pwd string `json:"pwd,omitempty"`
+	// CreateTime holds the value of the "create_time" field.
+	CreateTime time.Time `json:"create_time,omitempty"`
+	// UpdateTime holds the value of the "update_time" field.
+	UpdateTime   time.Time `json:"update_time,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -34,6 +39,8 @@ func (*UserPassword) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullInt64)
 		case userpassword.FieldSalt, userpassword.FieldPwd:
 			values[i] = new(sql.NullString)
+		case userpassword.FieldCreateTime, userpassword.FieldUpdateTime:
+			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -59,7 +66,7 @@ func (up *UserPassword) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field user_id", values[i])
 			} else if value.Valid {
-				up.UserID = value.Int64
+				up.UserID = uint64(value.Int64)
 			}
 		case userpassword.FieldSalt:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -72,6 +79,18 @@ func (up *UserPassword) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field pwd", values[i])
 			} else if value.Valid {
 				up.Pwd = value.String
+			}
+		case userpassword.FieldCreateTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field create_time", values[i])
+			} else if value.Valid {
+				up.CreateTime = value.Time
+			}
+		case userpassword.FieldUpdateTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field update_time", values[i])
+			} else if value.Valid {
+				up.UpdateTime = value.Time
 			}
 		default:
 			up.selectValues.Set(columns[i], values[i])
@@ -117,6 +136,12 @@ func (up *UserPassword) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("pwd=")
 	builder.WriteString(up.Pwd)
+	builder.WriteString(", ")
+	builder.WriteString("create_time=")
+	builder.WriteString(up.CreateTime.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("update_time=")
+	builder.WriteString(up.UpdateTime.Format(time.ANSIC))
 	builder.WriteByte(')')
 	return builder.String()
 }

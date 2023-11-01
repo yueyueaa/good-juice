@@ -21,28 +21,20 @@ type UserFollowInfoCreate struct {
 }
 
 // SetUserID sets the "user_id" field.
-func (ufic *UserFollowInfoCreate) SetUserID(i int64) *UserFollowInfoCreate {
-	ufic.mutation.SetUserID(i)
+func (ufic *UserFollowInfoCreate) SetUserID(u uint64) *UserFollowInfoCreate {
+	ufic.mutation.SetUserID(u)
 	return ufic
 }
 
 // SetFollowID sets the "follow_id" field.
-func (ufic *UserFollowInfoCreate) SetFollowID(i int64) *UserFollowInfoCreate {
-	ufic.mutation.SetFollowID(i)
+func (ufic *UserFollowInfoCreate) SetFollowID(u uint64) *UserFollowInfoCreate {
+	ufic.mutation.SetFollowID(u)
 	return ufic
 }
 
 // SetStatus sets the "status" field.
 func (ufic *UserFollowInfoCreate) SetStatus(i int8) *UserFollowInfoCreate {
 	ufic.mutation.SetStatus(i)
-	return ufic
-}
-
-// SetNillableStatus sets the "status" field if the given value is not nil.
-func (ufic *UserFollowInfoCreate) SetNillableStatus(i *int8) *UserFollowInfoCreate {
-	if i != nil {
-		ufic.SetStatus(*i)
-	}
 	return ufic
 }
 
@@ -74,6 +66,12 @@ func (ufic *UserFollowInfoCreate) SetNillableUpdateTime(t *time.Time) *UserFollo
 	return ufic
 }
 
+// SetID sets the "id" field.
+func (ufic *UserFollowInfoCreate) SetID(i int) *UserFollowInfoCreate {
+	ufic.mutation.SetID(i)
+	return ufic
+}
+
 // Mutation returns the UserFollowInfoMutation object of the builder.
 func (ufic *UserFollowInfoCreate) Mutation() *UserFollowInfoMutation {
 	return ufic.mutation
@@ -81,7 +79,6 @@ func (ufic *UserFollowInfoCreate) Mutation() *UserFollowInfoMutation {
 
 // Save creates the UserFollowInfo in the database.
 func (ufic *UserFollowInfoCreate) Save(ctx context.Context) (*UserFollowInfo, error) {
-	ufic.defaults()
 	return withHooks(ctx, ufic.sqlSave, ufic.mutation, ufic.hooks)
 }
 
@@ -107,48 +104,16 @@ func (ufic *UserFollowInfoCreate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (ufic *UserFollowInfoCreate) defaults() {
-	if _, ok := ufic.mutation.Status(); !ok {
-		v := userfollowinfo.DefaultStatus
-		ufic.mutation.SetStatus(v)
-	}
-	if _, ok := ufic.mutation.CreateTime(); !ok {
-		v := userfollowinfo.DefaultCreateTime()
-		ufic.mutation.SetCreateTime(v)
-	}
-	if _, ok := ufic.mutation.UpdateTime(); !ok {
-		v := userfollowinfo.DefaultUpdateTime()
-		ufic.mutation.SetUpdateTime(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (ufic *UserFollowInfoCreate) check() error {
 	if _, ok := ufic.mutation.UserID(); !ok {
 		return &ValidationError{Name: "user_id", err: errors.New(`ent: missing required field "UserFollowInfo.user_id"`)}
 	}
-	if v, ok := ufic.mutation.UserID(); ok {
-		if err := userfollowinfo.UserIDValidator(v); err != nil {
-			return &ValidationError{Name: "user_id", err: fmt.Errorf(`ent: validator failed for field "UserFollowInfo.user_id": %w`, err)}
-		}
-	}
 	if _, ok := ufic.mutation.FollowID(); !ok {
 		return &ValidationError{Name: "follow_id", err: errors.New(`ent: missing required field "UserFollowInfo.follow_id"`)}
 	}
-	if v, ok := ufic.mutation.FollowID(); ok {
-		if err := userfollowinfo.FollowIDValidator(v); err != nil {
-			return &ValidationError{Name: "follow_id", err: fmt.Errorf(`ent: validator failed for field "UserFollowInfo.follow_id": %w`, err)}
-		}
-	}
 	if _, ok := ufic.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "UserFollowInfo.status"`)}
-	}
-	if _, ok := ufic.mutation.CreateTime(); !ok {
-		return &ValidationError{Name: "create_time", err: errors.New(`ent: missing required field "UserFollowInfo.create_time"`)}
-	}
-	if _, ok := ufic.mutation.UpdateTime(); !ok {
-		return &ValidationError{Name: "update_time", err: errors.New(`ent: missing required field "UserFollowInfo.update_time"`)}
 	}
 	return nil
 }
@@ -164,8 +129,10 @@ func (ufic *UserFollowInfoCreate) sqlSave(ctx context.Context) (*UserFollowInfo,
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != _node.ID {
+		id := _spec.ID.Value.(int64)
+		_node.ID = int(id)
+	}
 	ufic.mutation.id = &_node.ID
 	ufic.mutation.done = true
 	return _node, nil
@@ -176,12 +143,16 @@ func (ufic *UserFollowInfoCreate) createSpec() (*UserFollowInfo, *sqlgraph.Creat
 		_node = &UserFollowInfo{config: ufic.config}
 		_spec = sqlgraph.NewCreateSpec(userfollowinfo.Table, sqlgraph.NewFieldSpec(userfollowinfo.FieldID, field.TypeInt))
 	)
+	if id, ok := ufic.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
 	if value, ok := ufic.mutation.UserID(); ok {
-		_spec.SetField(userfollowinfo.FieldUserID, field.TypeInt64, value)
+		_spec.SetField(userfollowinfo.FieldUserID, field.TypeUint64, value)
 		_node.UserID = value
 	}
 	if value, ok := ufic.mutation.FollowID(); ok {
-		_spec.SetField(userfollowinfo.FieldFollowID, field.TypeInt64, value)
+		_spec.SetField(userfollowinfo.FieldFollowID, field.TypeUint64, value)
 		_node.FollowID = value
 	}
 	if value, ok := ufic.mutation.Status(); ok {
@@ -217,7 +188,6 @@ func (uficb *UserFollowInfoCreateBulk) Save(ctx context.Context) ([]*UserFollowI
 	for i := range uficb.builders {
 		func(i int, root context.Context) {
 			builder := uficb.builders[i]
-			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*UserFollowInfoMutation)
 				if !ok {
@@ -244,7 +214,7 @@ func (uficb *UserFollowInfoCreateBulk) Save(ctx context.Context) ([]*UserFollowI
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
+				if specs[i].ID.Value != nil && nodes[i].ID == 0 {
 					id := specs[i].ID.Value.(int64)
 					nodes[i].ID = int(id)
 				}

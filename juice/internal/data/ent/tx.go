@@ -24,8 +24,8 @@ type Tx struct {
 	VideoComment *VideoCommentClient
 	// VideoLike is the client for interacting with the VideoLike builders.
 	VideoLike *VideoLikeClient
-	// VideoMetadata is the client for interacting with the VideoMetadata builders.
-	VideoMetadata *VideoMetadataClient
+	// VideoMetadatum is the client for interacting with the VideoMetadatum builders.
+	VideoMetadatum *VideoMetadatumClient
 
 	// lazily loaded.
 	client     *Client
@@ -163,7 +163,7 @@ func (tx *Tx) init() {
 	tx.VideoCollection = NewVideoCollectionClient(tx.config)
 	tx.VideoComment = NewVideoCommentClient(tx.config)
 	tx.VideoLike = NewVideoLikeClient(tx.config)
-	tx.VideoMetadata = NewVideoMetadataClient(tx.config)
+	tx.VideoMetadatum = NewVideoMetadatumClient(tx.config)
 }
 
 // txDriver wraps the given dialect.Tx with a nop dialect.Driver implementation.
