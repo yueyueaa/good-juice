@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"github.com/go-kratos/kratos/contrib/registry/discovery/v2"
 	"os"
 
 	"juice/app/user/internal/conf"
@@ -34,16 +35,25 @@ func init() {
 }
 
 func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server) *kratos.App {
+	r := discovery.New(&discovery.Config{
+		Nodes:  []string{"0.0.0.0:7171"},
+		Env:    "dev",
+		Region: "sh1",
+		Zone:   "zone1",
+		Host:   "hostname",
+	})
+	Name = "user"
 	return kratos.New(
 		kratos.ID(id),
 		kratos.Name(Name),
 		kratos.Version(Version),
-		kratos.Metadata(map[string]string{}),
+		kratos.Metadata(map[string]string{"color": "gray"}),
 		kratos.Logger(logger),
 		kratos.Server(
 			gs,
 			hs,
 		),
+		kratos.Registrar(r),
 	)
 }
 
