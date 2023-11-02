@@ -4,7 +4,7 @@ import (
 	"context"
 	"juice/app/user/internal/biz"
 
-	pb "juice/api/helloworld/v1"
+	pb "juice/app/user/api/user/v1"
 )
 
 type UserRelationService struct {

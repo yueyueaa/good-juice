@@ -4,7 +4,7 @@ import (
 	"flag"
 	"os"
 
-	"juice/app/user/internal/conf"
+	"juice/app/video/internal/conf"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/config"
@@ -42,12 +42,12 @@ func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server) *kratos.App {
 	//	Zone:   "zone1",
 	//	Host:   "hostname",
 	//})
-	//Name = "user"
+	//Name = "video"
 	return kratos.New(
 		kratos.ID(id),
 		kratos.Name(Name),
 		kratos.Version(Version),
-		kratos.Metadata(map[string]string{"color": "gray"}),
+		kratos.Metadata(map[string]string{}),
 		kratos.Logger(logger),
 		kratos.Server(
 			gs,

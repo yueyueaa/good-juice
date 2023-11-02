@@ -9,7 +9,7 @@ import "google/api/annotations.proto";
 // import "google/protobuf/empty.proto";
 // import "google/protobuf/timestamp.proto";
 
-option go_package = "juice/api/helloworld/v1;v1";
+option go_package = "juice/app/user/api/user/v1;v1";
 
 // 通用基本结构
 
