@@ -1,5 +1,2 @@
-*.yaml
-*.conf
-*.config
-*.cfg
-*config*
+config/*
+!config/config.txt
