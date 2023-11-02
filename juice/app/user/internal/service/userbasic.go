@@ -19,6 +19,7 @@ func NewUserBasicService(ub *biz.UserBasic) *UserBasicService {
 func (s *UserBasicService) UserLogin(ctx context.Context, req *pb.UserLoginRequest) (*pb.UserLoginResponse, error) {
 	return &pb.UserLoginResponse{}, nil
 }
+
 func (s *UserBasicService) UserRegister(ctx context.Context, req *pb.UserRegisterRequest) (*pb.UserRegisterResponse, error) {
 	return &pb.UserRegisterResponse{}, nil
 }

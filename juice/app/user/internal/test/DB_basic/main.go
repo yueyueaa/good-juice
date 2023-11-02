@@ -7,8 +7,9 @@ import (
 
 	"juice/app/user/internal/data/ent"
 
-	_ "github.com/go-sql-driver/mysql"
 	"juice/app/user/internal/test/config"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {

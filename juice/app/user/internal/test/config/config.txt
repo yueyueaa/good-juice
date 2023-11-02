@@ -1,0 +1,15 @@
+package config
+
+const (
+	database_driver   = "database"
+	database_source   = "user:path@tcp(host:port)/DBtable?parseTime=True"
+	redis_address  = "host:port"
+	redis_password = ""
+	redis_database = 0
+)
+
+var DB_driver = database_driver
+var DB_source = database_source
+var Cache_address = redis_address
+var Cache_password = redis_password
+var Cache_database = redis_database
