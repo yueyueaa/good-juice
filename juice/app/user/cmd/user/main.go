@@ -42,7 +42,7 @@ func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server) *kratos.App {
 		Zone:   "zone1",
 		Host:   "hostname",
 	})
-	Name = "user"
+	Name = "user111"
 	return kratos.New(
 		kratos.ID(id),
 		kratos.Name(Name),
