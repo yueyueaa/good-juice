@@ -15,6 +15,10 @@ type UserBasic struct {
 	log  *log.Helper
 }
 
+func NewUserBasic(repo UserBasicRepo, logger log.Logger) *UserBasic {
+	return &UserBasic{repo: repo, log: log.NewHelper(logger)}
+}
+
 func (ub *UserBasic) List(ctx context.Context, uid uint64) (*v1.Users, error) {
 	ub.log.WithContext(ctx).Infof("Get User: %d Info", uid)
 	return ub.repo.GetUserInfo(ctx, uid)
