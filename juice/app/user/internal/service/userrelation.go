@@ -2,16 +2,18 @@ package service
 
 import (
 	"context"
+	"juice/app/user/internal/biz"
 
 	pb "juice/api/helloworld/v1"
 )
 
 type UserRelationService struct {
 	pb.UnimplementedUserRelationServer
+	ur *biz.UserRelation
 }
 
-func NewUserRelationService() *UserRelationService {
-	return &UserRelationService{}
+func NewUserRelationService(ur *biz.UserRelation) *UserRelationService {
+	return &UserRelationService{ur: ur}
 }
 
 func (s *UserRelationService) SetFollow(ctx context.Context, req *pb.SetFollowRequest) (*pb.SetFollowResponse, error) {

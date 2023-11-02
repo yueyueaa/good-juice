@@ -5,110 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5e0781ec-9ebe-4b0a-8cbd-0e4fdb6a086a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/juice/app/user/internal/biz/userbasic.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/juice/app/user/internal/data/userbasic.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/juice/app/user/internal/biz/userrelation.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/juice/app/user/internal/biz/videofeed.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/juice/app/user/internal/biz/videointeract.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/juice/app/user/internal/biz/videomanager.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/juice/app/user/internal/data/userrelation.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/juice/app/user/internal/data/videofeed.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/juice/app/user/internal/data/videointeract.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/juice/app/user/internal/data/videomanager.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/app/user/cmd/user/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/cmd/user/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/app/user/configs/config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/configs/config.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/app/user/internal/conf/conf.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/conf/conf.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/app/user/internal/conf/conf.proto" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/conf/conf.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/juice/app/user/internal/biz/biz.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/biz/biz.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/juice/app/user/internal/biz/userbasic.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/biz/userbasic.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/juice/app/user/internal/data/data.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/data.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/cmd/juice/main.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/cmd/juice/wire.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/cmd/juice/wire_gen.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/configs/config.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/juice/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/juice/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/biz/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/biz/biz.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/biz/greeter.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/conf/conf.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/conf/conf.proto" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/data.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/client.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/client.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/ent.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/ent.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/enttest/enttest.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/enttest/enttest.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/generate.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/generate.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/hook/hook.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/hook/hook.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/migrate/migrate.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/migrate/migrate.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/migrate/schema.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/migrate/schema.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/mutation.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/mutation.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/predicate/predicate.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/predicate/predicate.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/runtime.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/runtime.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/runtime/runtime.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/runtime/runtime.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/schema/user_base_info.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/schema/user_base_info.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/schema/user_follow_info.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/schema/user_follow_info.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/schema/user_password.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/schema/user_password.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/schema/video_collection.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/schema/video_collection.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/schema/video_comment.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/schema/video_comment.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/schema/video_like.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/schema/video_like.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/schema/video_metadatum.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/schema/video_metadatum.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/tx.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/tx.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/userbaseinfo.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/userbaseinfo.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/userbaseinfo/userbaseinfo.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/userbaseinfo/userbaseinfo.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/userbaseinfo/where.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/userbaseinfo/where.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/userbaseinfo_create.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/userbaseinfo_create.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/userbaseinfo_delete.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/userbaseinfo_delete.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/userbaseinfo_query.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/userbaseinfo_query.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/userbaseinfo_update.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/userbaseinfo_update.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/userfollowinfo.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/userfollowinfo.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/userfollowinfo/userfollowinfo.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/userfollowinfo/userfollowinfo.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/userfollowinfo/where.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/userfollowinfo/where.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/userfollowinfo_create.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/userfollowinfo_create.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/userfollowinfo_delete.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/userfollowinfo_delete.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/userfollowinfo_query.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/userfollowinfo_query.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/userfollowinfo_update.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/userfollowinfo_update.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/userpassword.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/userpassword.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/userpassword/userpassword.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/userpassword/userpassword.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/userpassword/where.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/userpassword/where.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/userpassword_create.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/userpassword_create.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/userpassword_delete.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/userpassword_delete.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/userpassword_query.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/userpassword_query.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/userpassword_update.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/userpassword_update.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/videocollection.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/videocollection.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/videocollection/videocollection.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/videocollection/videocollection.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/videocollection/where.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/videocollection/where.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/videocollection_create.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/videocollection_create.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/videocollection_delete.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/videocollection_delete.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/videocollection_query.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/videocollection_query.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/videocollection_update.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/videocollection_update.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/videocomment.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/videocomment.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/videocomment/videocomment.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/videocomment/videocomment.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/videocomment/where.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/videocomment/where.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/videocomment_create.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/videocomment_create.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/videocomment_delete.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/videocomment_delete.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/videocomment_query.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/videocomment_query.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/videocomment_update.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/videocomment_update.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/videolike.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/videolike.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/videolike/videolike.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/videolike/videolike.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/videolike/where.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/videolike/where.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/videolike_create.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/videolike_create.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/videolike_delete.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/videolike_delete.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/videolike_query.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/videolike_query.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/videolike_update.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/videolike_update.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/videometadatum.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/videometadatum.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/videometadatum/videometadatum.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/videometadatum/videometadatum.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/videometadatum/where.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/videometadatum/where.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/videometadatum_create.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/videometadatum_create.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/videometadatum_delete.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/videometadatum_delete.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/videometadatum_query.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/videometadatum_query.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/ent/videometadatum_update.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/data/ent/videometadatum_update.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/data/greeter.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/server/grpc.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/server/http.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/server/server.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/service/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/service/greeter.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/service/service.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/service/userbasic.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/service/userrelation.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/service/videofeed.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/service/videointeract.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/internal/service/videomanage.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/test/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/test/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/test/DB_basic/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/test/DB_basic/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/juice/test/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/test/readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/juice/app/user/internal/service/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/service/service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/juice/app/user/internal/service/userrelation.go" beforeDir="false" afterPath="$PROJECT_DIR$/juice/app/user/internal/service/userrelation.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,6 +29,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Go File" />
+        <option value="Go Application" />
       </list>
     </option>
   </component>
@@ -130,6 +41,9 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2XZDgs1z9ZcsOgK8EY7rTyeRsq9" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="autoscrollFromSource" value="true" />
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -137,7 +51,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "DefaultGoTemplateProperty": "Go File",
+    "DefaultGoTemplateProperty": "Go Application",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.go.formatter.settings.were.checked": "true",
     "RunOnceActivity.go.migrated.go.modules.settings": "true",
@@ -146,7 +60,7 @@
     "git-widget-placeholder": "yueyuea",
     "go.import.settings.migrated": "true",
     "go.sdk.automatically.set": "true",
-    "last_opened_file_path": "/Users/yueyuea/go/src/good-juice/juice/app/user/internal/test/config",
+    "last_opened_file_path": "/Users/yueyuea/go/src/good-juice/juice/app/user/internal/biz",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "nodejs_package_manager_path": "npm"
@@ -154,6 +68,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/juice/app/user/internal/biz" />
       <recent name="$PROJECT_DIR$/juice/app/user/internal/test/config" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
