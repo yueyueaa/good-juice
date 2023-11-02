@@ -5,8 +5,8 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-redis/redis"
 	"github.com/google/wire"
+	"juice/app/pkg/ent"
 	"juice/app/user/internal/conf"
-	"juice/app/user/internal/data/ent"
 )
 
 // ProviderSet is data providers.

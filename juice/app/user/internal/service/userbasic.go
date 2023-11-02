@@ -2,9 +2,8 @@ package service
 
 import (
 	"context"
+	pb "juice/app/user/api/user/v1"
 	"juice/app/user/internal/biz"
-
-	pb "juice/api/helloworld/v1"
 )
 
 type UserBasicService struct {

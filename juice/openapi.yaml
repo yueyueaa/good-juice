@@ -6,25 +6,6 @@ info:
     title: ""
     version: 0.0.1
 paths:
-    /helloworld/{name}:
-        get:
-            tags:
-                - Greeter
-            description: Sends a greeting
-            operationId: Greeter_SayHello
-            parameters:
-                - name: name
-                  in: path
-                  required: true
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/helloworld.v1.HelloReply'
     /v1/user_basic/info:
         get:
             tags:
@@ -50,7 +31,13 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/v1.UserInfoResponse'
+                                $ref: '#/components/schemas/UserInfoResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/user_basic/login:
         post:
             tags:
@@ -84,7 +71,13 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/v1.UserLoginResponse'
+                                $ref: '#/components/schemas/UserLoginResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/user_basic/register:
         post:
             tags:
@@ -118,7 +111,13 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/v1.UserRegisterResponse'
+                                $ref: '#/components/schemas/UserRegisterResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/user_basic/search:
         get:
             tags:
@@ -148,7 +147,13 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/v1.UserListResponse'
+                                $ref: '#/components/schemas/UserListResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/user_basic/update:
         post:
             tags:
@@ -192,7 +197,13 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/v1.UserUpdateInfoResponse'
+                                $ref: '#/components/schemas/UserUpdateInfoResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/user_relation/followed:
         get:
             tags:
@@ -218,7 +229,13 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/v1.FollowedListResponse'
+                                $ref: '#/components/schemas/FollowedListResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/user_relation/follower:
         get:
             tags:
@@ -244,7 +261,13 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/v1.FollowerListResponse'
+                                $ref: '#/components/schemas/FollowerListResponse'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /v1/user_relation/set:
         post:
             tags:
@@ -278,517 +301,42 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/v1.SetFollowResponse'
-    /v1/video/manege/delete:
-        delete:
-            tags:
-                - VideoManage
-            description: 删除视频
-            operationId: VideoManage_DeleteVideo
-            parameters:
-                - name: userIdentity.userId
-                  in: query
-                  schema:
-                    type: string
-                - name: userIdentity.token
-                  in: query
-                  schema:
-                    type: string
-                - name: userIdentity.timestampe
-                  in: query
-                  schema:
-                    type: string
-                - name: videoId
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
+                                $ref: '#/components/schemas/SetFollowResponse'
+                default:
+                    description: Default error response
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/v1.DeleteVideoResponse'
-    /v1/video/manege/publish:
-        post:
-            tags:
-                - VideoManage
-            description: 发布视频
-            operationId: VideoManage_PublishVideo
-            parameters:
-                - name: userIdentity.userId
-                  in: query
-                  schema:
-                    type: string
-                - name: userIdentity.token
-                  in: query
-                  schema:
-                    type: string
-                - name: userIdentity.timestampe
-                  in: query
-                  schema:
-                    type: string
-                - name: title
-                  in: query
-                  schema:
-                    type: string
-                - name: intro
-                  in: query
-                  schema:
-                    type: string
-                - name: address
-                  in: query
-                  schema:
-                    type: string
-                - name: coverUrl
-                  in: query
-                  schema:
-                    type: string
-                    format: bytes
-                - name: playUrl
-                  in: query
-                  schema:
-                    type: string
-                    format: bytes
-                - name: publishDate
-                  in: query
-                  schema:
-                    type: string
-                - name: videoType
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/v1.PublishVideoResponse'
-    /v1/video_feed/feed:
-        get:
-            tags:
-                - VideoFeed
-            operationId: VideoFeed_GetVideoStream
-            parameters:
-                - name: userIdentity.userId
-                  in: query
-                  schema:
-                    type: string
-                - name: userIdentity.token
-                  in: query
-                  schema:
-                    type: string
-                - name: userIdentity.timestampe
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/v1.VideoStreamResponse'
-    /v1/video_feed/info:
-        get:
-            tags:
-                - VideoFeed
-            operationId: VideoFeed_SearchVideoList
-            parameters:
-                - name: userIdentity.userId
-                  in: query
-                  schema:
-                    type: string
-                - name: userIdentity.token
-                  in: query
-                  schema:
-                    type: string
-                - name: userIdentity.timestampe
-                  in: query
-                  schema:
-                    type: string
-                - name: videoKeywords
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/v1.VideoListResponse'
-    /v1/video_feed/list:
-        get:
-            tags:
-                - VideoFeed
-            operationId: VideoFeed_GetUserVideoList
-            parameters:
-                - name: userIdentity.userId
-                  in: query
-                  schema:
-                    type: string
-                - name: userIdentity.token
-                  in: query
-                  schema:
-                    type: string
-                - name: userIdentity.timestampe
-                  in: query
-                  schema:
-                    type: string
-                - name: userId
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/v1.VideoListResponse'
-    /v1/video_feed/video/classified_list:
-        get:
-            tags:
-                - VideoFeed
-            operationId: VideoFeed_ClassifyVideoList
-            parameters:
-                - name: userIdentity.userId
-                  in: query
-                  schema:
-                    type: string
-                - name: userIdentity.token
-                  in: query
-                  schema:
-                    type: string
-                - name: userIdentity.timestampe
-                  in: query
-                  schema:
-                    type: string
-                - name: videoType
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/v1.VideoListResponse'
-    /v1/video_interact/comment/delete:
-        delete:
-            tags:
-                - VideoInteract
-            operationId: VideoInteract_DeleteComment
-            parameters:
-                - name: userIdentity.userId
-                  in: query
-                  schema:
-                    type: string
-                - name: userIdentity.token
-                  in: query
-                  schema:
-                    type: string
-                - name: userIdentity.timestampe
-                  in: query
-                  schema:
-                    type: string
-                - name: cid
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/v1.DeleteCommentResponse'
-    /v1/video_interact/comment/list:
-        get:
-            tags:
-                - VideoInteract
-            operationId: VideoInteract_GetCommentsList
-            parameters:
-                - name: userIdentity.userId
-                  in: query
-                  schema:
-                    type: string
-                - name: userIdentity.token
-                  in: query
-                  schema:
-                    type: string
-                - name: userIdentity.timestampe
-                  in: query
-                  schema:
-                    type: string
-                - name: vid
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/v1.CommentListResponse'
-    /v1/video_interact/comment/publish:
-        post:
-            tags:
-                - VideoInteract
-            description: 视频评论
-            operationId: VideoInteract_PublishComment
-            parameters:
-                - name: userIdentity.userId
-                  in: query
-                  schema:
-                    type: string
-                - name: userIdentity.token
-                  in: query
-                  schema:
-                    type: string
-                - name: userIdentity.timestampe
-                  in: query
-                  schema:
-                    type: string
-                - name: comment.commentId
-                  in: query
-                  schema:
-                    type: string
-                - name: comment.pcommentId
-                  in: query
-                  schema:
-                    type: string
-                - name: comment.videoId
-                  in: query
-                  schema:
-                    type: string
-                - name: comment.user.uid
-                  in: query
-                  schema:
-                    type: string
-                - name: comment.user.userName
-                  in: query
-                  schema:
-                    type: string
-                - name: comment.user.followCount
-                  in: query
-                  schema:
-                    type: string
-                - name: comment.user.followerCount
-                  in: query
-                  schema:
-                    type: string
-                - name: comment.user.isFollow
-                  in: query
-                  schema:
-                    type: boolean
-                - name: comment.user.userIntro
-                  in: query
-                  schema:
-                    type: string
-                - name: comment.user.headImageURL
-                  in: query
-                  schema:
-                    type: string
-                    format: bytes
-                - name: comment.content
-                  in: query
-                  schema:
-                    type: string
-                - name: comment.createDate
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/v1.PublishCommentResponse'
-    /v1/video_interact/like/list:
-        get:
-            tags:
-                - VideoInteract
-            operationId: VideoInteract_GetLikeList
-            parameters:
-                - name: userIdentity.userId
-                  in: query
-                  schema:
-                    type: string
-                - name: userIdentity.token
-                  in: query
-                  schema:
-                    type: string
-                - name: userIdentity.timestampe
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/v1.LikeListResponse'
-    /v1/video_interact/like/set:
-        post:
-            tags:
-                - VideoInteract
-            description: 视频点赞
-            operationId: VideoInteract_SetLike
-            parameters:
-                - name: userIdentity.userId
-                  in: query
-                  schema:
-                    type: string
-                - name: userIdentity.token
-                  in: query
-                  schema:
-                    type: string
-                - name: userIdentity.timestampe
-                  in: query
-                  schema:
-                    type: string
-                - name: videoId
-                  in: query
-                  schema:
-                    type: string
-                - name: actionType
-                  in: query
-                  schema:
-                    type: boolean
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/v1.LikeResponse'
-    /v1/video_interact/save/list:
-        get:
-            tags:
-                - VideoInteract
-            operationId: VideoInteract_GetSaveList
-            parameters:
-                - name: userIdentity.userId
-                  in: query
-                  schema:
-                    type: string
-                - name: userIdentity.token
-                  in: query
-                  schema:
-                    type: string
-                - name: userIdentity.timestampe
-                  in: query
-                  schema:
-                    type: string
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/v1.SaveListResponse'
-    /v1/video_interact/save/set:
-        post:
-            tags:
-                - VideoInteract
-            description: 视频收藏
-            operationId: VideoInteract_SetSave
-            parameters:
-                - name: userIdentity.userId
-                  in: query
-                  schema:
-                    type: string
-                - name: userIdentity.token
-                  in: query
-                  schema:
-                    type: string
-                - name: userIdentity.timestampe
-                  in: query
-                  schema:
-                    type: string
-                - name: videoId
-                  in: query
-                  schema:
-                    type: string
-                - name: actionType
-                  in: query
-                  schema:
-                    type: boolean
-            responses:
-                "200":
-                    description: OK
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/v1.SaveResponse'
+                                $ref: '#/components/schemas/Status'
 components:
     schemas:
-        helloworld.v1.HelloReply:
-            type: object
-            properties:
-                message:
-                    type: string
-            description: The response message containing the greetings
-        v1.Comment:
-            type: object
-            properties:
-                commentId:
-                    type: string
-                pcommentId:
-                    type: string
-                videoId:
-                    type: string
-                user:
-                    $ref: '#/components/schemas/v1.Users'
-                content:
-                    type: string
-                createDate:
-                    type: string
-        v1.CommentListResponse:
+        FollowedListResponse:
             type: object
             properties:
                 msg:
-                    $ref: '#/components/schemas/v1.StatusMsg'
-                commentList:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/v1.Comment'
-        v1.DeleteCommentResponse:
-            type: object
-            properties:
-                msg:
-                    $ref: '#/components/schemas/v1.StatusMsg'
-        v1.DeleteVideoResponse:
-            type: object
-            properties:
-                msg:
-                    $ref: '#/components/schemas/v1.StatusMsg'
-        v1.FollowedListResponse:
-            type: object
-            properties:
-                msg:
-                    $ref: '#/components/schemas/v1.StatusMsg'
+                    $ref: '#/components/schemas/StatusMsg'
                 userList:
                     type: array
                     items:
-                        $ref: '#/components/schemas/v1.Users'
-        v1.FollowerListResponse:
+                        $ref: '#/components/schemas/Users'
+        FollowerListResponse:
             type: object
             properties:
                 msg:
-                    $ref: '#/components/schemas/v1.StatusMsg'
+                    $ref: '#/components/schemas/StatusMsg'
                 userList:
                     type: array
                     items:
-                        $ref: '#/components/schemas/v1.Users'
-        v1.IdentityMsg:
+                        $ref: '#/components/schemas/Users'
+        GoogleProtobufAny:
+            type: object
+            properties:
+                '@type':
+                    type: string
+                    description: The type of the serialized message.
+            additionalProperties: true
+            description: Contains an arbitrary serialized message along with a @type that describes the type of the serialized message.
+        IdentityMsg:
             type: object
             properties:
                 userId:
@@ -797,50 +345,28 @@ components:
                     type: string
                 timestampe:
                     type: string
-        v1.LikeListResponse:
+        SetFollowResponse:
             type: object
             properties:
-                statusMsg:
-                    $ref: '#/components/schemas/v1.StatusMsg'
-                videoList:
+                msg:
+                    $ref: '#/components/schemas/StatusMsg'
+        Status:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    description: The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+                    format: int32
+                message:
+                    type: string
+                    description: A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+                details:
                     type: array
                     items:
-                        $ref: '#/components/schemas/v1.Video'
-        v1.LikeResponse:
-            type: object
-            properties:
-                statusMsg:
-                    $ref: '#/components/schemas/v1.StatusMsg'
-        v1.PublishCommentResponse:
-            type: object
-            properties:
-                msg:
-                    $ref: '#/components/schemas/v1.StatusMsg'
-        v1.PublishVideoResponse:
-            type: object
-            properties:
-                msg:
-                    $ref: '#/components/schemas/v1.StatusMsg'
-        v1.SaveListResponse:
-            type: object
-            properties:
-                statusMsg:
-                    $ref: '#/components/schemas/v1.StatusMsg'
-                videoList:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/v1.Video'
-        v1.SaveResponse:
-            type: object
-            properties:
-                statusMsg:
-                    $ref: '#/components/schemas/v1.StatusMsg'
-        v1.SetFollowResponse:
-            type: object
-            properties:
-                msg:
-                    $ref: '#/components/schemas/v1.StatusMsg'
-        v1.StatusMsg:
+                        $ref: '#/components/schemas/GoogleProtobufAny'
+                    description: A list of messages that carry the error details.  There is a common set of message types for APIs to use.
+            description: 'The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).'
+        StatusMsg:
             type: object
             properties:
                 code:
@@ -849,42 +375,42 @@ components:
                     type: string
                 timestampe:
                     type: string
-        v1.UserInfoResponse:
+        UserInfoResponse:
             type: object
             properties:
                 status:
-                    $ref: '#/components/schemas/v1.StatusMsg'
+                    $ref: '#/components/schemas/StatusMsg'
                 user:
-                    $ref: '#/components/schemas/v1.Users'
-        v1.UserListResponse:
+                    $ref: '#/components/schemas/Users'
+        UserListResponse:
             type: object
             properties:
                 status:
-                    $ref: '#/components/schemas/v1.StatusMsg'
+                    $ref: '#/components/schemas/StatusMsg'
                 userList:
                     type: array
                     items:
-                        $ref: '#/components/schemas/v1.Users'
-        v1.UserLoginResponse:
+                        $ref: '#/components/schemas/Users'
+        UserLoginResponse:
             type: object
             properties:
                 status:
-                    $ref: '#/components/schemas/v1.StatusMsg'
+                    $ref: '#/components/schemas/StatusMsg'
                 IdentityMsg:
-                    $ref: '#/components/schemas/v1.IdentityMsg'
-        v1.UserRegisterResponse:
+                    $ref: '#/components/schemas/IdentityMsg'
+        UserRegisterResponse:
             type: object
             properties:
                 status:
-                    $ref: '#/components/schemas/v1.StatusMsg'
+                    $ref: '#/components/schemas/StatusMsg'
                 IdentityMsg:
-                    $ref: '#/components/schemas/v1.IdentityMsg'
-        v1.UserUpdateInfoResponse:
+                    $ref: '#/components/schemas/IdentityMsg'
+        UserUpdateInfoResponse:
             type: object
             properties:
                 status:
-                    $ref: '#/components/schemas/v1.StatusMsg'
-        v1.Users:
+                    $ref: '#/components/schemas/StatusMsg'
+        Users:
             type: object
             properties:
                 uid:
@@ -902,54 +428,6 @@ components:
                 headImageURL:
                     type: string
                     format: bytes
-        v1.Video:
-            type: object
-            properties:
-                vid:
-                    type: string
-                user:
-                    $ref: '#/components/schemas/v1.Users'
-                playUrl:
-                    type: string
-                    format: bytes
-                coverUrl:
-                    type: string
-                    format: bytes
-                favoriteCount:
-                    type: string
-                commentCount:
-                    type: string
-                isFavorite:
-                    type: boolean
-                title:
-                    type: string
-                publishDate:
-                    type: string
-        v1.VideoListResponse:
-            type: object
-            properties:
-                msg:
-                    $ref: '#/components/schemas/v1.StatusMsg'
-                videoList:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/v1.Video'
-        v1.VideoStreamResponse:
-            type: object
-            properties:
-                msg:
-                    $ref: '#/components/schemas/v1.StatusMsg'
-                videoList:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/v1.Video'
 tags:
-    - name: Greeter
-      description: The greeting service definition.
     - name: UserBasic
     - name: UserRelation
-    - name: VideoFeed
-    - name: VideoInteract
-      description: 互动服务接口
-    - name: VideoManage
-      description: 视频管理接口，用于视频发布者
