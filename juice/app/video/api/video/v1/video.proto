@@ -13,19 +13,19 @@ option go_package = "juice/app/video/api/video/v1;v1";
 
 // 通用基本结构
 
-message IdentityMsg { // 用户身份信息
+message VideoIdentityMsg { // 用户身份信息
   uint64 user_id = 1;
   string token = 2;
   uint64 timestampe = 3;
 }
 
-message StatusMsg { // 返回消息
+message VideoStatusMsg { // 返回消息
   uint64 code = 1;
   string msg = 2;
   uint64 timestampe = 3;
 }
 
-message Users { // 用户信息
+message VideoUsers { // 用户信息
   uint64 uid = 1;
   string user_name = 2;
   uint64 follow_count = 3;
@@ -39,14 +39,14 @@ message Comment { // 评论
   uint64 comment_id = 1;
   uint64 pcomment_id = 2;
   uint64 video_id = 3;
-  Users user = 4;
+  VideoUsers user = 4;
   string content = 5;
   string create_date = 6;
 }
 
 message Video { // 视频
   uint64 vid = 1;
-  Users user = 2;
+  VideoUsers user = 2;
   bytes play_url = 3;
   bytes cover_url = 4;
   uint64 favorite_count = 5;
@@ -75,7 +75,7 @@ service VideoManage {
 
 // 上传视频
 message PublishVideoRequest {
-  IdentityMsg user_identity = 1;
+  VideoIdentityMsg user_identity = 1;
   string title = 2;
   string intro = 3;
   string address = 4;
@@ -85,15 +85,15 @@ message PublishVideoRequest {
   uint64 video_type = 8;
 }
 
-message PublishVideoResponse { StatusMsg msg = 1; }
+message PublishVideoResponse { VideoStatusMsg msg = 1; }
 
 // 删除视频
 message DeleteVideoRequest {
-  IdentityMsg user_identity = 1;
+  VideoIdentityMsg user_identity = 1;
   uint64 video_id = 2;
 }
 
-message DeleteVideoResponse { StatusMsg msg = 1; }
+message DeleteVideoResponse { VideoStatusMsg msg = 1; }
 
 // 互动服务接口
 service VideoInteract {
@@ -142,62 +142,62 @@ service VideoInteract {
 
 // 点赞
 message SetLikeRequest {
-  IdentityMsg user_identity = 1;
+  VideoIdentityMsg user_identity = 1;
   uint64 video_id = 2;
   bool action_type = 3;
 }
 
-message LikeResponse { StatusMsg status_msg = 1; }
+message LikeResponse { VideoStatusMsg status_msg = 1; }
 
 // 点赞列表
-message GetLikeListRequest { IdentityMsg user_identity = 1; }
+message GetLikeListRequest { VideoIdentityMsg user_identity = 1; }
 
 message LikeListResponse {
-  StatusMsg status_msg = 1;
+  VideoStatusMsg status_msg = 1;
   repeated Video video_list = 3;
 }
 
 // 收藏
 message SetSaveRequest {
-  IdentityMsg user_identity = 1;
+  VideoIdentityMsg user_identity = 1;
   uint64 video_id = 2;
   bool action_type = 3;
 }
 
-message SaveResponse { StatusMsg status_msg = 1; }
+message SaveResponse { VideoStatusMsg status_msg = 1; }
 
 // 收藏列表
-message GetSaveListRequest { IdentityMsg user_identity = 1; }
+message GetSaveListRequest { VideoIdentityMsg user_identity = 1; }
 
 message SaveListResponse {
-  StatusMsg status_msg = 1;
+  VideoStatusMsg status_msg = 1;
   repeated Video video_list = 3;
 }
 
 // 发布评论
 message PublishCommentRequest {
-  IdentityMsg user_identity = 1;
+  VideoIdentityMsg user_identity = 1;
   Comment comment = 2;
 }
 
-message PublishCommentResponse { StatusMsg msg = 1; }
+message PublishCommentResponse { VideoStatusMsg msg = 1; }
 
 // 删除评论
 message DeleteCommentRequest {
-  IdentityMsg user_identity = 1;
+  VideoIdentityMsg user_identity = 1;
   uint64 cid = 2;
 }
 
-message DeleteCommentResponse { StatusMsg msg = 1; }
+message DeleteCommentResponse { VideoStatusMsg msg = 1; }
 
 // 评论列表
 message GetCommentListRequest {
-  IdentityMsg user_identity = 1;
+  VideoIdentityMsg user_identity = 1;
   uint64 vid = 2;
 }
 
 message CommentListResponse {
-  StatusMsg msg = 1;
+  VideoStatusMsg msg = 1;
   repeated Comment comment_list = 2;
 }
 
@@ -230,35 +230,35 @@ service VideoFeed {
 }
 
 // 获取视频列表
-message GetVideoListRequest { IdentityMsg user_identity = 1; }
+message GetVideoListRequest { VideoIdentityMsg user_identity = 1; }
 
 message GetUserVideoListRequest {
-  IdentityMsg user_identity = 1;
+  VideoIdentityMsg user_identity = 1;
   uint64 user_id = 2;
 }
 
 // 搜索视频
 message SearchVideoListRequest {
-  IdentityMsg user_identity = 1;
+  VideoIdentityMsg user_identity = 1;
   string video_keywords = 2;
 }
 
 // 按视频分类筛选
 message ClassifyVideoListRequest {
-  IdentityMsg user_identity = 1;
+  VideoIdentityMsg user_identity = 1;
   uint64 video_type = 2;
 }
 
 message VideoListResponse {
-  StatusMsg msg = 1;
+  VideoStatusMsg msg = 1;
   repeated Video video_list = 3;
 }
 
 // 视频流
 // 未知作用，可能可以用于ffmpeg和ffplay推拉流使用
-message GetVideoStreamRequest { IdentityMsg user_identity = 1; }
+message GetVideoStreamRequest { VideoIdentityMsg user_identity = 1; }
 
 message VideoStreamResponse {
-  StatusMsg msg = 1;
+  VideoStatusMsg msg = 1;
   repeated Video video_list = 4;
 }

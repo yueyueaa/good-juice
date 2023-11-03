@@ -1,11 +1,14 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"github.com/go-kratos/kratos/contrib/registry/discovery/v2"
-	"os"
-
+	srcgrpc "google.golang.org/grpc"
+	v1 "juice/app/user/api/user/v1"
 	"juice/app/video/internal/conf"
+	"os"
+	"time"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/config"
@@ -58,6 +61,22 @@ func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server) *kratos.App {
 	)
 }
 
+func callGRPC(conn *srcgrpc.ClientConn) {
+	client := v1.NewUserBasicClient(conn)
+	req := &v1.GetUserInfoRequest{
+		UserIdentity: &v1.IdentityMsg{
+			UserId:     123,
+			Token:      "example_token",
+			Timestampe: 1636000000,
+		},
+	}
+	reply, err := client.GetUserInfo(context.Background(), req)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Debugf("[grpc] SayHello %+v\n", reply)
+}
+
 func main() {
 	flag.Parse()
 	logger := log.With(log.NewStdLogger(os.Stdout),
@@ -78,6 +97,31 @@ func main() {
 
 	if err := c.Load(); err != nil {
 		panic(err)
+	}
+
+	r := discovery.New(&discovery.Config{
+		Nodes:  []string{"0.0.0.0:7171"},
+		Env:    "dev",
+		Region: "sh1",
+		Zone:   "zone1",
+		Host:   "localhost",
+	})
+
+	conn, err := grpc.DialInsecure(
+		context.Background(),
+		grpc.WithEndpoint("discovery:///user"),
+		// use discovery
+		grpc.WithDiscovery(r),
+	)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer conn.Close()
+
+	for {
+		callGRPC(conn)
+		time.Sleep(time.Second)
 	}
 
 	var bc conf.Bootstrap

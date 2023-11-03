@@ -11,13 +11,11 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
+	_ "go.uber.org/automaxprocs"
 	srcgrpc "google.golang.org/grpc"
 	"juice/app/user/api/user/v1"
 	"juice/app/user/internal/conf"
 	"os"
-	"time"
-
-	_ "go.uber.org/automaxprocs"
 )
 
 // go build -ldflags "-X main.Version=x.y.z"
@@ -111,10 +109,10 @@ func main() {
 	}
 	defer conn.Close()
 
-	for {
-		callGRPC(conn)
-		time.Sleep(time.Second)
-	}
+	//for {
+	//	callGRPC(conn)
+	//	time.Sleep(time.Second)
+	//}
 
 	var bc conf.Bootstrap
 	if err := c.Scan(&bc); err != nil {
