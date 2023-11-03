@@ -22,9 +22,14 @@ func (s *UserBasicService) UserLogin(ctx context.Context, req *pb.UserLoginReque
 func (s *UserBasicService) UserRegister(ctx context.Context, req *pb.UserRegisterRequest) (*pb.UserRegisterResponse, error) {
 	return &pb.UserRegisterResponse{}, nil
 }
+
 func (s *UserBasicService) UpdateUserInfo(ctx context.Context, req *pb.UserUpdateInfoRequest) (*pb.UserUpdateInfoResponse, error) {
+	// token := pb.IdentityMsg.Token //用户token
+	// uid := pb.IdentityMsg.UserId  //用户uid
+
 	return &pb.UserUpdateInfoResponse{}, nil
 }
+
 func (s *UserBasicService) GetUserInfo(ctx context.Context, req *pb.GetUserInfoRequest) (*pb.UserInfoResponse, error) {
 	userInfo, err := s.ub.List(ctx, req.UserIdentity.UserId)
 	if err != nil {
@@ -32,6 +37,7 @@ func (s *UserBasicService) GetUserInfo(ctx context.Context, req *pb.GetUserInfoR
 	}
 	return &pb.UserInfoResponse{User: userInfo}, nil
 }
+
 func (s *UserBasicService) SearchUserList(ctx context.Context, req *pb.SeaechUserListRequest) (*pb.UserListResponse, error) {
 	return &pb.UserListResponse{}, nil
 }

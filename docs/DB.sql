@@ -10,7 +10,7 @@ USE test;
 
 CREATE TABLE
     user_base_info(
-        `id` BIGINT NOT NULL UNIQUE PRIMARY KEY,
+        `id` BIGINT UNSIGNED NOT NULL UNIQUE PRIMARY KEY,
         -- 表项
         `user_id` BIGINT UNSIGNED NOT NULL UNIQUE,
         `username` CHAR(30) NOT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE
 
 CREATE TABLE
     user_password(
-        `id` BIGINT NOT NULL UNIQUE PRIMARY KEY,
+        `id` BIGINT UNSIGNED NOT NULL UNIQUE PRIMARY KEY,
         -- 表项
         `user_id` BIGINT UNSIGNED UNIQUE,
         `salt` CHAR(64) NOT NULL DEFAULT CONCAT(
@@ -57,7 +57,7 @@ CREATE TABLE
 
 CREATE TABLE
     user_follow_info (
-        `id` BIGINT NOT NULL UNIQUE PRIMARY KEY,
+        `id` BIGINT UNSIGNED NOT NULL UNIQUE PRIMARY KEY,
         -- 表项
         `user_id` BIGINT UNSIGNED NOT NULL,
         `follow_id` BIGINT UNSIGNED NOT NULL,
@@ -77,7 +77,7 @@ CREATE TABLE
 
 CREATE TABLE
     video_metadata (
-        `id` BIGINT NOT NULL UNIQUE PRIMARY KEY,
+        `id` BIGINT UNSIGNED NOT NULL UNIQUE PRIMARY KEY,
         -- 表项
         `video_id` BIGINT NOT NULL,
         `user_id` BIGINT NOT NULL,
@@ -99,7 +99,7 @@ CREATE TABLE
 
 CREATE TABLE
     video_like(
-        `id` BIGINT NOT NULL UNIQUE PRIMARY KEY,
+        `id` BIGINT UNSIGNED NOT NULL UNIQUE PRIMARY KEY,
         -- 表项
         `user_id` BIGINT NOT NULL,
         `video_id` BIGINT NOT NULL,
@@ -117,7 +117,7 @@ CREATE TABLE
 
 CREATE TABLE
     video_collection(
-        `id` BIGINT NOT NULL UNIQUE PRIMARY KEY,
+        `id` BIGINT UNSIGNED NOT NULL UNIQUE PRIMARY KEY,
         -- 表项
         `user_id` BIGINT NOT NULL,
         `video_id` BIGINT NOT NULL,
@@ -137,7 +137,7 @@ CREATE TABLE
 
 CREATE TABLE
     video_comment (
-        `id` BIGINT NOT NULL UNIQUE PRIMARY KEY,
+        `id` BIGINT UNSIGNED NOT NULL UNIQUE PRIMARY KEY,
         -- 表项
         `comment_id` BIGINT NOT NULL,
         `pcomment_id` BIGINT NOT NULL,

@@ -58,7 +58,7 @@ message Video { // 视频
 
 // grpcurl -d {"name":"World"} localhost:9000 api.User/v1/user/login
 
-service r { // 用户服务，用于所有用户
+service UserBasic { // 用户服务，用于所有用户
 
   // 用户登陆
   rpc UserLogin(UserLoginRequest) returns (UserLoginResponse) {
