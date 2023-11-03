@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"github.com/go-kratos/kratos/contrib/registry/discovery/v2"
 	"os"
 
 	"juice/app/video/internal/conf"
@@ -34,15 +35,15 @@ func init() {
 }
 
 func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server) *kratos.App {
-	// 服务注册，本地跑可以先注释掉
-	//r := discovery.New(&discovery.Config{
-	//	Nodes:  []string{"0.0.0.0:7171"},
-	//	Env:    "dev",
-	//	Region: "sh1",
-	//	Zone:   "zone1",
-	//	Host:   "hostname",
-	//})
-	//Name = "video"
+	//服务注册，本地跑可以先注释掉
+	r := discovery.New(&discovery.Config{
+		Nodes:  []string{"0.0.0.0:7171"},
+		Env:    "dev",
+		Region: "sh1",
+		Zone:   "zone1",
+		Host:   "hostname",
+	})
+	Name = "video"
 	return kratos.New(
 		kratos.ID(id),
 		kratos.Name(Name),
@@ -53,7 +54,7 @@ func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server) *kratos.App {
 			gs,
 			hs,
 		),
-		//kratos.Registrar(r),
+		kratos.Registrar(r),
 	)
 }
 

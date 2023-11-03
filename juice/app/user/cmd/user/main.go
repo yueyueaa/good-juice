@@ -1,11 +1,9 @@
 package main
 
 import (
+	"context"
 	"flag"
-	"os"
-
-	"juice/app/user/internal/conf"
-
+	"github.com/go-kratos/kratos/contrib/registry/discovery/v2"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/config"
 	"github.com/go-kratos/kratos/v2/config/file"
@@ -13,6 +11,11 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/http"
+	srcgrpc "google.golang.org/grpc"
+	"juice/app/user/api/user/v1"
+	"juice/app/user/internal/conf"
+	"os"
+	"time"
 
 	_ "go.uber.org/automaxprocs"
 )
@@ -34,15 +37,15 @@ func init() {
 }
 
 func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server) *kratos.App {
-	// 服务注册，本地跑可以先注释掉
-	//r := discovery.New(&discovery.Config{
-	//	Nodes:  []string{"0.0.0.0:7171"},
-	//	Env:    "dev",
-	//	Region: "sh1",
-	//	Zone:   "zone1",
-	//	Host:   "hostname",
-	//})
-	//Name = "user"
+	//服务注册，本地跑可以先注释掉
+	r := discovery.New(&discovery.Config{
+		Nodes:  []string{"0.0.0.0:7171"},
+		Env:    "dev",
+		Region: "sh1",
+		Zone:   "zone1",
+		Host:   "hostname",
+	})
+	Name = "user"
 	return kratos.New(
 		kratos.ID(id),
 		kratos.Name(Name),
@@ -53,8 +56,17 @@ func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server) *kratos.App {
 			gs,
 			hs,
 		),
-		//kratos.Registrar(r),
+		kratos.Registrar(r),
 	)
+}
+
+func callGRPC(conn *srcgrpc.ClientConn) {
+	client := v1.NewUserBasicClient(conn)
+	reply, err := client.GetUserInfo(context.Background(), &v1.GetUserInfoRequest{})
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Debugf("[grpc] SayHello %+v\n", reply)
 }
 
 func main() {
@@ -77,6 +89,31 @@ func main() {
 
 	if err := c.Load(); err != nil {
 		panic(err)
+	}
+
+	r := discovery.New(&discovery.Config{
+		Nodes:  []string{"0.0.0.0:7171"},
+		Env:    "dev",
+		Region: "sh1",
+		Zone:   "zone1",
+		Host:   "localhost",
+	})
+
+	conn, err := grpc.DialInsecure(
+		context.Background(),
+		grpc.WithEndpoint("discovery:///video"),
+		// use discovery
+		grpc.WithDiscovery(r),
+	)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer conn.Close()
+
+	for {
+		callGRPC(conn)
+		time.Sleep(time.Second)
 	}
 
 	var bc conf.Bootstrap
