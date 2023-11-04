@@ -2,6 +2,7 @@ package server
 
 import (
 	v1 "juice/api/helloworld/v1"
+	v2 "juice/app/user/api/user/v1"
 	"juice/app/user/internal/conf"
 	"juice/app/user/internal/service"
 
@@ -11,7 +12,7 @@ import (
 )
 
 // NewGRPCServer new a gRPC server.
-func NewGRPCServer(c *conf.Server, greeter *service.GreeterService, logger log.Logger) *grpc.Server {
+func NewGRPCServer(c *conf.Server, greeter *service.GreeterService, userbasic *service.UserBasicService, logger log.Logger) *grpc.Server {
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),
@@ -28,5 +29,7 @@ func NewGRPCServer(c *conf.Server, greeter *service.GreeterService, logger log.L
 	}
 	srv := grpc.NewServer(opts...)
 	v1.RegisterGreeterServer(srv, greeter)
+	v2.RegisterUserBasicServer(srv, userbasic)
+
 	return srv
 }

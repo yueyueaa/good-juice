@@ -2,6 +2,7 @@ package server
 
 import (
 	v1 "juice/api/helloworld/v1"
+	v2 "juice/app/user/api/user/v1"
 	"juice/app/user/internal/conf"
 	"juice/app/user/internal/service"
 
@@ -11,7 +12,7 @@ import (
 )
 
 // NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, logger log.Logger) *http.Server {
+func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, userbasic *service.UserBasicService, logger log.Logger) *http.Server {
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
@@ -28,5 +29,6 @@ func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, logger log.L
 	}
 	srv := http.NewServer(opts...)
 	v1.RegisterGreeterHTTPServer(srv, greeter)
+	v2.RegisterUserBasicHTTPServer(srv, userbasic)
 	return srv
 }
