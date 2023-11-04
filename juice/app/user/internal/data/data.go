@@ -3,7 +3,7 @@ package data
 import (
 	"context"
 	"juice/app/user/internal/conf"
-	"juice/public/data/ent"
+	"juice/public/ent"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-redis/redis"

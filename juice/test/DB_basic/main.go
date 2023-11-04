@@ -3,18 +3,18 @@ package main
 import (
 	"context"
 	"fmt"
+	ent2 "juice/public/ent"
+	"juice/public/ent/userpassword"
 	"log"
 	"time"
 
-	"juice/public/data/ent"
-	"juice/public/data/ent/userpassword"
 	"juice/test/config"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
-	client, err := ent.Open(config.DB_driver, config.DB_source)
+	client, err := ent2.Open(config.DB_driver, config.DB_source)
 	if err != nil {
 		log.Fatalf("failed opening connection to sqlite: %v", err)
 	}
@@ -31,7 +31,7 @@ func main() {
 	update(ctx, client)
 }
 
-func CreateUser(ctx context.Context, client *ent.Client) (*ent.UserPassword, error) {
+func CreateUser(ctx context.Context, client *ent2.Client) (*ent2.UserPassword, error) {
 	fmt.Println("Hello Mysql")
 	u, err := client.UserPassword.
 		Create().
@@ -48,7 +48,7 @@ func CreateUser(ctx context.Context, client *ent.Client) (*ent.UserPassword, err
 	return u, nil
 }
 
-func find(ctx context.Context, client *ent.Client) {
+func find(ctx context.Context, client *ent2.Client) {
 	u, err := client.UserPassword.Query().Where(userpassword.UserIDGT(0)).Select("pwd", "user_id").All(ctx)
 	if err != nil {
 		fmt.Errorf("failed creating user: %v", err)
@@ -66,7 +66,7 @@ func find(ctx context.Context, client *ent.Client) {
 	}
 }
 
-func update(ctx context.Context, client *ent.Client) {
+func update(ctx context.Context, client *ent2.Client) {
 	client.UserPassword.Update().
 		SetPwd("HelloWorld").
 		SetUpdateTime(time.Now()).
