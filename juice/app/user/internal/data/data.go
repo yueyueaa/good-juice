@@ -2,21 +2,23 @@ package data
 
 import (
 	"context"
+	"juice/app/user/internal/conf"
+	"juice/public/data/ent"
+
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-redis/redis"
 	"github.com/google/wire"
-	"juice/app/user/internal/conf"
-	"juice/public/ent"
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewData, NewDB, NewRedis, NewGreeterRepo, NewUserBasicRepo, NewUserRelationRepo)
+var ProviderSet = wire.NewSet(NewData, NewDB, NewRedis, NewUserBasicRepo, NewUserRelationRepo)
 
 // Data .
 type Data struct {
 	db  *ent.Client
 	rdb *redis.Client
 }
+
 type contextTxKey struct{}
 
 // NewData .

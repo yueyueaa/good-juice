@@ -2,9 +2,19 @@ package biz
 
 import (
 	"context"
-	"github.com/go-kratos/kratos/v2/log"
+
 	v1 "juice/app/user/api/user/v1"
+
+	"github.com/go-kratos/kratos/v2/log"
 )
+
+// UserPassword 数据库内容
+type UserPassword struct {
+	Id     int64
+	UserId int64
+	salt   string
+	pwd    string
+}
 
 type UserBasicRepo interface {
 	GetUserInfo(context.Context, uint64) (*v1.Users, error)
