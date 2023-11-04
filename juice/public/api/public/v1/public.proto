@@ -1,0 +1,92 @@
+syntax = "proto3";
+package v2;
+
+// import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+// import "google/protobuf/empty.proto";
+// import "google/protobuf/timestamp.proto";
+
+option go_package = "juice/public/api/public/v1;v1";
+
+// 通用基本结构
+
+message PublicIdentityMsg { // 用户身份信息
+  uint64 user_id = 1;
+  string token = 2;
+  uint64 timestampe = 3;
+}
+
+message PublicStatusMsg { // 返回消息
+  uint64 code = 1;
+  string msg = 2;
+  uint64 timestampe = 3;
+}
+
+message PublicUsers { // 用户信息
+  uint64 uid = 1;
+  string user_name = 2;
+  uint64 follow_count = 3;
+  uint64 follower_count = 4;
+  bool is_follow = 5; // False for oneself
+  string user_intro = 6;
+  bytes head_imageURL = 7;
+}
+
+message PublicComment { // 评论
+  uint64 comment_id = 1;
+  uint64 pcomment_id = 2;
+  uint64 video_id = 3;
+  PublicUsers user = 4;
+  string content = 5;
+  string create_date = 6;
+}
+
+message PublicVideo { // 视频
+  uint64 vid = 1;
+  PublicUsers user = 2;
+  bytes play_url = 3;
+  bytes cover_url = 4;
+  uint64 favorite_count = 5;
+  uint64 comment_count = 6;
+  bool is_favorite = 7;
+  string title = 8;
+  uint64 publish_date = 9;
+}
+
+service Public {
+  rpc VerifyUser(VerifyUserRequest) returns (VerifyResponse) {
+    option (google.api.http) = {
+      post : "/v1/public/verify"
+    };
+  };
+
+  rpc GetUser(GetUserRequest) returns (UserResponse) {
+    option (google.api.http) = {
+      post : "/v1/public/user"
+    };
+  };
+
+  //   rpc GetVideo(VideoRequest) returns (VideoResponse) {
+  //     option (google.api.http) = {
+  //       post : "/v1/public/login"
+  //     };
+  //   };
+
+  //   rpc GetComment(CommentRequest) returns (CommentResponse) {
+  //     option (google.api.http) = {
+  //       post : "/v1/public/login"
+  //     };
+  //   };
+}
+
+message VerifyUserRequest { PublicIdentityMsg identity = 1; }
+message VerifyResponse { bool identity = 1; }
+
+message GetUserRequest { uint64 uid = 1; }
+message UserResponse { PublicUsers user = 1; }
+
+// message VideoRequest { uint64 uid = 1; }
+// message VideoResponse { PublicVideo video = 1; }
+
+// message CommentRequest { uint64 uid = 1; }
+// message CommentResponse { PublicComment comment = 1; }
