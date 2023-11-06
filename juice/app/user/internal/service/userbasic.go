@@ -31,10 +31,11 @@ func (s *UserBasicService) UpdateUserInfo(ctx context.Context, req *pb.UserUpdat
 }
 
 func (s *UserBasicService) GetUserInfo(ctx context.Context, req *pb.GetUserInfoRequest) (*pb.UserInfoResponse, error) {
-	userInfo, err := s.ub.List(ctx, req.UserIdentity.UserId)
-	if err != nil {
-		return nil, err
-	}
+	//userInfo, err := s.ub.List(ctx, req.UserIdentity.UserId)
+	//if err != nil {
+	//	return nil, err
+	//}
+	var userInfo *pb.Users
 	return &pb.UserInfoResponse{User: userInfo}, nil
 }
 

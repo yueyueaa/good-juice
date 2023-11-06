@@ -15,7 +15,7 @@ CREATE TABLE
         `user_id` BIGINT UNSIGNED NOT NULL UNIQUE,
         `username` CHAR(30) NOT NULL,
         `sex` TINYINT NOT NULL,
-        `birth` DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        `birth` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         `area` INT NOT NULL,
         `user_profile` CHAR(255),
         `user_profile_photo_url` CHAR(255),
