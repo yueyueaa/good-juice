@@ -5,7 +5,7 @@ package hook
 import (
 	"context"
 	"fmt"
-	ent2 "juice/public/ent"
+	ent2 "juice/app/public/ent"
 )
 
 // The UserBaseInfoFunc type is an adapter to allow the use of ordinary

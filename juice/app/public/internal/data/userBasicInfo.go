@@ -3,9 +3,9 @@ package data
 import (
 	"context"
 	"encoding/json"
+	"juice/app/public/ent"
+	"juice/app/public/ent/userbaseinfo"
 	"juice/public/internal/biz"
-	"juice/public/ent"
-	"juice/public/ent/userbaseinfo"
 	"strconv"
 	"time"
 

@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
-	ent2 "juice/public/ent"
-	"juice/public/ent/userpassword"
+	ent2 "juice/app/public/ent"
+	"juice/app/public/ent/userpassword"
 	"log"
 	"time"
 

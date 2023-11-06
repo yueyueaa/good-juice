@@ -6,8 +6,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"juice/public/ent/predicate"
-	"juice/public/ent/userpassword"
+	"juice/app/public/ent/predicate"
+	"juice/app/public/ent/userpassword"
 	"time"
 
 	"entgo.io/ent/dialect/sql"

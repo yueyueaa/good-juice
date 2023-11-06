@@ -4,7 +4,7 @@ package ent
 
 import (
 	"fmt"
-	"juice/public/ent/videocomment"
+	"juice/app/public/ent/videocomment"
 	"strings"
 	"time"
 

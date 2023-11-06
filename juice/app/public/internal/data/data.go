@@ -1,7 +1,7 @@
 package data
 
 import (
-	"juice/public/ent"
+	"juice/app/public/ent"
 	"juice/public/internal/conf"
 
 	"github.com/go-kratos/kratos/v2/log"

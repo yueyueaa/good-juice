@@ -4,8 +4,8 @@ package enttest
 
 import (
 	"context"
-	"juice/public/ent"
-	migrate2 "juice/public/ent/migrate"
+	"juice/app/public/ent"
+	migrate2 "juice/app/public/ent/migrate"
 
 	// required by schema hooks.
 	_ "juice/public/data/ent/runtime"

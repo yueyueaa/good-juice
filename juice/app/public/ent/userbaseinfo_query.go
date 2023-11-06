@@ -5,8 +5,8 @@ package ent
 import (
 	"context"
 	"fmt"
-	"juice/public/ent/predicate"
-	"juice/public/ent/userbaseinfo"
+	"juice/app/public/ent/predicate"
+	"juice/app/public/ent/userbaseinfo"
 	"math"
 
 	"entgo.io/ent/dialect/sql"

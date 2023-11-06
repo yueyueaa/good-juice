@@ -4,7 +4,7 @@ package ent
 
 import (
 	"fmt"
-	"juice/public/ent/userfollowinfo"
+	"juice/app/public/ent/userfollowinfo"
 	"strings"
 	"time"
 

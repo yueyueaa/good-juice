@@ -2,9 +2,10 @@ package data
 
 import (
 	"context"
-	"github.com/go-redis/redis"
+	"juice/app/public/ent"
 	"juice/app/video/internal/conf"
-	"juice/public/ent"
+
+	"github.com/go-redis/redis"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"

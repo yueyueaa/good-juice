@@ -4,8 +4,8 @@ package ent
 
 import (
 	"context"
-	"juice/public/ent/predicate"
-	"juice/public/ent/videometadatum"
+	"juice/app/public/ent/predicate"
+	"juice/app/public/ent/videometadatum"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"

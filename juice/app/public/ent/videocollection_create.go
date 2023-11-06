@@ -6,7 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"juice/public/ent/videocollection"
+	"juice/app/public/ent/videocollection"
 	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"

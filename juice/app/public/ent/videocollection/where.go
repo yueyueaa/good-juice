@@ -3,7 +3,7 @@
 package videocollection
 
 import (
-	"juice/public/ent/predicate"
+	"juice/app/public/ent/predicate"
 	"time"
 
 	"entgo.io/ent/dialect/sql"

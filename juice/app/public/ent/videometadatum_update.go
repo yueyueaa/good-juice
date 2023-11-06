@@ -6,8 +6,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"juice/public/ent/predicate"
-	"juice/public/ent/videometadatum"
+	"juice/app/public/ent/predicate"
+	"juice/app/public/ent/videometadatum"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
