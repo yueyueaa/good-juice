@@ -2,7 +2,7 @@
 
 package runtime
 
-// The schema-stitching logic is generated in juice/public/data/ent/runtime.go
+// The schema-stitching logic is generated in juice/app/public/data/ent/runtime.go
 
 const (
 	Version = "v0.12.4"                                         // Version of ent codegen.

@@ -6,11 +6,11 @@
 package main
 
 import (
-	"juice/public/internal/biz"
-	"juice/public/internal/conf"
-	"juice/public/internal/data"
-	"juice/public/internal/server"
-	"juice/public/internal/service"
+	"juice/app/public/internal/biz"
+	"juice/app/public/internal/conf"
+	"juice/app/public/internal/data"
+	"juice/app/public/internal/server"
+	"juice/app/public/internal/service"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"

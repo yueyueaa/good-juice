@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 
-	pb "juice/public/api/public/v1"
+	pb "juice/app/public/api/public/v1"
 )
 
 type PublicService struct {

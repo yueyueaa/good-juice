@@ -1,8 +1,8 @@
 package server
 
 import (
-	"juice/public/internal/conf"
-	"juice/public/internal/service"
+	"juice/app/public/internal/conf"
+	"juice/app/public/internal/service"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
