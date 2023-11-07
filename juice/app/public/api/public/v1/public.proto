@@ -6,7 +6,7 @@ import "google/api/annotations.proto";
 // import "google/protobuf/empty.proto";
 // import "google/protobuf/timestamp.proto";
 
-option go_package = "juice/public/api/public/v1;v1";
+option go_package = "juice/app/public/api/public/v1;v1";
 
 // 通用基本结构
 

@@ -1,8 +1,9 @@
 package data
 
 import (
+	"context"
 	"juice/app/public/ent"
-	"juice/public/internal/conf"
+	"juice/app/public/internal/conf"
 
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-redis/redis"
@@ -10,7 +11,7 @@ import (
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewData, NewGreeterRepo, NewTokenCache, NewUserTokenRepo, NewUserInfoRepo)
+var ProviderSet = wire.NewSet(NewData, NewDB, NewRedis, NewGreeterRepo, NewUserInfoRepo, NewUserTokenRepo)
 
 // Data .
 type Data struct {
@@ -18,6 +19,9 @@ type Data struct {
 	rdb *redis.Client
 }
 
+type contextTxKey struct{}
+
+// NewData .
 func NewData(c *conf.Data, logger log.Logger, db *ent.Client, rdb *redis.Client) (*Data, func(), error) {
 	cleanup := func() {
 		log.NewHelper(logger).Info("closing the data resources")
@@ -25,30 +29,39 @@ func NewData(c *conf.Data, logger log.Logger, db *ent.Client, rdb *redis.Client)
 	return &Data{db: db, rdb: rdb}, cleanup, nil
 }
 
-type TokenCache struct {
-	tokenDB *redis.Client
+func (d *Data) DB(ctx context.Context) *ent.Client {
+	tx, ok := ctx.Value(contextTxKey{}).(*ent.Client)
+	if ok {
+		return tx
+	}
+	return d.db
 }
 
-type contextTxKey struct{}
+// NewDB .
+func NewDB(c *conf.Data) *ent.Client {
+	// 终端打印输入 sql 执行记录
+	log.Info("failed opening connection to ")
+	//client, err := ent.Open(config.DB_driver, config.DB_source)
+	db, err := ent.Open("driverName", "dataSourceName")
 
-// NewTokenCache .
-func NewTokenCache(c *conf.Data, logger log.Logger) (*TokenCache, func(), error) {
-	log := log.NewHelper(logger)
-
-	rdb := redis.NewClient(&redis.Options{
-		Addr:     "127.0.0.1:6379",
-		Password: "",
-		DB:       int(8 + 0),
-	})
-
-	d := &TokenCache{
-		tokenDB: rdb,
+	if err != nil {
+		log.Errorf("failed opening connection to mysql: %v", err)
 	}
 
-	return d, func() {
-		log.Info("message", "closing the data resources")
-		if err := d.tokenDB.Close(); err != nil {
-			log.Error(err)
-		}
-	}, nil
+	return db
+}
+
+func NewRedis(c *conf.Data) *redis.Client {
+	rdb := redis.NewClient(&redis.Options{
+		Addr:         c.Redis.Addr,
+		Password:     c.Redis.Password,
+		DB:           int(c.Redis.Db),
+		DialTimeout:  c.Redis.DialTimeout.AsDuration(),
+		WriteTimeout: c.Redis.WriteTimeout.AsDuration(),
+		ReadTimeout:  c.Redis.ReadTimeout.AsDuration(),
+	})
+	if err := rdb.Close(); err != nil {
+		log.Error(err)
+	}
+	return rdb
 }

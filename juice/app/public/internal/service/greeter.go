@@ -4,7 +4,7 @@ import (
 	"context"
 
 	v1 "juice/api/helloworld/v1"
-	"juice/public/internal/biz"
+	"juice/app/public/internal/biz"
 )
 
 // GreeterService is a greeter service.

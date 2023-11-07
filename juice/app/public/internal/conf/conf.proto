@@ -1,7 +1,7 @@
 syntax = "proto3";
 package kratos.api;
 
-option go_package = "juice/public/conf;conf";
+option go_package = "juice/app/public/conf;conf";
 
 import "google/protobuf/duration.proto";
 
@@ -10,12 +10,28 @@ message Bootstrap {
   Data data = 2;
 }
 
+message Server {
+  message GRPC {
+    string network = 1;
+    string addr = 2;
+    google.protobuf.Duration timeout = 3;
+  }
+  GRPC grpc = 1;
+}
+
 message Data {
+  message Database {
+    string driver = 1;
+    string source = 2;
+  }
   message Redis {
     string network = 1;
     string addr = 2;
-    google.protobuf.Duration read_timeout = 3;
-    google.protobuf.Duration write_timeout = 4;
+    string password = 3;
+    int32 db = 4;
+    google.protobuf.Duration dial_timeout = 5;
+    google.protobuf.Duration read_timeout = 6;
+    google.protobuf.Duration write_timeout = 7;
   }
   Database database = 1;
   Redis redis = 2;

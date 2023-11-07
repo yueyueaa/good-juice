@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"juice/app/public/ent"
 	"juice/app/public/ent/userbaseinfo"
-	"juice/public/internal/biz"
+	"juice/app/public/internal/biz"
 	"strconv"
 	"time"
 
