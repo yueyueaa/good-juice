@@ -4,6 +4,7 @@ import (
 	"context"
 	pb "juice/app/user/api/user/v1"
 	"juice/app/user/internal/biz"
+	"time"
 )
 
 type UserBasicService struct {
@@ -16,6 +17,7 @@ func NewUserBasicService(ub *biz.UserBasic) *UserBasicService {
 }
 
 func (s *UserBasicService) UserLogin(ctx context.Context, req *pb.UserLoginRequest) (*pb.UserLoginResponse, error) {
+
 	return &pb.UserLoginResponse{}, nil
 }
 
@@ -31,11 +33,18 @@ func (s *UserBasicService) UpdateUserInfo(ctx context.Context, req *pb.UserUpdat
 }
 
 func (s *UserBasicService) GetUserInfo(ctx context.Context, req *pb.GetUserInfoRequest) (*pb.UserInfoResponse, error) {
-	//userInfo, err := s.ub.List(ctx, req.UserIdentity.UserId)
-	//if err != nil {
-	//	return nil, err
-	//}
-	var userInfo *pb.Users
+	userInfo, err := s.ub.List(ctx, req.UserIdentity.UserId)
+	// status := pb.StatusMsg{}
+
+	if err != nil {
+		status := pb.StatusMsg{
+			Code:       400,
+			Msg:        "can't list users",
+			Timestampe: uint64(time.Now().Unix()),
+		}
+		return &pb.UserInfoResponse{Status: &status}, err
+	}
+	// var userInfo *pb.Users
 	return &pb.UserInfoResponse{User: userInfo}, nil
 }
 
