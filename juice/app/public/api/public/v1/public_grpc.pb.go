@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v4.24.4
-// source: public/api/public/v1/public.proto
+// source: public.proto
 
 package v1
 
@@ -19,8 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Public_VerifyUser_FullMethodName = "/v2.Public/VerifyUser"
-	Public_GetUser_FullMethodName    = "/v2.Public/GetUser"
+	Public_VerifyUser_FullMethodName = "/public.v1.Public/VerifyUser"
+	Public_GetUser_FullMethodName    = "/public.v1.Public/GetUser"
 )
 
 // PublicClient is the client API for Public service.
@@ -129,7 +129,7 @@ func _Public_GetUser_Handler(srv interface{}, ctx context.Context, dec func(inte
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Public_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "v2.Public",
+	ServiceName: "public.v1.Public",
 	HandlerType: (*PublicServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -142,5 +142,5 @@ var Public_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "public/api/public/v1/public.proto",
+	Metadata: "public.proto",
 }

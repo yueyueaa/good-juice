@@ -11,28 +11,100 @@ import (
 // is compatible with the kratos package it is being compiled against.
 const _ = errors.SupportPackageIsVersion1
 
-// 为某个枚举单独设置错误码
-func IsUserNotFound(err error) bool {
+// 成功
+func IsSuccess(err error) bool {
 	if err == nil {
 		return false
 	}
 	e := errors.FromError(err)
-	return e.Reason == ErrorReason_USER_NOT_FOUND.String() && e.Code == 404
+	return e.Reason == RespReason_SUCCESS.String() && e.Code == 200
 }
 
-// 为某个枚举单独设置错误码
-func ErrorUserNotFound(format string, args ...interface{}) *errors.Error {
-	return errors.New(404, ErrorReason_USER_NOT_FOUND.String(), fmt.Sprintf(format, args...))
+// 成功
+func ErrorSuccess(format string, args ...interface{}) *errors.Error {
+	return errors.New(200, RespReason_SUCCESS.String(), fmt.Sprintf(format, args...))
 }
 
-func IsContentMissing(err error) bool {
+// 无效的请求
+func IsInvalidRequest(err error) bool {
 	if err == nil {
 		return false
 	}
 	e := errors.FromError(err)
-	return e.Reason == ErrorReason_CONTENT_MISSING.String() && e.Code == 400
+	return e.Reason == RespReason_INVALID_REQUEST.String() && e.Code == 400
 }
 
-func ErrorContentMissing(format string, args ...interface{}) *errors.Error {
-	return errors.New(400, ErrorReason_CONTENT_MISSING.String(), fmt.Sprintf(format, args...))
+// 无效的请求
+func ErrorInvalidRequest(format string, args ...interface{}) *errors.Error {
+	return errors.New(400, RespReason_INVALID_REQUEST.String(), fmt.Sprintf(format, args...))
+}
+
+// 未通过鉴权
+func IsUnauthorized(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == RespReason_UNAUTHORIZED.String() && e.Code == 401
+}
+
+// 未通过鉴权
+func ErrorUnauthorized(format string, args ...interface{}) *errors.Error {
+	return errors.New(401, RespReason_UNAUTHORIZED.String(), fmt.Sprintf(format, args...))
+}
+
+// 权限不足
+func IsPermissionDenied(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == RespReason_PERMISSION_DENIED.String() && e.Code == 403
+}
+
+// 权限不足
+func ErrorPermissionDenied(format string, args ...interface{}) *errors.Error {
+	return errors.New(403, RespReason_PERMISSION_DENIED.String(), fmt.Sprintf(format, args...))
+}
+
+// 找不到资源
+func IsNotFound(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == RespReason_NOT_FOUND.String() && e.Code == 404
+}
+
+// 找不到资源
+func ErrorNotFound(format string, args ...interface{}) *errors.Error {
+	return errors.New(404, RespReason_NOT_FOUND.String(), fmt.Sprintf(format, args...))
+}
+
+// 服务器内部错误
+func IsInternalServerError(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == RespReason_INTERNAL_SERVER_ERROR.String() && e.Code == 500
+}
+
+// 服务器内部错误
+func ErrorInternalServerError(format string, args ...interface{}) *errors.Error {
+	return errors.New(500, RespReason_INTERNAL_SERVER_ERROR.String(), fmt.Sprintf(format, args...))
+}
+
+// 服务不可用
+func IsServiceUnavailable(err error) bool {
+	if err == nil {
+		return false
+	}
+	e := errors.FromError(err)
+	return e.Reason == RespReason_SERVICE_UNAVAILABLE.String() && e.Code == 503
+}
+
+// 服务不可用
+func ErrorServiceUnavailable(format string, args ...interface{}) *errors.Error {
+	return errors.New(503, RespReason_SERVICE_UNAVAILABLE.String(), fmt.Sprintf(format, args...))
 }

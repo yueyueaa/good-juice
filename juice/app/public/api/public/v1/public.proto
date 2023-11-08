@@ -1,5 +1,5 @@
 syntax = "proto3";
-package v2;
+package public.v1;
 
 // import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "google/api/annotations.proto";

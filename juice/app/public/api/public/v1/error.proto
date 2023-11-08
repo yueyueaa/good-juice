@@ -6,12 +6,25 @@ import "errors/errors.proto";
 option go_package = "juice/app/public/api/public/v1;v1";
 
 
-enum ErrorReason {
-  // 设置缺省错误码
-  option (errors.default_code) = 500;
+enum RespReason {
+  //  成功
+  SUCCESS = 0 [(errors.code) = 200];  
 
-  // 为某个枚举单独设置错误码
-  USER_NOT_FOUND = 0 [(errors.code) = 404];
+  // 无效的请求
+  INVALID_REQUEST = 1 [(errors.code) = 400];  
 
-  CONTENT_MISSING = 1 [(errors.code) = 400];
-}
+  // 未通过鉴权
+  UNAUTHORIZED = 2 [(errors.code) = 401];     
+  
+  // 权限不足  
+  PERMISSION_DENIED = 3 [(errors.code) = 403];  
+  
+  // 找不到资源
+  NOT_FOUND = 4 [(errors.code) = 404];   
+  
+  // 服务器内部错误
+  INTERNAL_SERVER_ERROR = 5 [(errors.code) = 500];  
+  
+  // 服务不可用 
+  SERVICE_UNAVAILABLE = 6 [(errors.code) = 503];   
+  }

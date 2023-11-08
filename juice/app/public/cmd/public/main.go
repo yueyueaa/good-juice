@@ -6,6 +6,7 @@ import (
 
 	"juice/app/public/internal/conf"
 
+	"github.com/go-kratos/kratos/contrib/registry/discovery/v2"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/config"
 	"github.com/go-kratos/kratos/v2/config/file"
@@ -33,6 +34,14 @@ func init() {
 }
 
 func newApp(logger log.Logger, gs *grpc.Server) *kratos.App {
+	r := discovery.New(&discovery.Config{
+		Nodes:  []string{"0.0.0.0:7171"},
+		Env:    "dev",
+		Region: "sh1",
+		Zone:   "zone1",
+		Host:   "hostname",
+	})
+	Name := "public"
 	return kratos.New(
 		kratos.ID(id),
 		kratos.Name(Name),
@@ -42,6 +51,7 @@ func newApp(logger log.Logger, gs *grpc.Server) *kratos.App {
 		kratos.Server(
 			gs,
 		),
+		kratos.Registrar(r),
 	)
 }
 
