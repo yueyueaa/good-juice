@@ -8,7 +8,7 @@ import (
 	migrate2 "juice/app/public/ent/migrate"
 
 	// required by schema hooks.
-	_ "juice/public/data/ent/runtime"
+	_ "juice/app/public/ent/runtime"
 
 	"entgo.io/ent/dialect/sql/schema"
 )

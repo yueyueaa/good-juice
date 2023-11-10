@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	bc "juice/app/public/api/public/v1"
 	pb "juice/app/user/api/user/v1"
 	"juice/app/user/internal/biz"
 	"time"
@@ -34,15 +35,13 @@ func (s *UserBasicService) UpdateUserInfo(ctx context.Context, req *pb.UserUpdat
 
 func (s *UserBasicService) GetUserInfo(ctx context.Context, req *pb.GetUserInfoRequest) (*pb.UserInfoResponse, error) {
 	userInfo, err := s.ub.List(ctx, req.UserIdentity.UserId)
-	// status := pb.StatusMsg{}
-
 	if err != nil {
 		status := pb.StatusMsg{
 			Code:       400,
 			Msg:        "can't list users",
 			Timestampe: uint64(time.Now().Unix()),
 		}
-		return &pb.UserInfoResponse{Status: &status}, err
+		return &pb.UserInfoResponse{Status: &status}, bc.ErrorUserNotFound("can't list users")
 	}
 	// var userInfo *pb.Users
 	return &pb.UserInfoResponse{User: userInfo}, nil

@@ -5,7 +5,6 @@ import "errors/errors.proto";
 
 option go_package = "juice/app/public/api/public/v1;v1";
 
-
 enum ErrorReason {
   // 设置缺省错误码
   option (errors.default_code) = 500;
