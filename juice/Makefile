@@ -81,3 +81,6 @@ help:
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)
 
 .DEFAULT_GOAL := help
+
+yueyuea: 
+    go generate ./...        

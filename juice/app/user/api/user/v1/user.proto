@@ -2,7 +2,7 @@
 // protobuf 文件参考:
 //  - https://developers.google.com/protocol-buffers/
 syntax = "proto3";
-package v1;
+package user.v1;
 
 // import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 import "google/api/annotations.proto";

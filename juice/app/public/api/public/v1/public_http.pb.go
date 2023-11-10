@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-http v2.7.1
 // - protoc             v4.24.4
-// source: public/api/public/v1/public.proto
+// source: public.proto
 
 package v1
 
@@ -19,8 +19,8 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationPublicGetUser = "/v2.Public/GetUser"
-const OperationPublicVerifyUser = "/v2.Public/VerifyUser"
+const OperationPublicGetUser = "/public.v1.Public/GetUser"
+const OperationPublicVerifyUser = "/public.v1.Public/VerifyUser"
 
 type PublicHTTPServer interface {
 	GetUser(context.Context, *GetUserRequest) (*UserResponse, error)
