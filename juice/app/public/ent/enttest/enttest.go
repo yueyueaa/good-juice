@@ -5,12 +5,12 @@ package enttest
 import (
 	"context"
 	"juice/app/public/ent"
-	migrate2 "juice/app/public/ent/migrate"
-
 	// required by schema hooks.
-	_ "juice/public/data/ent/runtime"
+	_ "juice/app/public/ent/runtime"
 
-	"entgo.io/ent/dialect/sql/schema"
+	"juice/app/public/ent/migrate"
+
+	// "juice/app/public/ent/dialect/sql/schema"
 )
 
 type (
@@ -72,12 +72,12 @@ func NewClient(t TestingT, opts ...Option) *ent.Client {
 	return c
 }
 func migrateSchema(t TestingT, c *ent.Client, o *options) {
-	tables, err := schema.CopyTables(migrate2.Tables)
+	tables, err := schema.CopyTables(migrate.Tables)
 	if err != nil {
 		t.Error(err)
 		t.FailNow()
 	}
-	if err := migrate2.Create(context.Background(), c.Schema, tables, o.migrateOpts...); err != nil {
+	if err := migrate.Create(context.Background(), c.Schema, tables, o.migrateOpts...); err != nil {
 		t.Error(err)
 		t.FailNow()
 	}

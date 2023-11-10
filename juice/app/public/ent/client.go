@@ -6,7 +6,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
+	"reflect"
+
 	"juice/app/public/ent/migrate"
+
 	"juice/app/public/ent/userbaseinfo"
 	"juice/app/public/ent/userfollowinfo"
 	"juice/app/public/ent/userpassword"
@@ -14,8 +18,6 @@ import (
 	"juice/app/public/ent/videocomment"
 	"juice/app/public/ent/videolike"
 	"juice/app/public/ent/videometadatum"
-	"log"
-	"reflect"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"

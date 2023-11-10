@@ -2,8 +2,10 @@ package service
 
 import (
 	"context"
+	bc "juice/app/public/api/public/v1"
 	pb "juice/app/user/api/user/v1"
 	"juice/app/user/internal/biz"
+	"time"
 )
 
 type UserBasicService struct {
@@ -16,6 +18,7 @@ func NewUserBasicService(ub *biz.UserBasic) *UserBasicService {
 }
 
 func (s *UserBasicService) UserLogin(ctx context.Context, req *pb.UserLoginRequest) (*pb.UserLoginResponse, error) {
+
 	return &pb.UserLoginResponse{}, nil
 }
 
@@ -31,12 +34,21 @@ func (s *UserBasicService) UpdateUserInfo(ctx context.Context, req *pb.UserUpdat
 }
 
 func (s *UserBasicService) GetUserInfo(ctx context.Context, req *pb.GetUserInfoRequest) (*pb.UserInfoResponse, error) {
-	//userInfo, err := s.ub.List(ctx, req.UserIdentity.UserId)
-	//if err != nil {
-	//	return nil, err
-	//}
-	var userInfo *pb.Users
-	return &pb.UserInfoResponse{User: userInfo}, nil
+	userInfo, err := s.ub.List(ctx, req.UserIdentity.UserId)
+	if err != nil {
+		status := &pb.StatusMsg{
+			Code:       uint64(bc.RespReason_NOT_FOUND),
+			Msg:        "can't list users",
+			Timestampe: uint64(time.Now().Unix()),
+		}
+		return &pb.UserInfoResponse{Status: status}, err
+	}
+	status := &pb.StatusMsg{
+		Code:       uint64(bc.RespReason_SUCCESS),
+		Msg:        "success",
+		Timestampe: uint64(time.Now().Unix()),
+	}
+	return &pb.UserInfoResponse{Status: status, User: userInfo}, nil
 }
 
 func (s *UserBasicService) SearchUserList(ctx context.Context, req *pb.SeaechUserListRequest) (*pb.UserListResponse, error) {

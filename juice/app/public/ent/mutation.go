@@ -42,8 +42,8 @@ const (
 // UserBaseInfoMutation represents an operation that mutates the UserBaseInfo nodes in the graph.
 type UserBaseInfoMutation struct {
 	config
-	op         Op
-	typ        string
+	op                     Op
+	typ                    string
 	id                     *uint64
 	user_id                *uint64
 	adduser_id             *int64
@@ -62,9 +62,9 @@ type UserBaseInfoMutation struct {
 	create_time            *time.Time
 	update_time            *time.Time
 	clearedFields          map[string]struct{}
-	done       bool
-	oldValue   func(context.Context) (*UserBaseInfo, error)
-	predicates []predicate.UserBaseInfo
+	done                   bool
+	oldValue               func(context.Context) (*UserBaseInfo, error)
+	predicates             []predicate.UserBaseInfo
 }
 
 var _ ent.Mutation = (*UserBaseInfoMutation)(nil)
@@ -1180,8 +1180,8 @@ func (m *UserBaseInfoMutation) ResetEdge(name string) error {
 // UserFollowInfoMutation represents an operation that mutates the UserFollowInfo nodes in the graph.
 type UserFollowInfoMutation struct {
 	config
-	op         Op
-	typ        string
+	op            Op
+	typ           string
 	id            *uint64
 	user_id       *uint64
 	adduser_id    *int64
@@ -1192,9 +1192,9 @@ type UserFollowInfoMutation struct {
 	create_time   *time.Time
 	update_time   *time.Time
 	clearedFields map[string]struct{}
-	done       bool
-	oldValue   func(context.Context) (*UserFollowInfo, error)
-	predicates []predicate.UserFollowInfo
+	done          bool
+	oldValue      func(context.Context) (*UserFollowInfo, error)
+	predicates    []predicate.UserFollowInfo
 }
 
 var _ ent.Mutation = (*UserFollowInfoMutation)(nil)
@@ -1871,8 +1871,8 @@ func (m *UserFollowInfoMutation) ResetEdge(name string) error {
 // UserPasswordMutation represents an operation that mutates the UserPassword nodes in the graph.
 type UserPasswordMutation struct {
 	config
-	op         Op
-	typ        string
+	op            Op
+	typ           string
 	id            *uint64
 	user_id       *uint64
 	adduser_id    *int64
@@ -1881,9 +1881,9 @@ type UserPasswordMutation struct {
 	create_time   *time.Time
 	update_time   *time.Time
 	clearedFields map[string]struct{}
-	done       bool
-	oldValue   func(context.Context) (*UserPassword, error)
-	predicates []predicate.UserPassword
+	done          bool
+	oldValue      func(context.Context) (*UserPassword, error)
+	predicates    []predicate.UserPassword
 }
 
 var _ ent.Mutation = (*UserPasswordMutation)(nil)
@@ -2516,8 +2516,8 @@ func (m *UserPasswordMutation) ResetEdge(name string) error {
 // VideoCollectionMutation represents an operation that mutates the VideoCollection nodes in the graph.
 type VideoCollectionMutation struct {
 	config
-	op         Op
-	typ        string
+	op            Op
+	typ           string
 	id            *uint64
 	user_id       *int
 	adduser_id    *int
@@ -2528,9 +2528,9 @@ type VideoCollectionMutation struct {
 	create_time   *time.Time
 	update_time   *time.Time
 	clearedFields map[string]struct{}
-	done       bool
-	oldValue   func(context.Context) (*VideoCollection, error)
-	predicates []predicate.VideoCollection
+	done          bool
+	oldValue      func(context.Context) (*VideoCollection, error)
+	predicates    []predicate.VideoCollection
 }
 
 var _ ent.Mutation = (*VideoCollectionMutation)(nil)
@@ -3207,8 +3207,8 @@ func (m *VideoCollectionMutation) ResetEdge(name string) error {
 // VideoCommentMutation represents an operation that mutates the VideoComment nodes in the graph.
 type VideoCommentMutation struct {
 	config
-	op         Op
-	typ        string
+	op             Op
+	typ            string
 	id             *uint64
 	comment_id     *int
 	addcomment_id  *int
@@ -3222,9 +3222,9 @@ type VideoCommentMutation struct {
 	create_time    *time.Time
 	update_time    *time.Time
 	clearedFields  map[string]struct{}
-	done       bool
-	oldValue   func(context.Context) (*VideoComment, error)
-	predicates []predicate.VideoComment
+	done           bool
+	oldValue       func(context.Context) (*VideoComment, error)
+	predicates     []predicate.VideoComment
 }
 
 var _ ent.Mutation = (*VideoCommentMutation)(nil)
@@ -4058,8 +4058,8 @@ func (m *VideoCommentMutation) ResetEdge(name string) error {
 // VideoLikeMutation represents an operation that mutates the VideoLike nodes in the graph.
 type VideoLikeMutation struct {
 	config
-	op         Op
-	typ        string
+	op            Op
+	typ           string
 	id            *uint64
 	user_id       *int
 	adduser_id    *int
@@ -4070,9 +4070,9 @@ type VideoLikeMutation struct {
 	create_time   *time.Time
 	update_time   *time.Time
 	clearedFields map[string]struct{}
-	done       bool
-	oldValue   func(context.Context) (*VideoLike, error)
-	predicates []predicate.VideoLike
+	done          bool
+	oldValue      func(context.Context) (*VideoLike, error)
+	predicates    []predicate.VideoLike
 }
 
 var _ ent.Mutation = (*VideoLikeMutation)(nil)
@@ -4749,8 +4749,8 @@ func (m *VideoLikeMutation) ResetEdge(name string) error {
 // VideoMetadatumMutation represents an operation that mutates the VideoMetadatum nodes in the graph.
 type VideoMetadatumMutation struct {
 	config
-	op         Op
-	typ        string
+	op                 Op
+	typ                string
 	id                 *uint64
 	video_id           *int
 	addvideo_id        *int
@@ -4766,9 +4766,9 @@ type VideoMetadatumMutation struct {
 	create_time        *time.Time
 	update_time        *time.Time
 	clearedFields      map[string]struct{}
-	done       bool
-	oldValue   func(context.Context) (*VideoMetadatum, error)
-	predicates []predicate.VideoMetadatum
+	done               bool
+	oldValue           func(context.Context) (*VideoMetadatum, error)
+	predicates         []predicate.VideoMetadatum
 }
 
 var _ ent.Mutation = (*VideoMetadatumMutation)(nil)
